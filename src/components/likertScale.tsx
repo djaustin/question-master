@@ -1,15 +1,12 @@
-import { Stack, Image as ChakraImage, Icon } from "@chakra-ui/react";
-import Image from "next/image";
+import { Stack } from "@chakra-ui/react";
 import React from "react";
-import FeedbackButton from "./FeedbackButton";
+import FeedbackButton, { FeedbackButtonProps } from "./FeedbackButton";
+
+const responses: FeedbackButtonProps['variant'][] = ['sad', 'frown', 'neutral', 'happy', 'grin'] 
 
 const LikertScale = () => (
-  <Stack direction={{ base: "column", sm: "row" }}>
-    <FeedbackButton />
-    <FeedbackButton />
-    <FeedbackButton />
-    <FeedbackButton />
-    <FeedbackButton />
+  <Stack direction={{ base: "column", sm: "row" }} >
+    {responses.map(variant => <FeedbackButton key={variant} variant={variant}/>)}
   </Stack>
 );
 
