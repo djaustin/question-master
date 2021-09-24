@@ -6,41 +6,51 @@ import SadSvg from "../assets/sad";
 import GrinSvg from "../assets/grin";
 import NeutralSvg from "../assets/neutral";
 import HappySvg from "../assets/happy";
-
+import { RadioProps, useRadio, UseRadioProps } from "@chakra-ui/radio";
 
 export type FeedbackButtonProps = {
-  variant: 'frown' | 'sad' | 'neutral' | 'happy' | 'grin'
-}
+  variant: "frown" | "sad" | "neutral" | "happy" | "grin";
+} & UseRadioProps;
 
-export default function FeedbackButton({variant}: FeedbackButtonProps ) {
+export default function FeedbackButton({
+  variant,
+  ...radioProps
+}: FeedbackButtonProps) {
+  const { getInputProps, getCheckboxProps } = useRadio(radioProps);
+  const inputProps = getInputProps();
+  const checkboxProps = getCheckboxProps();
   let svg: ReactElement;
-  switch(variant){ 
+  switch (variant) {
     case "frown":
-      svg = <FrownSvg/>;
+      svg = <FrownSvg />;
       break;
-    case "sad": 
-      svg = <SadSvg/>;
+    case "sad":
+      svg = <SadSvg />;
       break;
-    case 'neutral':
-      svg = <NeutralSvg/>;
+    case "neutral":
+      svg = <NeutralSvg />;
       break;
-    case 'happy': 
-      svg = <HappySvg/>;
+    case "happy":
+      svg = <HappySvg />;
       break;
-    case 'grin':
-      svg = <GrinSvg/>;
+    case "grin":
+      svg = <GrinSvg />;
       break;
   }
-  
+
   return (
-    <Box
-      p="1"
-      color="red"
-      textColor="red"
-      borderRadius="lg"
-      _hover={{ bg: useColorModeValue("gray.100", "gray.700") }}
-    >
-      {svg}
+    <Box as="label">
+      <input {...getInputProps()} />
+      <Box
+        {...getCheckboxProps()}
+        p="2"
+        borderRadius="lg"
+        _checked={{
+          bg: useColorModeValue("gray.200", "gray.700"),
+        }}
+      >
+        {svg}
+      </Box>
     </Box>
   );
 }
