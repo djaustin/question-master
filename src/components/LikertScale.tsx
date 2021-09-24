@@ -29,7 +29,7 @@ const LikertScale: React.FC<LikertScaleProps> = ({
       {...stackProps}
       {...getRootProps()}
       {...fieldProps}
-      direction={{ base: "column", sm: "row" }}
+      direction={{ base: "column", md: "row" }}
     >
       {responses.map(({ variant, value }) => {
         const radioProps = getRadioProps({ value });
