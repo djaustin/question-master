@@ -44,8 +44,6 @@ export default function FeedbackButton({
       <Box
         {...getCheckboxProps()}
         p="2"
-        color="red"
-        textColor="red"
         borderRadius="lg"
         _checked={{
           bg: useColorModeValue("gray.200", "gray.700"),

@@ -1,4 +1,3 @@
-import { Prisma } from ".prisma/client";
 import { NextApiHandler } from "next";
 import { createFeedback } from "../../controllers/createFeedback";
 

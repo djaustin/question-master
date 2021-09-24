@@ -20,10 +20,7 @@ const LikertScale: React.FC<LikertScaleProps> = ({
   fieldProps,
   ...stackProps
 }) => {
-  const { getRootProps, getRadioProps } = useRadioGroup({
-    name: "score",
-    onChange: console.log,
-  });
+  const { getRootProps, getRadioProps } = useRadioGroup();
   return (
     <Stack
       {...stackProps}
