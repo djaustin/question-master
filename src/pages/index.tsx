@@ -10,7 +10,9 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { ChangeEvent } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import CommentComponent from "../components/CommentComponent";
 import LikertScale from "../components/LikertScale";
 
 type FormInputs = {
@@ -26,15 +28,34 @@ const Index = () => {
     formState: { errors },
   } = useForm<FormInputs>();
   const [contactUser, setContactUser] = useState(false);
-  const sendFeedback: SubmitHandler<FormInputs> = (data) => {
-    console.log(data);
-    const parsedData = { ...data, score: parseInt(data.score) };
-    fetch("/api/feedback", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(parsedData),
-    });
+  const [ comment, setComment ] = useState();
+  const [ feedbackValue, setFeedbackValue ] = useState();
+  const [ errorNoInput, setErrorNoInput ] = useState(false);
+
+  const onCommentChange = (event: ChangeEvent) => {
+    setComment(event.target.value);
+    setErrorNoInput(false);
   };
+  const onFeedbackChange = (event: ChangeEvent) => {
+    setFeedbackValue(event.target.value);
+    if(event.target.value != 1){
+      setErrorNoInput(false);
+    }
+  };
+
+  const sendFeedback: SubmitHandler<FormInputs> = (data) => {
+    if(feedbackValue == 1 && !comment){
+      setErrorNoInput(true);      
+    } else {  
+      const parsedData = { ...data, score: parseInt(data.score) };
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(parsedData),
+      });
+    }
+  };
+
   return (
     <Container maxW="4xl">
       <VStack spacing="8">
@@ -53,6 +74,7 @@ const Index = () => {
             />
             <FormErrorMessage>{errors.score?.message}</FormErrorMessage>
           </FormControl>
+          <CommentComponent onCommentChange={onCommentChange} errorNoInput={errorNoInput}/>
           <Checkbox
             mt="6"
             checked={contactUser}
