@@ -52,7 +52,7 @@ const Index = () => {
               render={({ field }) => <LikertScale fieldProps={field}  />}
               control={control}
               rules={{
-                required: "Please choose a score before submitting",
+                required: "Please choose a response before submitting",
               }}
             />
             <FormErrorMessage>{errors.score?.message}</FormErrorMessage>
