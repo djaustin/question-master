@@ -13,6 +13,7 @@ generator client {
 model Feedback {
   id        Int      @id @default(autoincrement())
   score     Int
+  username  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
