@@ -27,6 +27,7 @@ const Index = () => {
   } = useForm<FormInputs>();
   const [contactUser, setContactUser] = useState(false);
   const sendFeedback: SubmitHandler<FormInputs> = (data) => {
+    console.log(data);
     const parsedData = { ...data, score: parseInt(data.score) };
     fetch("/api/feedback", {
       method: "POST",
