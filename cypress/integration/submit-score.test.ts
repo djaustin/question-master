@@ -14,5 +14,6 @@ describe("Score Submission", () => {
     cy.findAllByRole("button", { name: /submit/i }).click();
 
     cy.get("@feedback.all").should("have.length", 0);
+    cy.findByText("Please choose a response before submitting");
   });
 });

@@ -8,7 +8,8 @@ import {
   Heading,
   Input,
   VStack,
-  Text
+  chakra,
+  FormLabel
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -29,6 +30,7 @@ const Index = () => {
     watch
   } = useForm<FormInputs>();
   const [contactUser, setContactUser] = useState(false);
+  const commentIsMandatory = watch("score") === "1";
 
   const sendFeedback: SubmitHandler<FormInputs> = (data) => {
     const parsedData = { ...data, score: parseInt(data.score) };
@@ -57,13 +59,13 @@ const Index = () => {
             />
             <FormErrorMessage>{errors.score?.message}</FormErrorMessage>
           </FormControl>
-          <Text>Add a comment</Text>
-          <FormControl isInvalid={!!errors.comment}>
+          <FormControl isInvalid={!!errors.comment} >
+            <FormLabel>Add a comment {commentIsMandatory && (<chakra.span color="red">*</chakra.span>)}</FormLabel>
             <Input
               placeholder="Comment"              
               {...register("comment", {
                 required: {
-                  value: watch("score") === "1",
+                  value: commentIsMandatory,
                   message: "Please enter a comment before submitting",
                 },
               })}/>
