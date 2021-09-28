@@ -31,12 +31,12 @@ const Index = () => {
   const [contactUser, setContactUser] = useState(false);
 
   const sendFeedback: SubmitHandler<FormInputs> = (data) => {
-      const parsedData = { ...data, score: parseInt(data.score) };
-      fetch("/api/feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsedData),
-      });
+    const parsedData = { ...data, score: parseInt(data.score) };
+    fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(parsedData),
+    });
   };
 
   return (
