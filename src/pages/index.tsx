@@ -26,7 +26,7 @@ const Index = () => {
     control,
     register,
     formState: { errors },
-    getValues
+    watch
   } = useForm<FormInputs>();
   const [contactUser, setContactUser] = useState(false);
 
@@ -58,12 +58,12 @@ const Index = () => {
             <FormErrorMessage>{errors.score?.message}</FormErrorMessage>
           </FormControl>
           <Text>Add a comment</Text>
-          <FormControl isInvalid={getValues("score") == 1 && !!errors.comment}>
+          <FormControl isInvalid={!!errors.comment}>
             <Input
               placeholder="Comment"              
               {...register("comment", {
                 required: {
-                  value: getValues("score") == 1,
+                  value: watch("score") === "1",
                   message: "Please enter a comment before submitting",
                 },
               })}/>
