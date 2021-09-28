@@ -1,39 +1,78 @@
-# Example app with [chakra-ui](https://github.com/chakra-ui/chakra-ui) and TypeScript
+# Question Master
 
-This example features how to use [chakra-ui](https://github.com/chakra-ui/chakra-ui) as the component library within a Next.js app with TypeScript.
+[![Maintainability](https://api.codeclimate.com/v1/badges/433152fe4298594d0a99/maintainability)](https://codeclimate.com/github/djaustin/question-master/maintainability)
 
-Next.js and chakra-ui have built-in TypeScript declarations, so we'll get autocompletion for their modules straight away.
+A customisable experience sampling application with a live results viewer
 
-We are connecting the Next.js `_app.js` with `chakra-ui`'s Provider and theme so the pages can have app-wide dark/light mode. We are also creating some components which shows the usage of `chakra-ui`'s style props.
+## Deployment
 
-## Preview
+To deploy this project, pull the Docker image and run it with the appropriate environment variables to connect to a database.
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+### Running a container
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-chakra-ui-typescript)
+The container runs on port 80 and requires the environment variable DATABASE_URL described below
 
-## Deploy your own
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-chakra-ui-typescript&project-name=with-chakra-ui-typescript&repository-name=with-chakra-ui-typescript)
-
-## How to use
-
-### Using `create-next-app`
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+An example run command is:
 
 ```bash
-npx create-next-app --example with-chakra-ui-typescript with-chakra-ui-typescript-app
-# or
-yarn create next-app --example with-chakra-ui-typescript with-chakra-ui-typescript-app
+  docker container run -p 8080:80 -e DATABASE_URL=postgres://postgres:secret_password@localhost:5432/question-master -e LOCAL_USERNAME=admin -e LOCAL_PASSWORD=admin daustin/question-master:latest
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## Run Locally
 
-## Notes
+Clone the project
 
-Chakra has supported Gradients and RTL in `v1.1`. To utilize RTL, [add RTL direction and swap](https://chakra-ui.com/docs/features/rtl-support).
+```bash
+  git clone https://github.com/djaustin/question-master.git
+```
 
-If you don't have multi-direction app, you should make `<Html lang="ar" dir="rtl">` inside `_document.ts`.
+Go to the project directory
+
+```bash
+  cd question-master
+```
+
+Install dependencies
+
+```bash
+  yarn
+```
+
+Start the server
+
+```bash
+  yarn dev
+```
+
+## Running Tests
+
+To run jest tests, run the following command
+
+```bash
+  yarn test
+```
+
+To run Cypress tests, run the following command
+
+```bash
+  yarn test:e2e
+```
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your `.env.local` file
+
+`DATABASE_URL`: The connection string for the database in which feedback will be stored
+
+## Tech Stack
+
+**Client:** React, Chakra UI
+
+**Server:** NextJS, Prisma
+
+## Authors
+
+- [@djaustin](https://www.github.com/djaustin)
+- [@tigs1995](https://www.github.com/tigs1995)
+- [@annabelkimber](https://www.github.com/annabelkimber)
+- [@hh0ang](https://www.github.com/hh0ang)
