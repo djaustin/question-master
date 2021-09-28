@@ -7,16 +7,13 @@ import GrinSvg from "../assets/grin";
 import NeutralSvg from "../assets/neutral";
 import HappySvg from "../assets/happy";
 import { useRadio, UseRadioProps } from "@chakra-ui/radio";
-import { ChangeEvent } from "react";
 
 export type FeedbackButtonProps = {
   variant: "frown" | "sad" | "neutral" | "happy" | "grin";
-  onFeedbackChange: (event: ChangeEvent) => void;
 } & UseRadioProps;
 
 export default function FeedbackButton({
   variant,
-  onFeedbackChange,
   ...radioProps
 }: FeedbackButtonProps) {
   const { getInputProps, getCheckboxProps } = useRadio(radioProps);
@@ -43,7 +40,7 @@ export default function FeedbackButton({
 
   return (
     <Box as="label">
-      <input {...getInputProps()} onChange={onFeedbackChange}/>
+      <input {...getInputProps()}/>
       <Box
         {...getCheckboxProps()}
         p="2"
