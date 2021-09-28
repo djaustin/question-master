@@ -8,16 +8,16 @@ import {
   Heading,
   Input,
   VStack,
+  Text
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { ChangeEvent } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import CommentComponent from "../components/CommentComponent";
 import LikertScale from "../components/LikertScale";
 
 type FormInputs = {
   score: string;
   username: string;
+  comment: string;
 };
 
 const Index = () => {
@@ -26,34 +26,17 @@ const Index = () => {
     control,
     register,
     formState: { errors },
+    getValues
   } = useForm<FormInputs>();
   const [contactUser, setContactUser] = useState(false);
-  const [ comment, setComment ] = useState();
-  const [ feedbackValue, setFeedbackValue ] = useState();
-  const [ errorNoInput, setErrorNoInput ] = useState(false);
-
-  const onCommentChange = (event: ChangeEvent) => {
-    setComment(event.target.value);
-    setErrorNoInput(false);
-  };
-  const onFeedbackChange = (event: ChangeEvent) => {
-    setFeedbackValue(event.target.value);
-    if(event.target.value != 1){
-      setErrorNoInput(false);
-    }
-  };
 
   const sendFeedback: SubmitHandler<FormInputs> = (data) => {
-    if(feedbackValue == 1 && !comment){
-      setErrorNoInput(true);      
-    } else {  
       const parsedData = { ...data, score: parseInt(data.score) };
       fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsedData),
       });
-    }
   };
 
   return (
@@ -66,7 +49,7 @@ const Index = () => {
           <FormControl isInvalid={!!errors.score}>
             <Controller
               name="score"
-              render={({ field }) => <LikertScale fieldProps={field} />}
+              render={({ field }) => <LikertScale fieldProps={field}  />}
               control={control}
               rules={{
                 required: "Please choose a score before submitting",
@@ -74,7 +57,18 @@ const Index = () => {
             />
             <FormErrorMessage>{errors.score?.message}</FormErrorMessage>
           </FormControl>
-          <CommentComponent onCommentChange={onCommentChange} errorNoInput={errorNoInput}/>
+          <Text>Add a comment</Text>
+          <FormControl isInvalid={getValues("score") == 1 && !!errors.comment}>
+            <Input
+              placeholder="Comment"              
+              {...register("comment", {
+                required: {
+                  value: getValues("score") == 1,
+                  message: "Please enter a comment before submitting",
+                },
+              })}/>
+            <FormErrorMessage>{errors.comment?.message}</FormErrorMessage>
+          </FormControl>
           <Checkbox
             mt="6"
             checked={contactUser}
