@@ -15,12 +15,12 @@ const NeutralSvg = (props) => (
       cy="48"
       r="44"
       stroke={useColorModeValue("black", "white")}
-      stroke-width="8"
+      strokeWidth="8"
     />
     <path
       d="M27 64C44.2308 64 62.1795 64 69 64"
       stroke={useColorModeValue("black", "white")}
-      stroke-width="8"
+      strokeWidth="8"
     />
     <circle
       cx="34.5"
