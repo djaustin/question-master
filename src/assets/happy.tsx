@@ -15,12 +15,12 @@ const HappySvg = (props) => (
       cy="48"
       r="44"
       stroke={useColorModeValue("black", "white")}
-      stroke-width="8"
+      strokeWidth="8"
     />
     <path
       d="M29 59C45 77.111 61.6667 66.5462 68 59"
       stroke={useColorModeValue("black", "white")}
-      stroke-width="8"
+      strokeWidth="8"
     />
     <circle
       cx="34.5"
