@@ -1,18 +1,10 @@
-import useSWR from "swr";
-import {
-  Box,
-  Box as Grid,
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Spinner,
-} from "@chakra-ui/react";
-import ResultsTable from "../components/ResultsTable";
+import { Box, Container, Flex, Heading, Spinner } from "@chakra-ui/react";
 import React from "react";
+import useSWR from "swr";
+import ResultsTable from "../components/ResultsTable";
 
 const Results = () => {
-  const fetcher = (...args) => fetch(...args).then((res) => res.json());
+  const fetcher = (...args: any) => fetch(...args).then((res) => res.json());
   const { data, error } = useSWR("/api/feedback", fetcher);
 
   if (error) return <div>No Data</div>;
