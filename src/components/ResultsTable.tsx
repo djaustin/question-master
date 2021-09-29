@@ -3,6 +3,9 @@ import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { useTable, useSortBy, Column } from "react-table";
 import { Prisma } from ".prisma/client";
 import React from "react";
+import { props } from "cypress/types/bluebird";
+import { moveMessagePortToContext } from "worker_threads";
+import dayjs from "dayjs";
 
 function ResultsTable({ feedback }) {
   const data = React.useMemo(() => feedback, [feedback]);
@@ -12,6 +15,7 @@ function ResultsTable({ feedback }) {
       {
         Header: "Date",
         accessor: "createdAt",
+        Cell: ({ value }) => dayjs(value).format("DD-MM-YYYY HH:mm:ss"),
       },
       {
         Header: "Score",
@@ -44,6 +48,7 @@ function ResultsTable({ feedback }) {
           <Tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
               <Th
+                fontSize="medium"
                 key={column.id}
                 {...column.getHeaderProps(column.getSortByToggleProps())}
               >
