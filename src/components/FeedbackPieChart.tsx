@@ -36,11 +36,11 @@ export default function FeedbackPieChart({
   return (
     <PieChart
     data={[
-      { title: 'One', value: 1, color: '#E38627' },
-      { title: 'Two', value: 2, color: '#C13C37' },
-      { title: 'Three', value: 3, color: '#6A2135' },
-      { title: 'Four', value: 4, color: '#6A2135' },
-      { title: 'Five', value: 5, color: '#6A2135' },
+      { title: 'One', value: oneCount, color: '#E38627' },
+      { title: 'Two', value: twoCount, color: '#C13C37' },
+      { title: 'Three', value: threeCount, color: '#6A2135' },
+      { title: 'Four', value: fourCount, color: '#6A2135' },
+      { title: 'Five', value: fiveCount, color: '#6A2135' },
     ]}
     />
   )

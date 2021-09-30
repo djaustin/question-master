@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import useSWR from "swr";
+import FeedbackPieChart from "../components/FeedbackPieChart";
 import ResultsTable from "../components/ResultsTable";
 import fetcher from "../integrations/jsonFetcher";
 
@@ -33,6 +34,11 @@ const Results = () => {
       <Flex bg="teal.500" px={5} py={2} justify="space-between">
         <Heading color="gray.100">Results Page</Heading>
       </Flex>
+      <Container mt={5} maxW="8xl">
+        <Box>
+          <FeedbackPieChart data={data} />
+        </Box>
+      </Container>
       <Container mt={5} maxW="8xl">
         <Box>
           <ResultsTable feedback={data} />
