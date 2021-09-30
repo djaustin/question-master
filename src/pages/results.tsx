@@ -35,7 +35,7 @@ const Results = () => {
         <Heading color="gray.100">Results Page</Heading>
       </Flex>
       <Container mt={5} maxW="8xl">
-        <Box h="1000px" overflow="auto">
+        <Box>
           <ResultsTable feedback={data} />
         </Box>
       </Container>
