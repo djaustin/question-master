@@ -6,7 +6,7 @@ export type FeedbackPieChartProps = { data: Feedback[] };
 
 function getChartData(data: Feedback[]) {
   const piechartData = [];
-  const totals: { 
+  const totals: {
     [currentScore: number]: number;
   } = data.reduce(
     (acc, curr) => ({
