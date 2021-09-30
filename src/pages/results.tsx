@@ -10,6 +10,7 @@ import {
 import { signOut } from "next-auth/client";
 import React from "react";
 import useSWR from "swr";
+import FeedbackPieChart from "../components/FeedbackPieChart";
 import ResultsTable from "../components/ResultsTable";
 import { requireLogin } from "../integrations/authentication";
 import fetcher from "../integrations/jsonFetcher";
@@ -39,6 +40,11 @@ const Results = () => {
           Sign out
         </Button>
       </Flex>
+      <Container mt={5} maxW="8xl">
+        <Box>
+          <FeedbackPieChart data={data} />
+        </Box>
+      </Container>
       <Container mt={5} maxW="8xl">
         <Box>
           <ResultsTable feedback={data} />
