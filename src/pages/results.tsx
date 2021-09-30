@@ -41,11 +41,11 @@ const Results = () => {
         </Button>
       </Flex>
       <Container mt={5} maxW="8xl">
-      <Flex align="center" justify="center" mb="1">
+        <Center mb="1">
           <Box w="400px">
             <FeedbackPieChart data={data} />
           </Box>
-        </Flex>
+        </Center>
         <ResultsTable feedback={data} />
       </Container>
     </>

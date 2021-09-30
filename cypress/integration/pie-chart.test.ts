@@ -1,4 +1,3 @@
-import { Feedback } from "@prisma/client";
 import { feedbackData } from "../fixtures/feedback";
 
 describe("Feedback Pie Chart", () => {
