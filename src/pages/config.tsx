@@ -44,7 +44,7 @@ const Config: React.FC<ConfigProps> = ({ question }) => {
       <Head>
         <title>Site Configuration</title>
       </Head>
-      <Container>
+      <Container py="8">
         <chakra.form onSubmit={handleSubmit(submitConfig)}>
           <Heading>Site Configuration</Heading>
           <FormControl mt="8">
