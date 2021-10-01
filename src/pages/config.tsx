@@ -7,25 +7,25 @@ import Head from "next/head";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-type SettingsInputs = {
+type ConfigInputs = {
   question: string;
 };
 
-const Settings = () => {
-  const { handleSubmit } = useForm<SettingsInputs>();
+const Config = () => {
+  const { handleSubmit } = useForm<ConfigInputs>();
 
   return (
     <>
       <Head>
-        <title>Feedback Settings</title>
+        <title>Site Configuration</title>
       </Head>
       <Container>
         <chakra.form>
           <VStack alignItems="flex-start" spacing="8">
-            <Heading>Feedback Settings</Heading>
+            <Heading>Site Configuration</Heading>
             <FormControl>
               <FormLabel>Question</FormLabel>
-              <Input placeholder="How are you finding the performance today?" />
+              <Input placeholder="e.g. how are you finding the performance today?" />
             </FormControl>
             <Button alignSelf="flex-end" type="submit">
               Save
@@ -37,4 +37,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default Config;
