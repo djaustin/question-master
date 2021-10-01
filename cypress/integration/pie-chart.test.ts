@@ -14,7 +14,7 @@ describe("Feedback Pie Chart", () => {
       },
       {
         "id": 2,
-        "username": "tk44b4",
+        "username": "ggr555",
         "score": 1,
         "updatedAt": new Date(),
         "createdAt": new Date(),
@@ -22,7 +22,7 @@ describe("Feedback Pie Chart", () => {
       },
       {
         "id": 3,
-        "username": "tk44b4",
+        "username": "hjg8585",
         "score": 1,
         "updatedAt": new Date(),
         "createdAt": new Date(),
@@ -30,7 +30,7 @@ describe("Feedback Pie Chart", () => {
       },
       {
         "id": 4,
-        "username": "tk44b4",
+        "username": "ak4855",
         "score": 2,
         "updatedAt": new Date(),
         "createdAt": new Date(),
@@ -38,7 +38,7 @@ describe("Feedback Pie Chart", () => {
       },
       {
         "id": 5,
-        "username": "tk44b4",
+        "username": "fgjh585",
         "score": 3,
         "updatedAt": new Date(),
         "createdAt": new Date(),
@@ -46,23 +46,57 @@ describe("Feedback Pie Chart", () => {
       },
       {
         "id": 6,
-        "username": "tk44b4",
+        "username": "ff5563",
         "score": 3,
         "updatedAt": new Date(),
         "createdAt": new Date(),
         "comment": "Comment 6"
-      }   
+      },
+      {
+        "id": 7,
+        "username": "fd5555",
+        "score": 4,
+        "updatedAt": new Date(),
+        "createdAt": new Date(),
+        "comment": "Comment 7"
+      },
+      {
+        "id": 8,
+        "username": "jkkj666",
+        "score": 4,
+        "updatedAt": new Date(),
+        "createdAt": new Date(),
+        "comment": "Comment 8"
+      },
+      {
+        "id": 9,
+        "username": "aa33333",
+        "score": 5,
+        "updatedAt": new Date(),
+        "createdAt": new Date(),
+        "comment": "Comment 9"
+      },
+      {
+        "id": 10,
+        "username": "ku87876",
+        "score": 5,
+        "updatedAt": new Date(),
+        "createdAt": new Date(),
+        "comment": "Comment 10"
+      }
     ];
 
     cy.intercept("GET", "/api/feedback", data).as("feedback");
+    cy.visit("/results");
 
     // Assert
-    cy.visit("/results");
-    cy.findByTitle("One");
-    cy.findByTitle("Two");
-    cy.findByTitle("Three");
-
-    cy.findByRole("svg");
-
+    cy.findByText("30%");
+    cy.findByText("10%");
+    cy.findAllByText("20%");
+    cy.findByText("Really unhappy");
+    cy.findByText("Unhappy");
+    cy.findByText("Neutral");
+    cy.findByText("Happy");
+    cy.findByText("Really happy");
   });
 });
