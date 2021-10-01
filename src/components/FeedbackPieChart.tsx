@@ -41,7 +41,6 @@ export default function FeedbackPieChart({
     { title: "Happy", value: fourCount, color: '#7F3366' },
     { title: "Really happy", value: fiveCount, color: '#667F33' },
   ]
-  console.log(pieChartData);
 
   return (
     <PieChart
