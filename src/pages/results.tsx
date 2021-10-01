@@ -34,7 +34,7 @@ const Results = () => {
       <Flex bg="teal.500" px={5} py={2} justify="space-between">
         <Heading color="gray.100">Results Page</Heading>
       </Flex>
-      <Container mt={5} maxW="8xl">
+      <Container mt={5} width="40%">
         <Box>
           <FeedbackPieChart data={data} />
         </Box>

@@ -23,7 +23,7 @@ export default function FeedbackPieChart({
         twoCount += 1;
         break;
       case 3:
-        threeCount =+ 1;
+        threeCount += 1;
         break;
       case 4:
         fourCount += 1;
@@ -33,15 +33,29 @@ export default function FeedbackPieChart({
         break;
       }  
   });
+
+  const pieChartData = [
+    { title: "Really unhappy", value: oneCount, color: '#33667F' },
+    { title: "Unhappy", value: twoCount, color: '#337F66' },
+    { title: "Neutral", value: threeCount, color: '#66337F' },
+    { title: "Happy", value: fourCount, color: '#7F3366' },
+    { title: "Really happy", value: fiveCount, color: '#667F33' },
+  ]
+  console.log(pieChartData);
+
   return (
     <PieChart
-    data={[
-      { title: 'One', value: oneCount, color: '#E38627' },
-      { title: 'Two', value: twoCount, color: '#C13C37' },
-      { title: 'Three', value: threeCount, color: '#6A2135' },
-      { title: 'Four', value: fourCount, color: '#6A2135' },
-      { title: 'Five', value: fiveCount, color: '#6A2135' },
-    ]}
+      lineWidth={20}
+      paddingAngle={18}
+      rounded
+      label={({ dataEntry }) => Math.round(dataEntry.percentage) + '%'}
+      labelStyle={(index) => ({
+        fontSize: '5px',
+        fontFamily: 'sans-serif',
+        fill: pieChartData[index].color
+      })}
+      labelPosition={60}
+      data={pieChartData}
     />
   )
   
