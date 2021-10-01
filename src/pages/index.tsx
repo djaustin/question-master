@@ -12,9 +12,11 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
+import { GetStaticProps } from "next";
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import LikertScale from "../components/LikertScale";
+import prisma from "../integrations/db";
 
 type FormInputs = {
   score: string;
@@ -22,12 +24,11 @@ type FormInputs = {
   comment: string;
 };
 
-const Index = () => {
-  const toast = useToast({
-    isClosable: true,
-    position: "bottom",
-    variant: "solid",
-  });
+type IndexProps = {
+  question?: string;
+};
+
+const Index: React.FC<IndexProps> = ({ question }) => {
   const {
     handleSubmit,
     control,
@@ -36,6 +37,11 @@ const Index = () => {
     watch,
     reset,
   } = useForm<FormInputs>();
+  const toast = useToast({
+    isClosable: true,
+    position: "bottom",
+    variant: "solid",
+  });
   const [contactUser, setContactUser] = useState(false);
   const commentIsMandatory = watch("score") === "1";
 
@@ -66,7 +72,7 @@ const Index = () => {
     <Container maxW="4xl">
       <VStack spacing="8">
         <Heading textAlign="center" size="3xl">
-          How are you finding the system's performance today?
+          {question || "How are you finding the system's performance today?"}
         </Heading>
         <form onSubmit={handleSubmit(sendFeedback)}>
           <FormControl isInvalid={!!errors.score}>
@@ -131,3 +137,17 @@ const Index = () => {
 };
 
 export default Index;
+
+export const getStaticProps: GetStaticProps<IndexProps> = async (req) => {
+  const data = await prisma.config.findUnique({
+    where: {
+      key: "question",
+    },
+  });
+  return {
+    props: {
+      question: data?.value ?? null,
+    },
+    revalidate: 10,
+  };
+};
