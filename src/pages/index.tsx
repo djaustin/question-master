@@ -1,15 +1,16 @@
 import {
   Button,
+  chakra,
   Checkbox,
   Container,
   Flex,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Heading,
   Input,
+  useToast,
   VStack,
-  chakra,
-  FormLabel
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -22,23 +23,43 @@ type FormInputs = {
 };
 
 const Index = () => {
+  const toast = useToast({
+    isClosable: true,
+    position: "bottom",
+    variant: "solid",
+  });
   const {
     handleSubmit,
     control,
     register,
     formState: { errors },
-    watch
+    watch,
+    reset,
   } = useForm<FormInputs>();
   const [contactUser, setContactUser] = useState(false);
   const commentIsMandatory = watch("score") === "1";
 
-  const sendFeedback: SubmitHandler<FormInputs> = (data) => {
+  const sendFeedback: SubmitHandler<FormInputs> = async (data) => {
     const parsedData = { ...data, score: parseInt(data.score) };
-    fetch("/api/feedback", {
+    const res = await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(parsedData),
     });
+
+    if (res.ok) {
+      toast({
+        description: "Your feedback has been submitted. Thank you!",
+        status: "success",
+        onCloseComplete: () => window.location.reload(),
+      });
+    } else {
+      toast({
+        description: "There was an error submitting your feedback",
+        title: res.statusText,
+        status: "error",
+      });
+    }
   };
 
   return (
@@ -51,7 +72,7 @@ const Index = () => {
           <FormControl isInvalid={!!errors.score}>
             <Controller
               name="score"
-              render={({ field }) => <LikertScale fieldProps={field}  />}
+              render={({ field }) => <LikertScale fieldProps={field} />}
               control={control}
               rules={{
                 required: "Please choose a response before submitting",
@@ -59,16 +80,20 @@ const Index = () => {
             />
             <FormErrorMessage>{errors.score?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={!!errors.comment} >
-            <FormLabel>Add a comment {commentIsMandatory && (<chakra.span color="red">*</chakra.span>)}</FormLabel>
+          <FormControl isInvalid={!!errors.comment}>
+            <FormLabel>
+              Add a comment{" "}
+              {commentIsMandatory && <chakra.span color="red">*</chakra.span>}
+            </FormLabel>
             <Input
-              placeholder="Comment"              
+              placeholder="Comment"
               {...register("comment", {
                 required: {
                   value: commentIsMandatory,
                   message: "Please enter a comment before submitting",
                 },
-              })}/>
+              })}
+            />
             <FormErrorMessage>{errors.comment?.message}</FormErrorMessage>
           </FormControl>
           <Checkbox
