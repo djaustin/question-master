@@ -44,6 +44,30 @@ Start the server
   yarn dev
 ```
 
+## Running database locally 
+
+Run a prisma docker container
+
+```docker container run --name
+postgres-dev -e
+POSTGRES_PASSWORD=mpostgres -p 
+5432:5432 -v pgdata:/var/lib/postgres/data
+-d postgres
+````
+
+Migrate the database
+
+```yarn prisma migrate dev
+```
+
+Open prisma studio
+
+```yarn prisma studio
+```
+
+Add .env file with the following in:
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
+
 ## Running Tests
 
 To run jest tests, run the following command
