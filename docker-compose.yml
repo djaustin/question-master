@@ -1,0 +1,25 @@
+version: "3.4"
+
+services:
+  database:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  image_hosting:
+    image: daustin/filepile:0.1.0
+    ports:
+      - 8090:80
+    environment:
+      FILEPILE_UPLOAD_DIR: /var/filepile
+      FILEPILE_MAX_UPLOAD_SIZE: 10000000
+    volumes:
+      - imagedata:/var/filepile
+
+volumes:
+  pgdata:
+  imagedata:

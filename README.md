@@ -38,6 +38,12 @@ Install dependencies
   yarn
 ```
 
+Start dependency services
+
+```bash
+  docker compose up
+```
+
 Start the server
 
 ```bash
