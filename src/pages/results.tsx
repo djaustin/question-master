@@ -8,7 +8,10 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { signOut } from "next-auth/client";
-import React from "react";
+import { default as React, useState } from "react";
+import { DateRangePicker } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import useSWR from "swr";
 import FeedbackPieChart from "../components/FeedbackPieChart";
 import ResultsTable from "../components/ResultsTable";
@@ -17,6 +20,13 @@ import fetcher from "../integrations/jsonFetcher";
 
 const Results = () => {
   const { data, error } = useSWR("/api/feedback", fetcher);
+  const [ranges, setRanges] = useState([
+    {
+      startDate: null,
+      endDate: null,
+      key: "rollup",
+    },
+  ]);
 
   if (error) return <div>No Data</div>;
   if (!data)
@@ -41,6 +51,10 @@ const Results = () => {
         </Button>
       </Flex>
       <Container mt={5} maxW="8xl">
+        <DateRangePicker
+          ranges={ranges}
+          onChange={(ranges) => setRanges([ranges.rollup])}
+        />
         <Center mb="1">
           <Box w="400px">
             <FeedbackPieChart data={data} />
