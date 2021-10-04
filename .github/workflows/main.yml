@@ -31,4 +31,4 @@ jobs:
           yarn install --frozen-lockfile
           yarn test:e2e
         env:
-          DATABASE_URL: ${{ DEV_DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
