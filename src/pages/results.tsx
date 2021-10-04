@@ -50,6 +50,12 @@ const Results = () => {
           Sign out
         </Button>
       </Flex>
+
+      <Flex mt={5} mr={5}>
+        <Container width="40%">
+          <FeedbackPieChart data={data} />
+        </Container>
+      </Flex>
       <Container mt={5} maxW="8xl">
         <DateRangePicker
           ranges={ranges}
