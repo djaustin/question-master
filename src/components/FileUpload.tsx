@@ -19,7 +19,7 @@ const FileUpload = (props: FileUploadProps) => {
   const handleClick = () => inputRef.current?.click();
 
   return (
-    <InputGroup onClick={handleClick}>
+    <InputGroup onClick={handleClick} cursor="pointer">
       <input
         type={"file"}
         multiple={multiple || false}
