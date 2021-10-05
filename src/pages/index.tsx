@@ -8,6 +8,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
+  Image,
   Input,
   useToast,
   VStack,
@@ -26,16 +27,16 @@ type FormInputs = {
 
 type IndexProps = {
   question?: string;
+  brandingUrl?: string;
 };
 
-const Index: React.FC<IndexProps> = ({ question }) => {
+const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
   const {
     handleSubmit,
     control,
     register,
     formState: { errors },
     watch,
-    reset,
   } = useForm<FormInputs>();
   const toast = useToast({
     isClosable: true,
@@ -70,6 +71,7 @@ const Index: React.FC<IndexProps> = ({ question }) => {
 
   return (
     <Container maxW="4xl">
+      <Image h="50px" src={brandingUrl} />
       <VStack spacing="8">
         <Heading textAlign="center" size="3xl">
           {question || "How are you finding the system's performance today?"}
@@ -139,14 +141,13 @@ const Index: React.FC<IndexProps> = ({ question }) => {
 export default Index;
 
 export const getStaticProps: GetStaticProps<IndexProps> = async (req) => {
-  const data = await prisma.config.findUnique({
-    where: {
-      key: "question",
-    },
-  });
+  const data = await prisma.config.findMany();
+  const question = data.find((config) => config.key === "question");
+  const brandingUrl = data.find((config) => config.key === "brandingUrl");
   return {
     props: {
-      question: data?.value ?? null,
+      question: question?.value ?? null,
+      brandingUrl: brandingUrl?.value ?? null,
     },
     revalidate: 10,
   };
