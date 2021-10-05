@@ -147,12 +147,12 @@ const uploadFile = async (file: File) => {
   return res.text();
 };
 const submitConfig = async (data: ConfigInputs, imageName: string) => {
+  const payload = [{ key: "question", value: data.question }];
+  if (imageName)
+    payload.push({ key: "brandingUrl", value: `/api/images/${imageName}` });
   const res = await fetch("/api/config", {
     method: "POST",
-    body: JSON.stringify([
-      { key: "question", value: data.question },
-      { key: "brandingUrl", value: `/api/images/${imageName}` },
-    ]),
+    body: JSON.stringify(payload),
     headers: { "Content-Type": "application/json" },
   });
   if (!res.ok) throw new Error("Unable to update config: " + res.statusText);
