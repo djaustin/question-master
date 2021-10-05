@@ -8,39 +8,15 @@ export default function FeedbackPieChart({
   data,
 }: FeedbackPieChartProps) {
 
-  let oneCount = 0;
-  let twoCount = 0;
-  let threeCount = 0;
-  let fourCount = 0;
-  let fiveCount = 0;
-
-  data.map((feedback) => {
-    switch (feedback.score) {
-      case 1:
-        oneCount += 1;
-        break;
-      case 2:
-        twoCount += 1;
-        break;
-      case 3:
-        threeCount += 1;
-        break;
-      case 4:
-        fourCount += 1;
-        break;
-      case 5:
-        fiveCount += 1;
-        break;
-      }  
-  });
+  const totals = data.reduce((acc, curr) => ({...acc, [curr.score]: acc[curr.score] ? acc[curr.score] + 1 : 1}), {});
 
   const pieChartData = [
-    { title: "Really unhappy", value: oneCount, color: '#33667F' },
-    { title: "Unhappy", value: twoCount, color: '#337F66' },
-    { title: "Neutral", value: threeCount, color: '#66337F' },
-    { title: "Happy", value: fourCount, color: '#7F3366' },
-    { title: "Really happy", value: fiveCount, color: '#667F33' },
-  ]
+    { title: "Really unhappy", value: totals[1], color: '#33667F' },
+    { title: "Unhappy", value: totals[2], color: '#337F66' },
+    { title: "Neutral", value: totals[3], color: '#66337F' },
+    { title: "Happy", value: totals[4], color: '#7F3366' },
+    { title: "Really happy", value: totals[5], color: '#667F33' },
+  ];
 
   return (
     <PieChart
