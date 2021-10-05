@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  Center,
   chakra,
   Checkbox,
   Container,
@@ -10,6 +12,7 @@ import {
   Heading,
   Image,
   Input,
+  Textarea,
   useToast,
   VStack,
 } from "@chakra-ui/react";
@@ -70,17 +73,27 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
   };
 
   return (
-    <Container maxW="4xl">
-      <Image h="50px" src={brandingUrl} />
-      <VStack spacing="8">
-        <Heading textAlign="center" size="3xl">
-          {question || "How are you finding the system's performance today?"}
-        </Heading>
-        <form onSubmit={handleSubmit(sendFeedback)}>
-          <FormControl isInvalid={!!errors.score}>
+    <Container py="8" maxW="4xl">
+      {brandingUrl && (
+        <Center mb="8">
+          <Image h="200px" src={brandingUrl} />
+        </Center>
+      )}
+      <Heading textAlign="center" size="3xl">
+        {question || "How are you finding the system's performance today?"}
+      </Heading>
+      <chakra.form mt="8" onSubmit={handleSubmit(sendFeedback)}>
+        <VStack spacing="8" align="start">
+          <FormControl alignSelf="center" isInvalid={!!errors.score}>
             <Controller
               name="score"
-              render={({ field }) => <LikertScale fieldProps={field} />}
+              render={({ field }) => (
+                <LikertScale
+                  align="center"
+                  justify="center"
+                  fieldProps={field}
+                />
+              )}
               control={control}
               rules={{
                 required: "Please choose a response before submitting",
@@ -88,13 +101,13 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
             />
             <FormErrorMessage>{errors.score?.message}</FormErrorMessage>
           </FormControl>
-          <FormControl isInvalid={!!errors.comment}>
+          <FormControl mb="8" isInvalid={!!errors.comment}>
             <FormLabel>
               Add a comment{" "}
               {commentIsMandatory && <chakra.span color="red">*</chakra.span>}
             </FormLabel>
             <Input
-              placeholder="Comment"
+              placeholder="Type your comment here..."
               {...register("comment", {
                 required: {
                   value: commentIsMandatory,
@@ -104,36 +117,35 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
             />
             <FormErrorMessage>{errors.comment?.message}</FormErrorMessage>
           </FormControl>
-          <Checkbox
-            mt="6"
-            checked={contactUser}
-            onChange={(e) => setContactUser(e.target.checked)}
-          >
-            I would like to be contacted about my issue
-          </Checkbox>
-          <FormControl
-            hidden={!contactUser}
-            mt="4"
-            isInvalid={!!errors.username}
-          >
-            <Input
-              placeholder="Username (e.g. az999999)"
-              {...register("username", {
-                required: {
-                  value: contactUser,
-                  message: "Please enter a username to be contacted",
-                },
-              })}
-            />
-            <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
-          </FormControl>
-          <Flex mt="8" justify="flex-end">
-            <Button size="lg" type="submit">
-              Submit
-            </Button>
-          </Flex>
-        </form>
-      </VStack>
+          <Box>
+            <Checkbox
+              checked={contactUser}
+              onChange={(e) => setContactUser(e.target.checked)}
+            >
+              I would like to be contacted about my issue
+            </Checkbox>
+            <FormControl
+              mt="2"
+              hidden={!contactUser}
+              isInvalid={!!errors.username}
+            >
+              <Input
+                placeholder="Username (e.g. az999999)"
+                {...register("username", {
+                  required: {
+                    value: contactUser,
+                    message: "Please enter a username to be contacted",
+                  },
+                })}
+              />
+              <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
+            </FormControl>
+          </Box>
+          <Button alignSelf="end" size="lg" type="submit">
+            Submit
+          </Button>
+        </VStack>
+      </chakra.form>
     </Container>
   );
 };
