@@ -117,10 +117,11 @@ const uploadFile = async (file: File) => {
     method: "POST",
     body: formData,
   });
+  if (!res.ok) throw new Error("Unable to upload image: " + res.statusText);
   return res.text();
 };
 const submitConfig = async (data: ConfigInputs, imageName: string) => {
-  fetch("/api/config", {
+  const res = await fetch("/api/config", {
     method: "POST",
     body: JSON.stringify([
       { key: "question", value: data.question },
@@ -128,4 +129,5 @@ const submitConfig = async (data: ConfigInputs, imageName: string) => {
     ]),
     headers: { "Content-Type": "application/json" },
   });
+  if (!res.ok) throw new Error("Unable to update config: " + res.statusText);
 };
