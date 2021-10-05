@@ -54,6 +54,7 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
       });
     }
   };
+  const selectedImage = watch("images")?.[0];
 
   const clearImage = () => {
     setValue("images", undefined);
@@ -96,10 +97,10 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
                   direction={{ base: "column", sm: "row" }}
                 >
                   <Button>Browse</Button>
-                  <Text>{watch("images")?.[0]?.name}</Text>
+                  <Text>{selectedImage?.name}</Text>
                 </Stack>
               </FileUpload>
-              <CloseButton onClick={clearImage} hidden={!filePreviewUrl} />
+              <CloseButton onClick={clearImage} hidden={!selectedImage} />
             </Stack>
           </FormControl>
 
