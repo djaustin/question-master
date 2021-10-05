@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   database:
-    image: postgres
+    image: postgres:latest
     ports:
       - 5432:5432
     volumes:
@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: postgres
 
   image_hosting:
-    image: daustin/filepile:0.1.0
+    image: daustin/filepile:1.0.0
     ports:
       - 8090:80
     environment:
