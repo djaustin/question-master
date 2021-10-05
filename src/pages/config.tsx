@@ -1,7 +1,7 @@
-import { Button, Text, Image } from "@chakra-ui/react";
+import { Button, Text, Image, CloseButton } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input, InputGroup } from "@chakra-ui/input";
-import { Container, Flex, Heading } from "@chakra-ui/layout";
+import { Container, Flex, Heading, Stack } from "@chakra-ui/layout";
 import { chakra } from "@chakra-ui/system";
 import { useToast } from "@chakra-ui/toast";
 import { GetServerSideProps } from "next";
@@ -18,19 +18,23 @@ type ConfigInputs = {
 
 type ConfigProps = {
   question: string;
+  brandingUrl: string;
 };
 
-const Config: React.FC<ConfigProps> = ({ question }) => {
+const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
   const {
     handleSubmit,
     register,
     formState: { isDirty },
     watch,
     getValues,
+    setValue,
   } = useForm<ConfigInputs>({
     defaultValues: { question },
   });
-  const [filePreviewUrl, setFilePreviewUrl] = useState<string>("");
+  const [filePreviewUrl, setFilePreviewUrl] = useState<string>(
+    brandingUrl ?? ""
+  );
   const toast = useToast();
   const submit = async (data: ConfigInputs) => {
     try {
@@ -49,6 +53,11 @@ const Config: React.FC<ConfigProps> = ({ question }) => {
         title: "There was a problem updating the configuration",
       });
     }
+  };
+
+  const clearImage = () => {
+    setValue("images", undefined);
+    setFilePreviewUrl("");
   };
 
   useEffect(() => {
@@ -71,13 +80,27 @@ const Config: React.FC<ConfigProps> = ({ question }) => {
               placeholder="e.g. how are you finding the performance today?"
             />
           </FormControl>
-          <FormControl mt="8">
+          <FormControl mt="4">
             <FormLabel>Branding Image</FormLabel>
-            <FileUpload accept="image/*" register={register("images")}>
-              <Button>Browse</Button>
-            </FileUpload>
-            <Text>{watch("images")?.[0]?.name}</Text>
-            <Image src={filePreviewUrl}></Image>
+            <Stack
+              align="center"
+              justify="center"
+              direction={{ base: "column", sm: "row" }}
+              spacing="8"
+            >
+              {filePreviewUrl && <Image h="40px" src={filePreviewUrl}></Image>}{" "}
+              <FileUpload accept="image/*" register={register("images")}>
+                <Stack
+                  align="center"
+                  justify="center"
+                  direction={{ base: "column", sm: "row" }}
+                >
+                  <Button>Browse</Button>
+                  <Text>{watch("images")?.[0]?.name}</Text>
+                </Stack>
+              </FileUpload>
+              <CloseButton onClick={clearImage} hidden={!filePreviewUrl} />
+            </Stack>
           </FormControl>
 
           <Flex justify="end">
@@ -103,9 +126,12 @@ export const getServerSideProps: GetServerSideProps<ConfigProps> = async (
 ) => {
   const config = await prisma.config.findMany();
   const question = config.find((item) => item.key === "question");
+  const brandingUrl = config.find((item) => item.key === "brandingUrl");
+
   return {
     props: {
       question: question?.value ?? null,
+      brandingUrl: brandingUrl?.value ?? null,
     },
   };
 };
