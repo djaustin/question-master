@@ -1,14 +1,17 @@
 import {
   Box,
+  Button,
   Center,
   Container,
   Flex,
   Heading,
   Spinner,
 } from "@chakra-ui/react";
+import { signOut } from "next-auth/client";
 import React from "react";
 import useSWR from "swr";
 import ResultsTable from "../components/ResultsTable";
+import { requireLogin } from "../integrations/authentication";
 import fetcher from "../integrations/jsonFetcher";
 
 const Results = () => {
@@ -32,6 +35,9 @@ const Results = () => {
     <>
       <Flex bg="teal.500" px={5} py={2} justify="space-between">
         <Heading color="gray.100">Results Page</Heading>
+        <Button variant="solid" color="white" onClick={() => signOut()}>
+          Sign out
+        </Button>
       </Flex>
       <Container mt={5} maxW="8xl">
         <Box>
@@ -41,5 +47,7 @@ const Results = () => {
     </>
   );
 };
+
+export const getServerSideProps = requireLogin();
 
 export default Results;
