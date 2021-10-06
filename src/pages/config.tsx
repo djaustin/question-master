@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import FileUpload from "../components/FileUpload";
 import prisma from "../integrations/db";
+import { requireLogin } from "../integrations/authentication";
 
 type ConfigInputs = {
   question: string;
@@ -122,20 +123,20 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
 
 export default Config;
 
-export const getServerSideProps: GetServerSideProps<ConfigProps> = async (
-  req
-) => {
-  const config = await prisma.config.findMany();
-  const question = config.find((item) => item.key === "question");
-  const brandingUrl = config.find((item) => item.key === "brandingUrl");
+export const getServerSideProps: GetServerSideProps<ConfigProps> = requireLogin(
+  async () => {
+    const config = await prisma.config.findMany();
+    const question = config.find((item) => item.key === "question");
+    const brandingUrl = config.find((item) => item.key === "brandingUrl");
 
-  return {
-    props: {
-      question: question?.value ?? null,
-      brandingUrl: brandingUrl?.value ?? null,
-    },
-  };
-};
+    return {
+      props: {
+        question: question?.value ?? null,
+        brandingUrl: brandingUrl?.value ?? null,
+      },
+    };
+  }
+);
 
 const uploadFile = async (file: File) => {
   const formData = new FormData();
@@ -147,6 +148,7 @@ const uploadFile = async (file: File) => {
   if (!res.ok) throw new Error("Unable to upload image: " + res.statusText);
   return res.text();
 };
+
 const submitConfig = async (data: ConfigInputs, imageName: string) => {
   const payload = [{ key: "question", value: data.question }];
   if (imageName)
