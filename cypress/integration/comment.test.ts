@@ -5,7 +5,7 @@ describe("Comment Submission", () => {
 
     // Act
     cy.visit("/");
-    cy.findByPlaceholderText("Comment").type("Test comment 1");
+    cy.findByPlaceholderText(/comment/i).type("Test comment 1");
     cy.findByLabelText("neutral").click();
     cy.findAllByRole("button", { name: /submit/i }).click();
 
