@@ -3,6 +3,7 @@ import { PageConfig } from "next";
 
 const handler = createProxyMiddleware({
   target: process.env.FILEPILE_BASE_URL,
+  secure: false,
   pathRewrite: { ["^/api/images"]: "" },
 });
 
