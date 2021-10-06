@@ -40,10 +40,10 @@ const Results = () => {
           Sign out
         </Button>
       </Flex>
-      <Container mt={5} width="40%">
-        <FeedbackPieChart data={data} />
-      </Container>
-      <Container mt={5} maxW="8xl">
+      <Container mt={5} maxW="8xl" textAlign="center">
+        <Box width="40%">
+          <FeedbackPieChart data={data} />
+        </Box>
         <ResultsTable feedback={data} />
       </Container>
     </>
