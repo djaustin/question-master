@@ -1,10 +1,4 @@
-import {
-  Center,
-  Container,
-  Flex,
-  Heading,
-  Spinner,
-} from "@chakra-ui/react";
+import { Center, Container, Flex, Heading, Spinner } from "@chakra-ui/react";
 import React, { useState } from "react";
 import useSWR from "swr";
 import FeedbackPieChart from "../components/FeedbackPieChart";
@@ -21,18 +15,6 @@ const Results = () => {
   const [feedbackData, setFeedbackData] = useState<Feedback[]>();
 
   if (error) return <div>No Data</div>;
-  if (!data)
-    return (
-      <Center h="100vh" w="100vw">
-        <Spinner
-          thickness="6px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="teal.500"
-          size="xl"
-        />
-      </Center>
-    );
 
   return (
     <>
@@ -40,16 +22,28 @@ const Results = () => {
         <Heading color="gray.100">Results Page</Heading>
       </Flex>
       <Flex width="20%" alignSelf="right" justify="space-between" mt={5} ml={5}>
-        <DatePicker setApiUrl={setApiUrl}/>
+        <DatePicker setApiUrl={setApiUrl} />
       </Flex>
-      <Flex mt={5} mr={5}>
-        <Container width="40%">
-          <FeedbackPieChart data={data} />
-        </Container>
-      </Flex>
-      <Container mt={5} maxW="8xl">
-          <ResultsTable feedback={data} />
-      </Container>
+      {data ? (
+        <>
+          <Flex mt={5} mr={5}>
+            <Container width="40%">
+              <FeedbackPieChart data={data} />
+            </Container>
+          </Flex>
+          <Container mt={5} maxW="8xl">
+            <ResultsTable feedback={data} />
+          </Container>
+        </>
+      ) : (
+        <Spinner
+          thickness="6px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="teal.500"
+          size="xl"
+        />
+      )}
     </>
   );
 };
