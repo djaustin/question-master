@@ -16,7 +16,8 @@ import { Feedback } from "@prisma/client";
 import prisma from "../integrations/db";
 
 const Results = () => {
-  const { data, error } = useSWR("/api/feedback", fetcher);
+  const [apiUrl, setApiUrl] = useState("/api/feedback");
+  const { data, error } = useSWR(apiUrl, fetcher);
   const [feedbackData, setFeedbackData] = useState<Feedback[]>();
 
   if (error) return <div>No Data</div>;
@@ -39,7 +40,7 @@ const Results = () => {
         <Heading color="gray.100">Results Page</Heading>
       </Flex>
       <Flex width="20%" alignSelf="right" justify="space-between" mt={5} ml={5}>
-        <DatePicker setFeedbackData={setFeedbackData}/>
+        <DatePicker setApiUrl={setApiUrl}/>
       </Flex>
       <Flex mt={5} mr={5}>
         <Container width="40%">
