@@ -25,3 +25,25 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import "@testing-library/cypress/add-commands";
 import "cypress-file-upload";
+
+Cypress.Commands.add("login", (username?: string, password?: string) => {
+  username = username ?? Cypress.env("ADMIN_USERNAME");
+  password = password ?? Cypress.env("ADMIN_PASSWORD");
+  cy.visit("/auth/signin");
+  cy.findByLabelText(/username/i).type(username);
+  cy.findByLabelText(/password/i).type(password);
+  cy.findByRole("button", { name: /sign in/i }).click();
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable<Subject> {
+      /**
+       * Log in to the application using credentials in the cypress environment variables
+       * @example
+       * cy.login()
+       */
+      login(username?: string, password?: string): Chainable<any>;
+    }
+  }
+}
