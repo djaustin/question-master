@@ -7,26 +7,22 @@ import {
   Heading,
   Spinner,
 } from "@chakra-ui/react";
+import { Feedback } from "@prisma/client";
 import { signOut } from "next-auth/client";
 import { default as React, useState } from "react";
-import { DateRangePicker } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import useSWR from "swr";
+import DatePicker from "../components/DatePicker";
 import FeedbackPieChart from "../components/FeedbackPieChart";
 import ResultsTable from "../components/ResultsTable";
 import { requireLogin } from "../integrations/authentication";
 import fetcher from "../integrations/jsonFetcher";
 
 const Results = () => {
-  const { data, error } = useSWR("/api/feedback", fetcher);
-  const [ranges, setRanges] = useState([
-    {
-      startDate: null,
-      endDate: null,
-      key: "rollup",
-    },
-  ]);
+  const [apiUrl, setApiUrl] = useState("/api/feedback");
+  const { data, error } = useSWR(apiUrl, fetcher);
+  const [feedbackData, setFeedbackData] = useState<Feedback[]>();
 
   if (error) return <div>No Data</div>;
   if (!data)
@@ -50,17 +46,10 @@ const Results = () => {
           Sign out
         </Button>
       </Flex>
-
-      <Flex mt={5} mr={5}>
-        <Container width="40%">
-          <FeedbackPieChart data={data} />
-        </Container>
+      <Flex width="20%" alignSelf="right" justify="space-between" mt={5} ml={5}>
+        <DatePicker setApiUrl={setApiUrl} />
       </Flex>
       <Container mt={5} maxW="8xl">
-        <DateRangePicker
-          ranges={ranges}
-          onChange={(ranges) => setRanges([ranges.rollup])}
-        />
         <Center mb="1">
           <Box w="400px">
             <FeedbackPieChart data={data} />
