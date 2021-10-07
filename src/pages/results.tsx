@@ -5,9 +5,7 @@ import {
   Heading,
   Skeleton,
   SkeletonCircle,
-  Spinner,
 } from "@chakra-ui/react";
-import { Feedback } from "@prisma/client";
 import React, { useState } from "react";
 import useSWR from "swr";
 import DatePicker, { DateRange } from "../components/DatePicker";
