@@ -13,7 +13,7 @@ import FeedbackPieChart from "../components/FeedbackPieChart";
 import ResultsTable from "../components/ResultsTable";
 import fetcher from "../integrations/jsonFetcher";
 
-const baseFeedbackUrl = "/api/date";
+const baseFeedbackUrl = "/api/feedback";
 
 const Results = () => {
   const [apiUrl, setApiUrl] = useState(baseFeedbackUrl);
