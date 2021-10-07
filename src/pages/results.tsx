@@ -1,4 +1,12 @@
-import { Container, Flex, Heading, Spinner } from "@chakra-ui/react";
+import {
+  Center,
+  Container,
+  Flex,
+  Heading,
+  Skeleton,
+  SkeletonCircle,
+  Spinner,
+} from "@chakra-ui/react";
 import { Feedback } from "@prisma/client";
 import React, { useState } from "react";
 import useSWR from "swr";
@@ -39,13 +47,14 @@ const Results = () => {
           </Container>
         </>
       ) : (
-        <Spinner
-          thickness="6px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="teal.500"
-          size="xl"
-        />
+        <>
+          <Center mt={5} mr={5}>
+            <SkeletonCircle size="sm" />
+          </Center>
+          <Container mt={5} maxW="8xl">
+            <Skeleton h="800px" variant="" />
+          </Container>
+        </>
       )}
     </>
   );
