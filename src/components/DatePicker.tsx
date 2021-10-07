@@ -26,7 +26,7 @@ export default function DatePicker({ onRangeChange }: DatePickerProps) {
       selectsRange={true}
       startDate={startDate}
       endDate={endDate}
-      onChange={(date) => onDateChanged(date)}
+      onChange={(date) => onDateChanged(date as DateRange)}
     />
   );
 }
