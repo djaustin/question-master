@@ -1,4 +1,14 @@
 describe("Configuration Page", () => {
+  before(() => {
+    cy.login();
+  });
+  beforeEach(() =>
+    Cypress.Cookies.preserveOnce(
+      "next-auth.session-token",
+      "next-auth.csrf-token",
+      "next-auth.callback-url"
+    )
+  );
   it("should submit the config when submit is clicked", () => {
     const question = "test question";
     cy.intercept("POST", "/api/config", {}).as("config");
