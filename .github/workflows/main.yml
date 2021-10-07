@@ -32,3 +32,6 @@ jobs:
           yarn test:e2e
         env:
           DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+          NEXTAUTH_URL: http://localhost:3000
+          ADMIN_USERNAME: admin
+          ADMIN_PASSWORD: password
