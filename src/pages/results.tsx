@@ -41,7 +41,7 @@ const Results = () => {
         </Button>
       </Flex>
       <Container mt={5} maxW="8xl" textAlign="center">
-        <Box width="40%">
+        <Box w="600px">
           <FeedbackPieChart data={data} />
         </Box>
         <ResultsTable feedback={data} />
