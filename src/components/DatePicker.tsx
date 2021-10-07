@@ -14,6 +14,7 @@ export default function DatePicker({ onRangeChange }: DatePickerProps) {
 
   function onDateChanged(range: DateRange) {
     setDateRange(range);
+    if (!range[0] && !range[1]) onRangeChange(null);
     if (range[1]) {
       onRangeChange?.(range);
     }
@@ -21,6 +22,7 @@ export default function DatePicker({ onRangeChange }: DatePickerProps) {
 
   return (
     <ReactDatePicker
+      isClearable
       selectsRange={true}
       startDate={startDate}
       endDate={endDate}

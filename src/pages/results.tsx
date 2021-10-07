@@ -22,7 +22,8 @@ const Results = () => {
   const { data, error } = useSWR(apiUrl, fetcher);
 
   const setDateFilter = (range: DateRange) => {
-    const isoRange = range.map((date) => date.toISOString());
+    if (!range) return setApiUrl(baseFeedbackUrl);
+    const isoRange = range.map((date) => date?.toISOString());
     setApiUrl(`${baseFeedbackUrl}?dateRange=${isoRange.join(",")}`);
   };
   if (error) return <div>No Data</div>;
@@ -32,7 +33,13 @@ const Results = () => {
       <Flex bg="teal.500" px={5} py={2} justify="space-between">
         <Heading color="gray.100">Results Page</Heading>
       </Flex>
-      <Flex width="20%" alignSelf="right" justify="space-between" mt={5} ml={5}>
+      <Flex
+        width={{ base: "full", md: "400px" }}
+        alignSelf="right"
+        justify="space-between"
+        px="4"
+        py="4"
+      >
         <DatePicker onRangeChange={setDateFilter} />
       </Flex>
       {data ? (
