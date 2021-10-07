@@ -1,19 +1,22 @@
-import { Center, Container, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Container, Flex, Heading, Spinner } from "@chakra-ui/react";
+import { Feedback } from "@prisma/client";
 import React, { useState } from "react";
 import useSWR from "swr";
+import DatePicker, { DateRange } from "../components/DatePicker";
 import FeedbackPieChart from "../components/FeedbackPieChart";
 import ResultsTable from "../components/ResultsTable";
 import fetcher from "../integrations/jsonFetcher";
-import DatePicker from "../components/DatePicker";
-import { useEffect } from "react";
-import { Feedback } from "@prisma/client";
-import prisma from "../integrations/db";
+
+const baseFeedbackUrl = "/api/date";
 
 const Results = () => {
-  const [apiUrl, setApiUrl] = useState("/api/feedback");
+  const [apiUrl, setApiUrl] = useState(baseFeedbackUrl);
   const { data, error } = useSWR(apiUrl, fetcher);
-  const [feedbackData, setFeedbackData] = useState<Feedback[]>();
 
+  const setDateFilter = (range: DateRange) => {
+    const isoRange = range.map((date) => date.toISOString());
+    setApiUrl(`${baseFeedbackUrl}?dateRange=${isoRange.join(",")}`);
+  };
   if (error) return <div>No Data</div>;
 
   return (
@@ -22,7 +25,7 @@ const Results = () => {
         <Heading color="gray.100">Results Page</Heading>
       </Flex>
       <Flex width="20%" alignSelf="right" justify="space-between" mt={5} ml={5}>
-        <DatePicker setApiUrl={setApiUrl} />
+        <DatePicker onRangeChange={setDateFilter} />
       </Flex>
       {data ? (
         <>
