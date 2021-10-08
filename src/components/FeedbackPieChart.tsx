@@ -4,9 +4,11 @@ import { PieChart } from "react-minimal-pie-chart";
 
 export type FeedbackPieChartProps = { data: Feedback[] };
 
-function getChartData(data) {
-  const getChartData = [];
-  const totals = data.reduce(
+function getChartData(data: Feedback[]) {
+  const piechartData = [];
+  const totals: { 
+    [currentScore: number]: number;
+  } = data.reduce(
     (acc, curr) => ({
       ...acc,
       [curr.score]: acc[curr.score] ? acc[curr.score] + 1 : 1,
@@ -14,29 +16,29 @@ function getChartData(data) {
     {}
   );
   if (totals[1]) {
-    getChartData.push({
+    piechartData.push({
       title: "Very unhappy",
       value: totals[1],
       color: "#FF0000",
     });
   }
   if (totals[2]) {
-    getChartData.push({ title: "Unhappy", value: totals[2], color: "#FF6900" });
+    piechartData.push({ title: "Unhappy", value: totals[2], color: "#FF6900" });
   }
   if (totals[3]) {
-    getChartData.push({ title: "Neutral", value: totals[3], color: "#FFD300" });
+    piechartData.push({ title: "Neutral", value: totals[3], color: "#FFD300" });
   }
   if (totals[4]) {
-    getChartData.push({ title: "Happy", value: totals[4], color: "#9FFF00" });
+    piechartData.push({ title: "Happy", value: totals[4], color: "#9FFF00" });
   }
   if (totals[5]) {
-    getChartData.push({
+    piechartData.push({
       title: "Very happy",
       value: totals[5],
       color: "#51bf03",
     });
   }
-  return getChartData;
+  return piechartData;
 }
 
 export default function FeedbackPieChart({ data }: FeedbackPieChartProps) {
