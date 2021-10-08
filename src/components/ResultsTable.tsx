@@ -15,19 +15,40 @@ import {
 import dayjs from "dayjs";
 import { default as React, useMemo } from "react";
 import { useFilters, useGlobalFilter, useSortBy, useTable } from "react-table";
+import { Response } from "../models/response";
+import { ScoreCard } from "./ScoreCard";
 import GlobalTableFilter from "./tableFilters/GlobalTableFilter";
 import NumberRangeColumnFilter from "./tableFilters/NumberRangeColumnFilter";
 import TextFilter from "./tableFilters/TextFilter";
 
+type ColumnTitle = "Date" | "Score" | "Comment" | "Username";
+
 export type ResultsTableProps = {
   feedback: Feedback[];
+  canFilter?: boolean;
+  globalFilter?: boolean;
+  hiddenColumns?: ColumnTitle[];
 } & SpacerProps;
 
-function ResultsTable({ feedback, ...spacerProps }: ResultsTableProps) {
+const scoreMap: { [key: number]: Response } = {
+  1: "very unhappy",
+  2: "unhappy",
+  3: "neutral",
+  4: "happy",
+  5: "very happy",
+};
+
+function ResultsTable({
+  feedback,
+  canFilter,
+  globalFilter,
+  hiddenColumns,
+  ...spacerProps
+}: ResultsTableProps) {
   const data = React.useMemo(() => feedback, [feedback]);
 
-  const columns = React.useMemo(
-    () => [
+  const columns = React.useMemo(() => {
+    const columns = [
       {
         Header: "Date",
         accessor: "createdAt",
@@ -38,18 +59,30 @@ function ResultsTable({ feedback, ...spacerProps }: ResultsTableProps) {
         accessor: "score",
         Filter: NumberRangeColumnFilter,
         filter: "between",
+        Cell: ({ value }) => (
+          <ScoreCard variant={scoreMap[value]}>{value}</ScoreCard>
+        ),
       },
       {
         Header: "Comment",
         accessor: "comment",
+        Cell: ({ value }) => (
+          <Box maxW="500px" maxH="60px" overflow="auto">
+            {value}
+          </Box>
+        ),
       },
       {
         Header: "Username",
         accessor: "username",
       },
-    ],
-    []
-  );
+    ];
+    if (!hiddenColumns) return columns;
+    else
+      return columns.filter(
+        (col) => !hiddenColumns?.includes(col.Header as ColumnTitle)
+      );
+  }, [hiddenColumns]);
 
   const defaultColumn = useMemo(
     () => ({
@@ -75,12 +108,14 @@ function ResultsTable({ feedback, ...spacerProps }: ResultsTableProps) {
   );
 
   return (
-    <>
-      <GlobalTableFilter
-        globalFilter={state.globalFilter}
-        setGlobalFilter={setGlobalFilter}
-        preGlobalFilteredRows={preGlobalFilteredRows}
-      />
+    <Box {...spacerProps}>
+      {canFilter && globalFilter && (
+        <GlobalTableFilter
+          globalFilter={state.globalFilter}
+          setGlobalFilter={setGlobalFilter}
+          preGlobalFilteredRows={preGlobalFilteredRows}
+        />
+      )}
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (
@@ -106,7 +141,9 @@ function ResultsTable({ feedback, ...spacerProps }: ResultsTableProps) {
                       </chakra.span>
                     </Box>
                     <div>
-                      {column.canFilter ? column.render("Filter") : null}
+                      {canFilter && column.canFilter
+                        ? column.render("Filter")
+                        : null}
                     </div>
                   </VStack>
                 </Th>
@@ -127,7 +164,7 @@ function ResultsTable({ feedback, ...spacerProps }: ResultsTableProps) {
           })}
         </Tbody>
       </Table>
-    </>
+    </Box>
   );
 }
 
