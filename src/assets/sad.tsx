@@ -1,7 +1,7 @@
 import React from "react";
 import { useColorModeValue } from "@chakra-ui/color-mode";
 
-const NeutralSvg = (props) => (
+const SadSvg = (props) => (
   <svg
     aria-label="very unhappy"
     width="96"
@@ -41,4 +41,4 @@ const NeutralSvg = (props) => (
   </svg>
 );
 
-export default NeutralSvg;
+export default SadSvg;
