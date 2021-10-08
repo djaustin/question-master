@@ -1,12 +1,21 @@
-import { Table, Thead, Tbody, Tr, Th, Td, chakra } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
-import { useTable, useSortBy, Column, useGlobalFilter } from "react-table";
-import { Prisma } from ".prisma/client";
-import React from "react";
-import { props } from "cypress/types/bluebird";
-import { moveMessagePortToContext } from "worker_threads";
+import {
+  Box,
+  chakra,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  VStack,
+} from "@chakra-ui/react";
 import dayjs from "dayjs";
-import GlobalTableFilter from "./GlobalTableFilter";
+import React, { useMemo } from "react";
+import { useFilters, useGlobalFilter, useSortBy, useTable } from "react-table";
+import GlobalTableFilter from "./tableFilters/GlobalTableFilter";
+import NumberRangeColumnFilter from "./tableFilters/NumberRangeColumnFilter";
+import TextFilter from "./tableFilters/TextFilter";
 
 function ResultsTable({ feedback }) {
   const data = React.useMemo(() => feedback, [feedback]);
@@ -21,6 +30,8 @@ function ResultsTable({ feedback }) {
       {
         Header: "Score",
         accessor: "score",
+        Filter: NumberRangeColumnFilter,
+        filter: "between",
       },
       {
         Header: "Comment",
@@ -34,6 +45,13 @@ function ResultsTable({ feedback }) {
     []
   );
 
+  const defaultColumn = useMemo(
+    () => ({
+      Filter: TextFilter,
+    }),
+    []
+  );
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -43,7 +61,12 @@ function ResultsTable({ feedback }) {
     state,
     preGlobalFilteredRows,
     setGlobalFilter,
-  } = useTable({ columns, data }, useGlobalFilter, useSortBy);
+  } = useTable(
+    { columns, data, defaultColumn },
+    useFilters,
+    useGlobalFilter,
+    useSortBy
+  );
 
   return (
     <>
@@ -58,20 +81,28 @@ function ResultsTable({ feedback }) {
             <Tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <Th
+                  verticalAlign="top"
                   fontSize="medium"
                   key={column.id}
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  {...column.getHeaderProps()}
                 >
-                  {column.render("Header")}
-                  <chakra.span pl="4">
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <TriangleDownIcon aria-label="sorted descending" />
-                      ) : (
-                        <TriangleUpIcon aria-label="sorted ascending" />
-                      )
-                    ) : null}
-                  </chakra.span>
+                  <VStack align="start" justify="start">
+                    <Box {...column.getSortByToggleProps()}>
+                      {column.render("Header")}
+                      <chakra.span pl="4">
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <TriangleDownIcon aria-label="sorted descending" />
+                          ) : (
+                            <TriangleUpIcon aria-label="sorted ascending" />
+                          )
+                        ) : null}
+                      </chakra.span>
+                    </Box>
+                    <div>
+                      {column.canFilter ? column.render("Filter") : null}
+                    </div>
+                  </VStack>
                 </Th>
               ))}
             </Tr>
