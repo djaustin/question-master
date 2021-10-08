@@ -2,6 +2,16 @@ import { Feedback } from "@prisma/client";
 import { feedbackData } from "../fixtures/feedback";
 
 describe("Feedback Pie Chart", () => {
+  before(() => {
+    cy.login();
+  });
+  beforeEach(() =>
+    Cypress.Cookies.preserveOnce(
+      "next-auth.session-token",
+      "next-auth.csrf-token",
+      "next-auth.callback-url"
+    )
+  );
   it("should show a pie chart when the user goes to the results page", () => {
     // Arrange
     cy.intercept("GET", "/api/feedback", feedbackData).as("feedback");
