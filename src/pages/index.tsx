@@ -5,7 +5,6 @@ import {
   chakra,
   Checkbox,
   Container,
-  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -18,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { GetStaticProps } from "next";
 import React, { useState } from "react";
+import { useBeforeunload } from "react-beforeunload";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import LikertScale from "../components/LikertScale";
 import prisma from "../integrations/db";
@@ -34,12 +34,17 @@ type IndexProps = {
 };
 
 const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  useBeforeunload((e) => {
+    if (!hasSubmitted) e.preventDefault();
+  });
   const {
     handleSubmit,
     control,
     register,
     formState: { errors },
     watch,
+    reset,
   } = useForm<FormInputs>();
   const toast = useToast({
     isClosable: true,
@@ -61,8 +66,9 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
       toast({
         description: "Your feedback has been submitted. Thank you!",
         status: "success",
-        onCloseComplete: () => window.location.reload(),
       });
+      reset({ comment: "", username: "" });
+      setHasSubmitted(true);
     } else {
       toast({
         description: "There was an error submitting your feedback",
