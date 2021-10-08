@@ -17,23 +17,23 @@ function getChartData(data) {
     getChartData.push({
       title: "Very unhappy",
       value: totals[1],
-      color: "#33667F",
+      color: "#FF0000",
     });
   }
   if (totals[2]) {
-    getChartData.push({ title: "Unhappy", value: totals[2], color: "#337F66" });
+    getChartData.push({ title: "Unhappy", value: totals[2], color: "#FF6900" });
   }
   if (totals[3]) {
-    getChartData.push({ title: "Neutral", value: totals[3], color: "#66337F" });
+    getChartData.push({ title: "Neutral", value: totals[3], color: "#FFD300" });
   }
   if (totals[4]) {
-    getChartData.push({ title: "Happy", value: totals[4], color: "#7F3366" });
+    getChartData.push({ title: "Happy", value: totals[4], color: "#9FFF00" });
   }
   if (totals[5]) {
     getChartData.push({
       title: "Very happy",
       value: totals[5],
-      color: "#667F33",
+      color: "#51bf03",
     });
   }
   return getChartData;
