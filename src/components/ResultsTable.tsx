@@ -3,6 +3,7 @@ import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   Box,
   chakra,
+  HStack,
   SpacerProps,
   Table,
   Tbody,
@@ -11,9 +12,12 @@ import {
   Thead,
   Tr,
   VStack,
+  Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { default as React, useMemo } from "react";
+import { FiUser } from "react-icons/fi";
 import { useFilters, useGlobalFilter, useSortBy, useTable } from "react-table";
 import { Response } from "../models/response";
 import { ScoreCard } from "./ScoreCard";
@@ -75,6 +79,19 @@ function ResultsTable({
       {
         Header: "Username",
         accessor: "username",
+        Cell: ({ value }) =>
+          value && (
+            <HStack
+              justifyContent="center"
+              bg={useColorModeValue("blue.600", "blue.400")}
+              px="2"
+              borderRadius="md"
+              color={useColorModeValue("white", "black")}
+            >
+              <FiUser />
+              <Text fontWeight="bold">{value}</Text>
+            </HStack>
+          ),
       },
     ];
     if (!hiddenColumns) return columns;

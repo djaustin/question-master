@@ -1,7 +1,15 @@
-import { Center, Container, HStack, Input, Spinner } from "@chakra-ui/react";
+import {
+  Center,
+  Container,
+  HStack,
+  Input,
+  Spinner,
+  Stack,
+} from "@chakra-ui/react";
 import React from "react";
 import useSWR from "swr";
 import { DashboardNavigation } from "../../components/DashboardNavigation";
+import DatePicker from "../../components/DatePicker";
 import { Navbar } from "../../components/Navbar";
 import ResultsTable from "../../components/ResultsTable";
 import { requireLogin } from "../../integrations/authentication";
@@ -27,14 +35,22 @@ const Results = () => {
     <>
       <Navbar />
       <Container mt="8" maxW="container.xl">
-        <HStack justify="space-between">
-          <HStack spacing="2">
-            <Input placeholder="From" size="sm" w="200px" />
-            <Input placeholder="To" size="sm" w="200px" />
-          </HStack>
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          align="center"
+          justify="space-between"
+        >
+          <DatePicker onRangeChange={(range) => console.log(range)} />
           <DashboardNavigation />
-        </HStack>
-        <ResultsTable mt="8" feedback={data} canFilter globalFilter />
+        </Stack>
+        <ResultsTable
+          maxW="100vw"
+          overflowX="auto"
+          mt="8"
+          feedback={data}
+          canFilter
+          globalFilter
+        />
       </Container>
     </>
   );

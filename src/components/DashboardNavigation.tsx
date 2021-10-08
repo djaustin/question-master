@@ -28,7 +28,11 @@ export const DashboardNavigation = () => {
         </Button>
       </Link>
       <Link as={NextLink} href="/dashboard/wallboard">
-        <Button variant="outline" size="sm">
+        <Button
+          isActive={!!asPath.match(/wallboard/i)}
+          variant="outline"
+          size="sm"
+        >
           Wallboard
         </Button>
       </Link>

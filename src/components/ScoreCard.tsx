@@ -35,7 +35,7 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({ variant, children }) => {
       px="2"
       borderRadius="md"
     >
-      <Text fontWeight="bold" textAlign="center" color={textColor}>
+      <Text fontWeight="black" textAlign="center" color={textColor}>
         {children}
       </Text>
     </Box>
