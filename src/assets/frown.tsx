@@ -15,12 +15,12 @@ const FrownSvg = (props) => (
       cy="48"
       r="44"
       stroke={useColorModeValue("black", "white")}
-      strokeWidth="8"
+      strokeWidth="4"
     />
     <path
       d="M28 70C44.8205 51.889 62.3419 62.4538 69 70"
       stroke={useColorModeValue("black", "white")}
-      strokeWidth="8"
+      strokeWidth="4"
     />
     <circle
       cx="34.5"
