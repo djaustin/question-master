@@ -1,9 +1,4 @@
-import {
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Input, InputGroup, InputLeftAddon } from "@chakra-ui/react";
 import React from "react";
 import { FiSearch } from "react-icons/fi";
 
