@@ -1,42 +1,35 @@
 import {
-  Box,
   Button,
   Center,
   Container,
   Flex,
   Heading,
-  Spinner,
+  Skeleton,
+  SkeletonCircle,
 } from "@chakra-ui/react";
-import { Feedback } from "@prisma/client";
 import { signOut } from "next-auth/client";
 import { default as React, useState } from "react";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import useSWR from "swr";
-import DatePicker from "../components/DatePicker";
+import DatePicker, { DateRange } from "../components/DatePicker";
 import FeedbackPieChart from "../components/FeedbackPieChart";
 import ResultsTable from "../components/ResultsTable";
 import { requireLogin } from "../integrations/authentication";
 import fetcher from "../integrations/jsonFetcher";
 
-const Results = () => {
-  const [apiUrl, setApiUrl] = useState("/api/feedback");
-  const { data, error } = useSWR(apiUrl, fetcher);
-  const [feedbackData, setFeedbackData] = useState<Feedback[]>();
+const baseFeedbackUrl = "/api/feedback";
 
+const Results = () => {
+  const [apiUrl, setApiUrl] = useState(baseFeedbackUrl);
+  const { data, error } = useSWR(apiUrl, fetcher);
+
+  const setDateFilter = (range: DateRange) => {
+    if (!range) return setApiUrl(baseFeedbackUrl);
+    const isoRange = range.map((date) => date?.toISOString());
+    setApiUrl(`${baseFeedbackUrl}?dateRange=${isoRange.join(",")}`);
+  };
   if (error) return <div>No Data</div>;
-  if (!data)
-    return (
-      <Center h="100vh" w="100vw">
-        <Spinner
-          thickness="6px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="teal.500"
-          size="xl"
-        />
-      </Center>
-    );
 
   return (
     <>
@@ -46,17 +39,36 @@ const Results = () => {
           Sign out
         </Button>
       </Flex>
-      <Flex width="20%" alignSelf="right" justify="space-between" mt={5} ml={5}>
-        <DatePicker setApiUrl={setApiUrl} />
+      <Flex
+        width={{ base: "full", md: "400px" }}
+        alignSelf="right"
+        justify="space-between"
+        px="4"
+        py="4"
+      >
+        <DatePicker onRangeChange={setDateFilter} />
       </Flex>
-      <Container mt={5} maxW="8xl">
-        <Center mb="1">
-          <Box w="400px">
-            <FeedbackPieChart data={data} />
-          </Box>
-        </Center>
-        <ResultsTable feedback={data} />
-      </Container>
+      {data ? (
+        <>
+          <Flex mt={5} mr={5}>
+            <Container width="40%">
+              <FeedbackPieChart data={data} />
+            </Container>
+          </Flex>
+          <Container mt={5} maxW="8xl">
+            <ResultsTable feedback={data} />
+          </Container>
+        </>
+      ) : (
+        <>
+          <Center mt={5} mr={5}>
+            <SkeletonCircle size="sm" />
+          </Center>
+          <Container mt={5} maxW="8xl">
+            <Skeleton h="800px" variant="" />
+          </Container>
+        </>
+      )}
     </>
   );
 };
