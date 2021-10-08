@@ -158,7 +158,7 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
 
 export default Index;
 
-export const getStaticProps: GetStaticProps<IndexProps> = async (req) => {
+export const getStaticProps: GetStaticProps<IndexProps> = async () => {
   const data = await prisma.config.findMany();
   const question = data.find((config) => config.key === "question");
   const brandingUrl = data.find((config) => config.key === "brandingUrl");
