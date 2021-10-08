@@ -1,10 +1,11 @@
-import { VStack, Box, SpacerProps } from "@chakra-ui/layout";
+import { VStack, Box, SpacerProps, Text } from "@chakra-ui/layout";
 import React from "react";
 import FrownSvg from "../assets/frown";
 import GrinSvg from "../assets/grin";
 import HappySvg from "../assets/happy";
 import NeutralSvg from "../assets/neutral";
 import SadSvg from "../assets/sad";
+import { ScoreCard } from "./ScoreCard";
 
 export type ResponseCountProps = {
   variant: "very unhappy" | "unhappy" | "neutral" | "happy" | "very happy";
@@ -37,9 +38,7 @@ export const ResponseCount: React.FC<ResponseCountProps> = ({
   return (
     <VStack {...spacerProps}>
       {svg}
-      <Box bg="teal.500" color="white" px="2" borderRadius="md">
-        {count}
-      </Box>
+      <ScoreCard variant={variant}>{count}</ScoreCard>
     </VStack>
   );
 };

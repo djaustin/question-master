@@ -5,6 +5,8 @@ import {
   Stack,
   VStack,
   Text,
+  Heading,
+  Box,
 } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import useSWR from "swr";
@@ -16,6 +18,7 @@ import fetcher from "../../integrations/jsonFetcher";
 import _ from "lodash";
 import { Feedback } from ".prisma/client";
 import ResultsTable from "../../components/ResultsTable";
+import FeedbackPieChart from "../../components/FeedbackPieChart";
 
 export const Summary = () => {
   const { data, error } = useSWR<Feedback[]>("/api/feedback", fetcher);
@@ -26,7 +29,7 @@ export const Summary = () => {
   return (
     <>
       <Navbar />
-      <Container mt="8" maxW="container.lg">
+      <Container mt="8" maxW="container.xl">
         <Stack
           direction={{ base: "column", md: "row" }}
           justify="space-between"
@@ -38,27 +41,61 @@ export const Summary = () => {
           </HStack>
           <DashboardNavigation />
         </Stack>
+        <VStack>
+          <Text
+            mt="8"
+            fontWeight="bold"
+            textTransform="uppercase"
+            alignSelf="start"
+          >
+            Responses by Score
+          </Text>
+          <Stack
+            w="full"
+            justify="space-between"
+            direction={{ base: "column", md: "row" }}
+          >
+            <ResponseCount
+              variant="very unhappy"
+              count={scoreCount[1].length}
+            />
+            <ResponseCount variant="unhappy" count={scoreCount[2].length} />
+            <ResponseCount variant="neutral" count={scoreCount[3].length} />
+            <ResponseCount variant="happy" count={scoreCount[4].length} />
+            <ResponseCount variant="very happy" count={scoreCount[5].length} />
+          </Stack>
+        </VStack>
         <Stack
-          mt="8"
-          justify="space-between"
+          spacing="16"
+          mt="20"
+          w="full"
           direction={{ base: "column", md: "row" }}
         >
-          <ResponseCount variant="very unhappy" count={scoreCount[1].length} />
-          <ResponseCount variant="unhappy" count={scoreCount[2].length} />
-          <ResponseCount variant="neutral" count={scoreCount[3].length} />
-          <ResponseCount variant="happy" count={scoreCount[4].length} />
-          <ResponseCount variant="very happy" count={scoreCount[5].length} />
-        </Stack>
-        <Stack mt="8" w="full" direction={{ base: "column", md: "row" }}>
           <VStack flexGrow={1}>
-            <Text alignSelf="start">Response Breakdown</Text>
+            <Text fontWeight="bold" textTransform="uppercase" alignSelf="start">
+              Response Breakdown
+            </Text>
+            <Box w="300px">
+              <FeedbackPieChart data={data} />
+            </Box>
           </VStack>
           <VStack flexGrow={2}>
-            <Text alignSelf="start">All Responses</Text>
+            <Text fontWeight="bold" textTransform="uppercase" alignSelf="start">
+              All Responses
+            </Text>
+            <ResultsTable
+              w="full"
+              hiddenColumns={["Comment", "Username"]}
+              h="300px"
+              overflow="auto"
+              feedback={data}
+            />
           </VStack>
         </Stack>
-        <Text>All Feedback Comments</Text>
-        <ResultsTable feedback={data} />
+        <Text mt="20" fontWeight="bold" textTransform="uppercase">
+          All Feedback Comments
+        </Text>
+        <ResultsTable canFilter feedback={data} />
       </Container>
     </>
   );

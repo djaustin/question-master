@@ -26,7 +26,7 @@ const Results = () => {
   return (
     <>
       <Navbar />
-      <Container mt="8" maxW="container.lg">
+      <Container mt="8" maxW="container.xl">
         <HStack justify="space-between">
           <HStack spacing="2">
             <Input placeholder="From" size="sm" w="200px" />
@@ -34,7 +34,7 @@ const Results = () => {
           </HStack>
           <DashboardNavigation />
         </HStack>
-        <ResultsTable mt="8" feedback={data} />
+        <ResultsTable mt="8" feedback={data} canFilter globalFilter />
       </Container>
     </>
   );
