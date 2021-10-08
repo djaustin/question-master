@@ -1,7 +1,9 @@
+import { Feedback } from ".prisma/client";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   Box,
   chakra,
+  SpacerProps,
   Table,
   Tbody,
   Td,
@@ -11,13 +13,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import React, { useMemo } from "react";
+import { default as React, useMemo } from "react";
 import { useFilters, useGlobalFilter, useSortBy, useTable } from "react-table";
 import GlobalTableFilter from "./tableFilters/GlobalTableFilter";
 import NumberRangeColumnFilter from "./tableFilters/NumberRangeColumnFilter";
 import TextFilter from "./tableFilters/TextFilter";
 
-function ResultsTable({ feedback }) {
+export type ResultsTableProps = {
+  feedback: Feedback[];
+} & SpacerProps;
+
+function ResultsTable({ feedback, ...spacerProps }: ResultsTableProps) {
   const data = React.useMemo(() => feedback, [feedback]);
 
   const columns = React.useMemo(
