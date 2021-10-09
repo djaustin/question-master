@@ -11,10 +11,10 @@ describe("Feedback Pie Chart", () => {
       "next-auth.callback-url"
     )
   );
-  it("should show a pie chart when the user goes to the results page", () => {
+  it("should show a pie chart when the user goes to the summary page", () => {
     // Arrange
     cy.intercept("GET", "/api/feedback", feedbackData).as("feedback");
-    cy.visit("/results");
+    cy.visit("/dashboard/summary");
 
     // Assert
     cy.findByText("30%");

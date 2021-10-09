@@ -82,6 +82,7 @@ function ResultsTable({
         Cell: ({ value }) =>
           value && (
             <HStack
+              display="inline-flex"
               justifyContent="center"
               bg={useColorModeValue("blue.600", "blue.400")}
               px="2"

@@ -40,7 +40,7 @@ const Wallboard = () => {
             allowMouseWheel
             min={0}
           >
-            <NumberInputField placeholder="Refresh interval" />
+            <NumberInputField aria-label="Refresh interval" />
             <NumberInputStepper>
               <NumberIncrementStepper />
               <NumberDecrementStepper />
