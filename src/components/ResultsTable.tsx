@@ -25,7 +25,7 @@ import GlobalTableFilter from "./tableFilters/GlobalTableFilter";
 import NumberRangeColumnFilter from "./tableFilters/NumberRangeColumnFilter";
 import TextFilter from "./tableFilters/TextFilter";
 
-export type ColumnTitle = "Date" | "Score" | "Comment" | "Username";
+export type ColumnTitle = "Date" | "Score" | "Comment" | "Username" | "Address";
 
 export type ResultsTableProps = {
   feedback: Feedback[];
@@ -93,6 +93,10 @@ function ResultsTable({
               <Text fontWeight="bold">{value}</Text>
             </HStack>
           ),
+      },
+      {
+        Header: "Address",
+        accessor: "device.ip",
       },
     ];
     if (!hiddenColumns) return columns;
