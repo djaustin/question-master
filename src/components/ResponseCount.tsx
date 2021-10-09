@@ -38,7 +38,7 @@ export const ResponseCount: React.FC<ResponseCountProps> = ({
   return (
     <VStack {...spacerProps}>
       {svg}
-      <ScoreCard variant={variant}>{count}</ScoreCard>
+      <ScoreCard variant={variant}>{count || 0}</ScoreCard>
     </VStack>
   );
 };
