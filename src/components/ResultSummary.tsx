@@ -28,11 +28,11 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({ data }) => {
           justify="space-between"
           direction={{ base: "column", md: "row" }}
         >
-          <ResponseCount variant="very unhappy" count={scoreCount[1].length} />
-          <ResponseCount variant="unhappy" count={scoreCount[2].length} />
-          <ResponseCount variant="neutral" count={scoreCount[3].length} />
-          <ResponseCount variant="happy" count={scoreCount[4].length} />
-          <ResponseCount variant="very happy" count={scoreCount[5].length} />
+          <ResponseCount variant="very unhappy" count={scoreCount[1]?.length} />
+          <ResponseCount variant="unhappy" count={scoreCount[2]?.length} />
+          <ResponseCount variant="neutral" count={scoreCount[3]?.length} />
+          <ResponseCount variant="happy" count={scoreCount[4]?.length} />
+          <ResponseCount variant="very happy" count={scoreCount[5]?.length} />
         </Stack>
       </VStack>
       <Stack
