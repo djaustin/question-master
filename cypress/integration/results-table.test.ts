@@ -55,4 +55,12 @@ describe("Results Page", () => {
     cy.findByText(/happy times/i).should("not.exist");
     cy.findByText(/neutral times/i).should("be.visible");
   });
+  it("should allow address text filtering", () => {
+    cy.intercept("GET", "/api/feedback", data).as("feedback");
+    cy.visit("/dashboard/results");
+    cy.findAllByRole("textbox").eq(5).type("192");
+    cy.findByText(/127.0.0.1/i).should("not.exist");
+    cy.findByText(/10.131.0.1/i).should("not.exist");
+    cy.findByText(/192.168.0.1/i).should("be.visible");
+  });
 });
