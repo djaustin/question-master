@@ -1,5 +1,5 @@
 -- AlterTable
-ALTER TABLE "Feedback" ADD COLUMN     "deviceIp" TEXT DEFAULT E'127.0.0.1';
+ALTER TABLE "Feedback" ADD COLUMN     "deviceIp" TEXT;
 
 -- CreateTable
 CREATE TABLE "Device" (
