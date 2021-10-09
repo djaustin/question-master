@@ -5,7 +5,10 @@
     "username": "xx123456",
     "comment": "sad times",
     "createdAt": "2021-09-28T15:02:25.935Z",
-    "updatedAt": "2021-09-28T15:02:36.567Z"
+    "updatedAt": "2021-09-28T15:02:36.567Z",
+    "device": {
+      "ip": "127.0.0.1"
+    }
   },
   {
     "id": 2,
@@ -13,7 +16,10 @@
     "username": "ab123456",
     "comment": "happy times",
     "createdAt": "2021-09-28T15:02:52.674Z",
-    "updatedAt": "2021-09-28T15:02:52.673Z"
+    "updatedAt": "2021-09-28T15:02:52.673Z",
+    "device": {
+      "ip": "192.168.0.1"
+    }
   },
   {
     "id": 3,
@@ -21,6 +27,9 @@
     "username": "zz123456",
     "comment": "neutral times",
     "createdAt": "2021-09-29T15:02:54.611Z",
-    "updatedAt": "2021-09-29T15:02:54.611Z"
+    "updatedAt": "2021-09-29T15:02:54.611Z",
+    "device": {
+      "ip": "10.131.0.1"
+    }
   }
 ]
