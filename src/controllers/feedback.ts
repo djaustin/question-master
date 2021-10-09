@@ -1,22 +1,27 @@
+import { reverse } from "dns";
 import { NextApiRequest, NextApiResponse } from "next";
+import { promisify } from "util";
 import prisma from "../integrations/db";
+const reverseLookup = promisify(reverse);
 
 export async function handleCreateFeedback(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const data = req.body;
-  const remoteIP = getRemoteIP(req);
+  const ip = getRemoteIP(req);
+  const hostname = await reverseLookup(ip);
   return res.json(
     await prisma.feedback.create({
       data: {
         device: {
           connectOrCreate: {
             create: {
-              ip: remoteIP,
+              ip,
+              hostname: hostname[0],
             },
             where: {
-              ip: remoteIP,
+              ip,
             },
           },
         },
