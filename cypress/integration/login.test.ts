@@ -50,7 +50,7 @@ describe("Login", () => {
   });
   it("should successfully redirect to the results page", () => {
     // Arrange
-    cy.visit("/results");
+    cy.visit("/dashboard/results");
 
     // Act
     cy.findByLabelText(/username/i).type(Cypress.env("ADMIN_USERNAME"));
@@ -58,6 +58,6 @@ describe("Login", () => {
     cy.findByRole("button", { name: /sign in/i }).click();
 
     // Assert
-    cy.url().should("eq", Cypress.config().baseUrl + "/results");
+    cy.url().should("eq", Cypress.config().baseUrl + "/dashboard/results");
   });
 });
