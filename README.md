@@ -50,29 +50,30 @@ Start the server
   yarn dev
 ```
 
-## Running database locally 
+## Database administration 
 
-Run a prisma docker container
+A Postgres docker container is included in the dependency services docker-compose file referenced above. In order for Prisma to connect to the database the following to a .env file:
 
-```docker container run --name
-postgres-dev -e
-POSTGRES_PASSWORD=mpostgres -p 
-5432:5432 -v pgdata:/var/lib/postgres/data
--d postgres
-````
+`DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres`
 
-Migrate the database
 
-```yarn prisma migrate dev
+### Migration
+
+Whenever you make a change to the Prisma schema or you checkout a branch that has had changes made, you will need to run a database migration. This updates the database schema to reflect the Prisma schema and also generates TypeScript types for the new schema
+
+
+```bash
+yarn prisma migrate dev
 ```
 
-Open prisma studio
+### Prisma Studio
 
-```yarn prisma studio
+Prisma provides a convenient web UI to view and edit the data in your database. You can run this application locally with the following command
+
+```bash
+yarn prisma studio
 ```
 
-Add .env file with the following in:
-DATABASE_URL=postgres://postgres:postgres@localhost:5432/postgres
 
 ## Running Tests
 
