@@ -39,17 +39,17 @@ const Results = () => {
           Sign out
         </Button>
       </Flex>
-      <Flex
-        width={{ base: "full", md: "400px" }}
-        alignSelf="right"
-        justify="space-between"
-        px="4"
-        py="4"
-      >
-        <DatePicker onRangeChange={setDateFilter} />
-      </Flex>
       {data ? (
         <>
+          <Flex
+            width={{ base: "full", md: "400px" }}
+            alignSelf="right"
+            justify="space-between"
+            px="4"
+            py="4"
+          >
+            <DatePicker onRangeChange={setDateFilter} />
+          </Flex>
           <Flex mt={5} mr={5}>
             <Container width="40%">
               <FeedbackPieChart data={data} />

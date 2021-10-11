@@ -23,7 +23,7 @@ describe("Date Picker", async () => {
     const toDateRegex = new RegExp(`\\s+${toDate.getDate()}rd`);
     // Act
     cy.visit("/results");
-    cy.findAllByRole("textbox").click();
+    cy.findAllByRole("textbox").eq(0).click();
     cy.findAllByRole("button", { name: fromDateRegex }).click();
     cy.findAllByRole("button", { name: toDateRegex }).click();
 
