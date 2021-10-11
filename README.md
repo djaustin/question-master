@@ -95,6 +95,20 @@ To run this project, you will need to add the following environment variables to
 
 `DATABASE_URL`: The connection string for the database in which feedback will be stored
 
+`FILEPILE_BASE_URL`: The base URL of a [FilePile](https://github.com/djaustin/filepile) installation for image storage
+
+`ADMIN_USERNAME`: The username used for admin access to the application
+
+`ADMIN_PASSWORD`: The password used for admin access to the application
+
+`NEXTAUTH_URL`: The canonical URL of the application when deployed e.g. http://localhost:3000 in development or https://question-master.vercel.app in production 
+
+`JWT_SIGNING_PRIVATE_KEY`: The private key in JSON Web Key (JWK) format. This can be generated using the following command. Use the *entire* returned value. e.g. `JWT_SIGNING_PRIVATE_KEY={"kty":"oct","kid":"v_mjTJTW2eEx_E__K8Uu75Xi-CxH0fZnK55lxTIeOuo","alg":"HS512","k":"DuvtvI31nLiUPTRALmjB81wjfYnPtgYwc_ie3XzfTGk"}`                                   
+
+```bash
+npx node-jose-tools newkey -s 256 -t oct -a HS512
+```
+
 ## Tech Stack
 
 **Client:** React, Chakra UI

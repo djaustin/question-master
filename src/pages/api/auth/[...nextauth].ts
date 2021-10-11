@@ -24,6 +24,9 @@ const options: NextAuthOptions = {
     signIn: "/auth/signin",
     error: "/auth/signin",
   },
+  jwt: {
+    signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
+  },
 };
 
 export default NextAuth(options);
