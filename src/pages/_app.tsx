@@ -1,9 +1,9 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "next-auth/client";
-
-import theme from "../theme";
 import { AppProps } from "next/app";
+import "react-datepicker/dist/react-datepicker.css";
 import "../css/datePicker.css";
+import theme from "../theme";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
