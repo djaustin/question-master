@@ -6,7 +6,7 @@ const setToStartOfDay = (date: Date) => {
 };
 
 describe("Date Picker", async () => {
-  it("should call send date filter query to API", () => {
+  it("should send a date filter query to API when a range is selected", () => {
     // Arrange
     const fromDate = new Date();
     const toDate = new Date();
