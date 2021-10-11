@@ -26,14 +26,14 @@ describe("Results Page", () => {
   it("should allow date text filtering", () => {
     cy.intercept("GET", "/api/feedback", data).as("feedback");
     cy.visit("/results");
-    cy.findAllByRole("textbox").eq(1).type("29");
+    cy.findAllByRole("textbox").eq(2).type("29");
     cy.findByText(/28-09/i).should("not.exist");
     cy.findByText(/29-09/i).should("be.visible");
   });
   it("should allow comment text filtering", () => {
     cy.intercept("GET", "/api/feedback", data).as("feedback");
     cy.visit("/results");
-    cy.findAllByRole("textbox").eq(2).type("happy");
+    cy.findAllByRole("textbox").eq(3).type("happy");
     cy.findByText(/sad times/i).should("not.exist");
     cy.findByText(/neutral times/i).should("not.exist");
     cy.findByText(/happy times/i).should("be.visible");
@@ -41,7 +41,7 @@ describe("Results Page", () => {
   it("should allow username text filtering", () => {
     cy.intercept("GET", "/api/feedback", data).as("feedback");
     cy.visit("/results");
-    cy.findAllByRole("textbox").eq(3).type("zz");
+    cy.findAllByRole("textbox").eq(4).type("zz");
     cy.findByText(/xx123456/i).should("not.exist");
     cy.findByText(/ab123456/i).should("not.exist");
     cy.findByText(/zz123456/i).should("be.visible");
