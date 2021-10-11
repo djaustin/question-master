@@ -9,7 +9,8 @@ export async function createFeedback(data: Prisma.FeedbackCreateInput) {
 export async function getFeedback(query: NextApiRequest["query"]) {
   const dateRange = query.dateRange as string;
 
-  if (!dateRange) return prisma.feedback.findMany();
+  if (!dateRange)
+    return prisma.feedback.findMany({ orderBy: { createdAt: "desc" } });
 
   const dateRangeArray = dateRange?.split(",");
 
@@ -27,6 +28,9 @@ export async function getFeedback(query: NextApiRequest["query"]) {
           },
         },
       ],
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 }

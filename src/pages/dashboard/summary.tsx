@@ -1,28 +1,14 @@
-import {
-  Container,
-  HStack,
-  Input,
-  Stack,
-  VStack,
-  Text,
-  Heading,
-  Box,
-} from "@chakra-ui/react";
-import React, { useMemo } from "react";
-import useSWR from "swr";
+import { Container, Stack } from "@chakra-ui/react";
+import React from "react";
 import { DashboardNavigation } from "../../components/DashboardNavigation";
+import DatePicker from "../../components/DatePicker";
 import { Navbar } from "../../components/Navbar";
-import { ResponseCount } from "../../components/ResponseCount";
-import { requireLogin } from "../../integrations/authentication";
-import fetcher from "../../integrations/jsonFetcher";
-import _ from "lodash";
-import { Feedback } from ".prisma/client";
-import ResultsTable from "../../components/ResultsTable";
-import FeedbackPieChart from "../../components/FeedbackPieChart";
 import { ResultSummary } from "../../components/ResultSummary";
+import { useDateFilter } from "../../hooks/useDateFilter";
+import { requireLogin } from "../../integrations/authentication";
 
 export const Summary = () => {
-  const { data, error } = useSWR<Feedback[]>("/api/feedback", fetcher);
+  const { data, error, setDateFilter } = useDateFilter();
   if (error) return "error";
   if (!data) return "loading...";
   return (
@@ -34,10 +20,7 @@ export const Summary = () => {
           justify="space-between"
           align="center"
         >
-          <HStack spacing="2">
-            <Input placeholder="From" size="sm" w="200px" />
-            <Input placeholder="To" size="sm" w="200px" />
-          </HStack>
+          <DatePicker onRangeChange={setDateFilter} />
           <DashboardNavigation />
         </Stack>
         <ResultSummary data={data} />
