@@ -6,6 +6,7 @@ import {
   Heading,
   Skeleton,
   SkeletonCircle,
+  useColorMode,
 } from "@chakra-ui/react";
 import { signOut } from "next-auth/client";
 import { default as React, useState } from "react";

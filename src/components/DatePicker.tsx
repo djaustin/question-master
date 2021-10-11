@@ -1,6 +1,6 @@
+import { useColorModeValue } from "@chakra-ui/color-mode";
 import React, { useState } from "react";
 import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 export type DateRange = [Date, Date];
 
@@ -21,12 +21,14 @@ export default function DatePicker({ onRangeChange }: DatePickerProps) {
   }
 
   return (
-    <ReactDatePicker
-      isClearable
-      selectsRange={true}
-      startDate={startDate}
-      endDate={endDate}
-      onChange={(date) => onDateChanged(date as DateRange)}
-    />
+    <div className={useColorModeValue("light-theme", "dark-theme")}>
+      <ReactDatePicker
+        isClearable
+        selectsRange={true}
+        startDate={startDate}
+        endDate={endDate}
+        onChange={(date) => onDateChanged(date as DateRange)}
+      />
+    </div>
   );
 }
