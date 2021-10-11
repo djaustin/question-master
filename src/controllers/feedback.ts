@@ -1,3 +1,4 @@
+import { Prisma } from ".prisma/client";
 import { reverse } from "dns";
 import { NextApiRequest, NextApiResponse } from "next";
 import { promisify } from "util";
@@ -37,15 +38,19 @@ export async function handleGetFeedback(
 ) {
   const dateRange = req.query?.dateRange as string;
 
-  if (!dateRange)
-    return res.json(
-      await prisma.feedback.findMany({ orderBy: { createdAt: "desc" } })
-    );
+  let query: Prisma.FeedbackFindManyArgs = {
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      device: true,
+    },
+  };
 
-  const dateRangeArray = dateRange?.split(",");
-
-  return res.json(
-    await prisma.feedback.findMany({
+  if (dateRange) {
+    const dateRangeArray = dateRange?.split(",");
+    query = {
+      ...query,
       where: {
         AND: [
           {
@@ -60,11 +65,10 @@ export async function handleGetFeedback(
           },
         ],
       },
-      orderBy: {
-        createdAt: "desc",
-      },
-    })
-  );
+    };
+  }
+
+  return res.json(await prisma.feedback.findMany(query));
 }
 
 function getRemoteIP(req: NextApiRequest) {
