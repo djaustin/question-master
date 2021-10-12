@@ -15,7 +15,7 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import React, { useState } from "react";
 import { useBeforeunload } from "react-beforeunload";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -158,7 +158,7 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
 
 export default Index;
 
-export const getStaticProps: GetStaticProps<IndexProps> = async () => {
+export const getServerSideProps: GetServerSideProps<IndexProps> = async () => {
   const data = await prisma.config.findMany();
   const question = data.find((config) => config.key === "question");
   const brandingUrl = data.find((config) => config.key === "brandingUrl");
@@ -167,6 +167,5 @@ export const getStaticProps: GetStaticProps<IndexProps> = async () => {
       question: question?.value ?? null,
       brandingUrl: brandingUrl?.value ?? null,
     },
-    revalidate: 10,
   };
 };
