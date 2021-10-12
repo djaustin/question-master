@@ -1,4 +1,5 @@
 import { VStack, Box, SpacerProps, Text } from "@chakra-ui/layout";
+import { Theme } from "@chakra-ui/theme";
 import React from "react";
 import FrownSvg from "../assets/frown";
 import GrinSvg from "../assets/grin";
@@ -17,28 +18,28 @@ export const ResponseCount: React.FC<ResponseCountProps> = ({
   count,
   ...spacerProps
 }) => {
-  let svg;
-  switch (variant) {
-    case "very unhappy":
-      svg = <SadSvg />;
-      break;
-    case "unhappy":
-      svg = <FrownSvg />;
-      break;
-    case "neutral":
-      svg = <NeutralSvg />;
-      break;
-    case "happy":
-      svg = <HappySvg />;
-      break;
-    case "very happy":
-      svg = <GrinSvg />;
-      break;
-  }
+  let svg = svgVariant(variant);
   return (
-    <VStack {...spacerProps}>
+    <VStack spacing="4" {...spacerProps}>
       {svg}
-      <ScoreCard variant={variant}>{count || 0}</ScoreCard>
+      <ScoreCard size="lg" variant={variant}>
+        {count || 0}
+      </ScoreCard>
     </VStack>
   );
 };
+
+function svgVariant(variant: string) {
+  switch (variant) {
+    case "very unhappy":
+      return <SadSvg />;
+    case "unhappy":
+      return <FrownSvg />;
+    case "neutral":
+      return <NeutralSvg />;
+    case "happy":
+      return <HappySvg />;
+    case "very happy":
+      return <GrinSvg />;
+  }
+}
