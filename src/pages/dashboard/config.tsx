@@ -1,16 +1,17 @@
-import { Button, Text, Image, CloseButton } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Input, InputGroup } from "@chakra-ui/input";
+import { Input } from "@chakra-ui/input";
 import { Container, Flex, Heading, Stack } from "@chakra-ui/layout";
+import { Button, CloseButton, Image, Text } from "@chakra-ui/react";
 import { chakra } from "@chakra-ui/system";
 import { useToast } from "@chakra-ui/toast";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import FileUpload from "../components/FileUpload";
-import prisma from "../integrations/db";
-import { requireLogin } from "../integrations/authentication";
+import FileUpload from "../../components/FileUpload";
+import { Navbar } from "../../components/Navbar";
+import { requireLogin } from "../../integrations/authentication";
+import prisma from "../../integrations/db";
 
 type ConfigInputs = {
   question: string;
@@ -72,6 +73,7 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
       <Head>
         <title>Site Configuration</title>
       </Head>
+      <Navbar />
       <Container py="8">
         <chakra.form onSubmit={handleSubmit(submit)}>
           <Heading>Site Configuration</Heading>
