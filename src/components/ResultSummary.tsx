@@ -55,7 +55,7 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({ data }) => {
           </Text>
           <ResultsTable
             w="full"
-            hiddenColumns={["Comment", "Username"]}
+            hiddenColumns={["Comment", "Username", "Address"]}
             h="300px"
             overflow="auto"
             feedback={data}
