@@ -12,6 +12,7 @@ import useSWR from "swr";
 import { DarkModeToggle } from "../../components/DarkModeToggle";
 import { DashboardNavigation } from "../../components/DashboardNavigation";
 import { ResultSummary } from "../../components/ResultSummary";
+import { requireLogin } from "../../integrations/authentication";
 import fetcher from "../../integrations/jsonFetcher";
 
 const format = (value) => `${value || 0}s`;
@@ -58,3 +59,5 @@ const Wallboard = () => {
 };
 
 export default Wallboard;
+
+export const getServerSideProps = requireLogin();
