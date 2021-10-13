@@ -12,7 +12,7 @@ describe("Configuration Page", () => {
   it("should submit the config when submit is clicked", () => {
     const question = "test question";
     cy.intercept("POST", "/api/config", {}).as("config");
-    cy.visit("/config");
+    cy.visit("/dashboard/config");
     cy.findByLabelText(/question/i)
       .clear()
       .type(question);
@@ -26,7 +26,7 @@ describe("Configuration Page", () => {
     const uploadedImageName = "abc.png";
     cy.intercept("POST", "/api/images/upload", "abc.png").as("upload");
     cy.intercept("POST", "/api/config", {}).as("config");
-    cy.visit("/config");
+    cy.visit("/dashboard/config");
     cy.findByLabelText(/question/i)
       .clear()
       .type(question);
