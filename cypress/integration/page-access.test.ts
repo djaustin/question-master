@@ -16,7 +16,7 @@ describe("Page access", () => {
     cy.url().should("include", "/auth/signin");
   });
   it("should require login to access config", () => {
-    cy.visit("/config");
+    cy.visit("/dashboard/config");
     cy.url().should("include", "/auth/signin");
   });
 });
