@@ -13,7 +13,7 @@ export const requireLogin = (
     const session = await getSession(ctx);
     if (!session) {
       const { req, resolvedUrl } = ctx;
-      const { origin } = absolute(req);
+      const origin = process.env.BASE_URL || absolute(req).origin;
       const callbackUrl = `${origin}${resolvedUrl}`;
 
       return {
