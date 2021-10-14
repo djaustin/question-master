@@ -15,7 +15,7 @@ export const Summary = () => {
   return (
     <>
       <Head>
-        <title>Summary</title>
+        <title>Feedback: Summary</title>
       </Head>
       <Navbar />
       <Container mt="8" maxW="container.xl">

@@ -88,7 +88,7 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
         </Center>
       )}
        <Head>
-        <title>SNS Feedback</title>
+        <title>Feedback: Submit</title>
       </Head>
       <Heading textAlign="center" size="3xl">
         {question || "How are you finding the system's performance today?"}
