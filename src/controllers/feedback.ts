@@ -67,12 +67,9 @@ export async function handleGetFeedback(
 }
 
 function getRemoteIP(req: NextApiRequest) {
-  console.log("attempting to get remote IP...");
-  console.log("X-Forwarded-For", req.headers["X-Forwarded-For"]);
-  console.log("X-Real-IP", req.headers["X-Real-IP"]);
   return (
-    req.headers["X-Forwarded-For"] ||
-    req.headers["X-Real-IP"] ||
+    req.headers["x-real-ip"] ||
+    req.headers["x-forwarded-for"] ||
     req.socket.remoteAddress.replace(/.*:.*:.*:/, "")
   );
 }
