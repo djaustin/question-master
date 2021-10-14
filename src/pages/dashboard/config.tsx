@@ -107,11 +107,10 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
             </Stack>
           </FormControl>
 
-          <Flex justify="end">
+          <Flex width="100%" justifyContent="flex-end">
             <Button
               mt="4"
               disabled={!isDirty}
-              alignSelf="flex-end"
               type="submit"
             >
               Save
