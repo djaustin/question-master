@@ -14,6 +14,7 @@ import {
   Textarea,
   useToast,
   VStack,
+  Flex
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import React, { useState } from "react";
@@ -147,9 +148,11 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
               <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
             </FormControl>
           </Box>
-          <Button alignSelf="end" size="lg" type="submit">
-            Submit
-          </Button>
+          <Flex width="100%" justifyContent="flex-end">
+            <Button size="lg" type="submit">
+              Submit
+            </Button>
+          </Flex>
         </VStack>
       </chakra.form>
     </Container>
