@@ -6,6 +6,7 @@ import { Navbar } from "../../components/Navbar";
 import { ResultSummary } from "../../components/ResultSummary";
 import { useDateFilter } from "../../hooks/useDateFilter";
 import { requireLogin } from "../../integrations/authentication";
+import Head from 'next/head'
 
 export const Summary = () => {
   const { data, error, setDateFilter } = useDateFilter();
@@ -13,6 +14,9 @@ export const Summary = () => {
   if (!data) return "loading...";
   return (
     <>
+      <Head>
+        <title>Summary</title>
+      </Head>
       <Navbar />
       <Container mt="8" maxW="container.xl">
         <Stack

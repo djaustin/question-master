@@ -6,6 +6,7 @@ import { Navbar } from "../../components/Navbar";
 import ResultsTable from "../../components/ResultsTable";
 import { useDateFilter } from "../../hooks/useDateFilter";
 import { requireLogin } from "../../integrations/authentication";
+import Head from 'next/head'
 
 const Results = () => {
   const { data, error, setDateFilter } = useDateFilter();
@@ -25,6 +26,9 @@ const Results = () => {
 
   return (
     <>
+      <Head>
+        <title>Results Table</title>
+      </Head>
       <Navbar />
       <Container mt="8" maxW="container.xl">
         <Stack

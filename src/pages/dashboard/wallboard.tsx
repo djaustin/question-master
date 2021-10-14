@@ -1,5 +1,5 @@
 import { Feedback } from ".prisma/client";
-import { Box, Container, HStack, Stack } from "@chakra-ui/layout";
+import { Box, HStack, Stack } from "@chakra-ui/layout";
 import {
   NumberDecrementStepper,
   NumberIncrementStepper,
@@ -14,6 +14,7 @@ import { DashboardNavigation } from "../../components/DashboardNavigation";
 import { ResultSummary } from "../../components/ResultSummary";
 import { requireLogin } from "../../integrations/authentication";
 import fetcher from "../../integrations/jsonFetcher";
+import Head from 'next/head'
 
 const format = (value) => `${value || 0}s`;
 const parse = (value) => parseInt(value.replace(/s/, ""));
@@ -27,6 +28,9 @@ const Wallboard = () => {
   if (!data) return "loading...";
   return (
     <Box p="4">
+      <Head>
+        <title>Wallboard</title>
+      </Head>
       <Stack
         direction={{ base: "column", md: "row" }}
         justify="space-between"

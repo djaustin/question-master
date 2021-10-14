@@ -22,6 +22,7 @@ import { useBeforeunload } from "react-beforeunload";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import LikertScale from "../components/LikertScale";
 import prisma from "../integrations/db";
+import Head from 'next/head'
 
 type FormInputs = {
   score: string;
@@ -86,6 +87,9 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
           <Image h="200px" src={brandingUrl} />
         </Center>
       )}
+       <Head>
+        <title>SNS Feedback</title>
+      </Head>
       <Heading textAlign="center" size="3xl">
         {question || "How are you finding the system's performance today?"}
       </Heading>
