@@ -29,7 +29,7 @@ const Wallboard = () => {
   return (
     <Box p="4">
       <Head>
-        <title>Wallboard</title>
+        <title>Feedback: Wallboard</title>
       </Head>
       <Stack
         direction={{ base: "column", md: "row" }}

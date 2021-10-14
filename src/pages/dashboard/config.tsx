@@ -71,7 +71,7 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
   return (
     <>
       <Head>
-        <title>Site Configuration</title>
+        <title>Feedback: Site Configuration</title>
       </Head>
       <Navbar />
       <Container py="8">

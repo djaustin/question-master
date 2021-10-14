@@ -27,7 +27,7 @@ const Results = () => {
   return (
     <>
       <Head>
-        <title>Results Table</title>
+        <title>Feedback: Results Table</title>
       </Head>
       <Navbar />
       <Container mt="8" maxW="container.xl">
