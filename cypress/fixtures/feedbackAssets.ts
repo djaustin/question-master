@@ -1,4 +1,5 @@
 import { Feedback } from "@prisma/client";
+import dayjs from "dayjs";
 
 const feedbackData: Feedback[] = [
   {
@@ -100,4 +101,6 @@ export default function setToStartOfDay(date: Date){
   date.setMilliseconds(0);
 };
 
-export { feedbackData };
+const defaultDatePickerText = `${new Date()} - ${dayjs().subtract(1, 'day').toDate()}`;
+
+export { feedbackData, defaultDatePickerText };
