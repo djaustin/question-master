@@ -32,10 +32,7 @@ describe("Date Picker on Summary Page", () => {
     cy.findByRole("button", { name: fromDateRegex }).click();
     cy.findByRole("button", { name: toDateRegex }).click();
 
-    cy.reload();
-
     // Assert
-    cy.findByRole("button", { name: fromDateRegex }).should("be.visible");
-    cy.findByRole("button", { name: toDateRegex }).should("be.visible");
+    cy.findByRole("textbox").contains(`${fromDate.getDate()} - ${toDate.getDate()}`);
   });
 });
