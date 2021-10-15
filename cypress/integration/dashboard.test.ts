@@ -30,7 +30,7 @@ describe("Dashboard", () => {
 
       // Act
       cy.visit("/dashboard/results");
-      cy.findAllByRole("textbox").contains(defaultDatePickerText).click();
+      cy.get(`input[value="${defaultDatePickerText}"]`).click();
       cy.findAllByRole("button", { name: fromDateRegex }).click();
       cy.findAllByRole("button", { name: toDateRegex }).click();
 
