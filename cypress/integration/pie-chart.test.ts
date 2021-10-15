@@ -1,4 +1,4 @@
-import { feedbackData } from "../fixtures/feedback";
+import { feedbackData } from "../fixtures/feedbackAssets";
 
 describe("Feedback Pie Chart", () => {
   before(() => {
