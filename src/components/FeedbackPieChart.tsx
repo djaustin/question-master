@@ -1,3 +1,4 @@
+import { useColorModeValue } from "@chakra-ui/color-mode";
 import { Feedback } from "@prisma/client";
 import React from "react";
 import { PieChart } from "react-minimal-pie-chart";
@@ -53,7 +54,7 @@ export default function FeedbackPieChart({ data }: FeedbackPieChartProps) {
       labelStyle={(index) => ({
         fontSize: "5px",
         fontFamily: "sans-serif",
-        fill: pieChartData[index].color,
+        fill: useColorModeValue("black", "white"),
       })}
       labelPosition={60}
       data={pieChartData}
