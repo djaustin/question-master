@@ -111,7 +111,10 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
           <FormControl mb="8" isInvalid={!!errors.comment}>
             <FormLabel>
               Add a comment{" "}
-              {commentIsMandatory && <chakra.span color="red">*</chakra.span>}
+              {(commentIsMandatory && (
+                <chakra.span color="red">*</chakra.span>
+              )) ||
+                (contactUser && <chakra.span color="red">*</chakra.span>)}
             </FormLabel>
             <Textarea
               placeholder="Type your comment here..."

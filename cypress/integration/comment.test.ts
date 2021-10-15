@@ -52,7 +52,7 @@ describe("Comment Submission", () => {
     cy.findByRole("checkbox", {
       name: /i would like to be contacted/i,
     }).click({ force: true });
-    cy.findAllByRole("button", { name: /submit/i }).click();
+    cy.findByRole("button", { name: /submit/i }).click();
 
     // Assert
     cy.findByText("Please enter a comment before submitting");
