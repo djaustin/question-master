@@ -6,6 +6,7 @@ describe("Username Submission", () => {
 
     // Act
     cy.visit("/");
+    cy.findByPlaceholderText(/comment/i).type("Test comment 1");
     cy.findByLabelText("neutral").click();
     cy.findByRole("checkbox", {
       name: /i would like to be contacted/i,
