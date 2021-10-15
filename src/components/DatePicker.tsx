@@ -15,6 +15,7 @@ export default function DatePicker({ onRangeChange }: DatePickerProps) {
   const sessionStorageEndDate = sessionStorage.getItem('EndDate') && new Date(sessionStorage.getItem('EndDate'));
   const [dateRange, setDateRange] = useState<DateRange>([sessionStorageStartDate || date24HrsAgo, sessionStorageEndDate || new Date()]);
   const [startDate, endDate] = dateRange;
+  onRangeChange(dateRange);
 
   function onDateChanged(range: DateRange) {
     const fromDate = range[0] && dayjs(range[0]).startOf("day").toDate();

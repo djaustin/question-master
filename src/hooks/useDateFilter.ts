@@ -9,8 +9,10 @@ export const useDateFilter = (baseUrl: string = "/api/feedback") => {
 
   const setDateFilter = (range: DateRange) => {
     if (!range) return setApiUrl(baseUrl);
-    const isoRange = range.map((date) => date?.toISOString());
-    setApiUrl(`${baseUrl}?dateRange=${isoRange.join(",")}`);
+    if(range[1]){
+      const isoRange = range.map((date) => date?.toISOString());
+      setApiUrl(`${baseUrl}?dateRange=${isoRange.join(",")}`);
+    }
   };
 
   return { setDateFilter, data, error };
