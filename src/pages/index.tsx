@@ -14,7 +14,7 @@ import {
   Textarea,
   useToast,
   VStack,
-  Flex
+  Flex,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import React, { useState } from "react";
@@ -121,7 +121,7 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
               placeholder="Type your comment here..."
               {...register("comment", {
                 required: {
-                  value: commentIsMandatory,
+                  value: commentIsMandatory || contactUser,
                   message: "Please enter a comment before submitting",
                 },
               })}
