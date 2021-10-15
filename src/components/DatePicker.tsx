@@ -10,7 +10,10 @@ export type DatePickerProps = {
 };
 
 export default function DatePicker({ onRangeChange }: DatePickerProps) {
-  const [dateRange, setDateRange] = useState<DateRange>([null, null]);
+  const date24HrsAgo: Date = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+  const sessionStorageStartDate = sessionStorage.getItem('StartDate') && new Date(sessionStorage.getItem('StartDate'));
+  const sessionStorageEndDate = sessionStorage.getItem('EndDate') && new Date(sessionStorage.getItem('EndDate'));
+  const [dateRange, setDateRange] = useState<DateRange>([sessionStorageStartDate || date24HrsAgo, sessionStorageEndDate || new Date()]);
   const [startDate, endDate] = dateRange;
 
   function onDateChanged(range: DateRange) {
