@@ -25,7 +25,7 @@ describe("Date Picker on Summary Page", () => {
     const toDateRegex = new RegExp(`\\s+${toDate.getDate()}rd`);
     // Act
     cy.visit("/dashboard/summary");
-    cy.get(`input[value="${defaultDatePickerText}"]`).click();
+    cy.findAllByRole("textbox").contains(defaultDatePickerText).click();
     cy.findByRole("button", { name: fromDateRegex }).click();
     cy.findByRole("button", { name: toDateRegex }).click();
 
