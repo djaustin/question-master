@@ -28,7 +28,7 @@ describe("Dashboard", () => {
 
       // Act
       cy.visit("/dashboard/results");
-      cy.findAllByRole("textbox").eq(0).click();
+      cy.findAllByRole("textbox").contains(`${new Date()} - ${dayjs().subtract(1, 'day').toDate()}`).click();
       cy.findAllByRole("button", { name: fromDateRegex }).click();
       cy.findAllByRole("button", { name: toDateRegex }).click();
 
