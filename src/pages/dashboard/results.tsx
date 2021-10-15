@@ -11,18 +11,6 @@ import Head from 'next/head'
 const Results = () => {
   const { data, error, setDateFilter } = useDateFilter();
   if (error) return <div>No Data</div>;
-  if (!data)
-    return (
-      <Center h="100vh" w="100vw">
-        <Spinner
-          thickness="6px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="teal.500"
-          size="xl"
-        />
-      </Center>
-    );
 
   return (
     <>
@@ -39,14 +27,25 @@ const Results = () => {
           <DatePicker onRangeChange={setDateFilter} />
           <DashboardNavigation />
         </Stack>
-        <ResultsTable
-          maxW="100vw"
-          overflowX="auto"
-          mt="8"
-          feedback={data}
-          canFilter
-          globalFilter
-        />
+        {data ? 
+          <ResultsTable
+            maxW="100vw"
+            overflowX="auto"
+            mt="8"
+            feedback={data}
+            canFilter
+            globalFilter
+          /> : 
+        <Center h="100vh" w="100vw">
+          <Spinner
+            thickness="6px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="teal.500"
+            size="xl"
+          />
+        </Center>
+        }
       </Container>
     </>
   );

@@ -11,7 +11,6 @@ import Head from 'next/head'
 export const Summary = () => {
   const { data, error, setDateFilter } = useDateFilter();
   if (error) return "error";
-  if (!data) return "loading...";
   return (
     <>
       <Head>
@@ -25,9 +24,9 @@ export const Summary = () => {
           align="center"
         >
           <DatePicker onRangeChange={setDateFilter} />
-          <DashboardNavigation />
+          {data && <DashboardNavigation />}
         </Stack>
-        <ResultSummary data={data} />
+        {data && <ResultSummary data={data} />}
       </Container>
     </>
   );

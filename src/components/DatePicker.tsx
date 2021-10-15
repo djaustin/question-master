@@ -11,9 +11,7 @@ export type DatePickerProps = {
 
 export default function DatePicker({ onRangeChange }: DatePickerProps) {
   const date24HrsAgo: Date = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
-  const sessionStorageStartDate = sessionStorage.getItem('StartDate') && new Date(sessionStorage.getItem('StartDate'));
-  const sessionStorageEndDate = sessionStorage.getItem('EndDate') && new Date(sessionStorage.getItem('EndDate'));
-  const [dateRange, setDateRange] = useState<DateRange>([sessionStorageStartDate || date24HrsAgo, sessionStorageEndDate || new Date()]);
+ const [dateRange, setDateRange] = useState<DateRange>([date24HrsAgo, new Date()]);
   const [startDate, endDate] = dateRange;
   onRangeChange(dateRange);
 
