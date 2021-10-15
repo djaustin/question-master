@@ -1,5 +1,4 @@
-import setToStartOfDay from "../fixtures/feedbackAssets";
-import dayjs from "dayjs";
+import setToStartOfDay, { defaultDatePickerText } from "../fixtures/feedbackAssets";
 
 describe("Date Picker on Summary Page", () => {
   before(() => {
@@ -26,7 +25,7 @@ describe("Date Picker on Summary Page", () => {
     const toDateRegex = new RegExp(`\\s+${toDate.getDate()}rd`);
     // Act
     cy.visit("/dashboard/summary");
-    cy.findAllByRole("textbox").contains(`${new Date()} - ${dayjs().subtract(1, 'day').toDate()}`).click();
+    cy.findAllByRole("textbox").contains(defaultDatePickerText).click();
     cy.findByRole("button", { name: fromDateRegex }).click();
     cy.findByRole("button", { name: toDateRegex }).click();
 
