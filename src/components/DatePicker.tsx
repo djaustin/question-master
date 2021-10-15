@@ -10,8 +10,8 @@ export type DatePickerProps = {
 };
 
 export default function DatePicker({ onRangeChange }: DatePickerProps) {
-  const date24HrsAgo: Date = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
- const [dateRange, setDateRange] = useState<DateRange>([date24HrsAgo, new Date()]);
+  const date24HrsAgo: Date = dayjs().subtract(1, 'day').toDate()
+  const [dateRange, setDateRange] = useState<DateRange>([date24HrsAgo, new Date()]);
   const [startDate, endDate] = dateRange;
   onRangeChange(dateRange);
 

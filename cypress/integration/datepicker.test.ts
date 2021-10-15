@@ -1,4 +1,4 @@
-import setToStartOfDay from "../fixtures/feedbackAssets";
+import setToStartOfDay from "../fixtures/feedbackAssets";]
 
 describe("Date Picker on Summary Page", () => {
   before(() => {
@@ -21,9 +21,6 @@ describe("Date Picker on Summary Page", () => {
     setToStartOfDay(toDate);
 
     cy.intercept("GET", "/api/feedback*", []).as("feedback");
-    const expectedQuery = [fromDate, toDate]
-      .map((date) => date.toISOString())
-      .join(",");
     const fromDateRegex = new RegExp(`\\s+${fromDate.getDate()}th`);
     const toDateRegex = new RegExp(`\\s+${toDate.getDate()}rd`);
     // Act
