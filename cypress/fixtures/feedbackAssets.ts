@@ -101,6 +101,6 @@ export default function setToStartOfDay(date: Date){
   date.setMilliseconds(0);
 };
 
-const defaultDatePickerText = `${dayjs(new Date).format("DD/MM/YYYY")}`;
+const defaultDatePickerText = `${new Date()} - ${dayjs(new Date).format("DD/MM/YYYY")}`;
 
 export { feedbackData, defaultDatePickerText };
