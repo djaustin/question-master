@@ -93,7 +93,6 @@ const feedbackData: Feedback[] = [
   },
 ];
 
-
 export default function setToStartOfDay(date: Date){
   date.setHours(0);
   date.setMinutes(0);
