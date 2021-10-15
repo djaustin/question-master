@@ -1,11 +1,5 @@
-import data from "../fixtures/results.json";
+import setToStartOfDay from "../fixtures/feedbackAssets";
 
-const setToStartOfDay = (date: Date) => {
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-};
 describe("Date Picker on Summary Page", () => {
   before(() => {
     cy.login();
