@@ -41,4 +41,21 @@ describe("Comment Submission", () => {
     cy.findByText("Please enter a comment before submitting");
     cy.get("@feedback.all").should("have.length", 0);
   });
+
+  it("should show an error message if you submit without a comment when the username checkbox is checked", () => {
+    // Arrange
+    cy.intercept("POST", "/api/feedback", {}).as("feedback");
+
+    // Act
+    cy.visit("/");
+    cy.findByLabelText("neutral").click();
+    cy.findByRole("checkbox", {
+      name: /i would like to be contacted/i,
+    }).click({ force: true });
+    cy.findAllByRole("button", { name: /submit/i }).click();
+
+    // Assert
+    cy.findByText("Please enter a comment before submitting");
+    cy.get("@feedback.all").should("have.length", 0);
+  });
 });
