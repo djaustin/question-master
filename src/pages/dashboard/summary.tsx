@@ -1,4 +1,4 @@
-import { Container, Stack } from "@chakra-ui/react";
+import { Container, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 import { DashboardNavigation } from "../../components/DashboardNavigation";
 import DatePicker from "../../components/DatePicker";

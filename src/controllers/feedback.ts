@@ -32,7 +32,8 @@ export async function handleGetFeedback(
   res: NextApiResponse
 ) {
   const dateRange = req.query?.dateRange as string;
-
+  let skip: number = parseInt(req.query?.skip as string);
+  
   let query: Prisma.FeedbackFindManyArgs = {
     orderBy: {
       createdAt: "desc",
@@ -40,6 +41,8 @@ export async function handleGetFeedback(
     include: {
       device: true,
     },
+    skip: skip ? skip : 0,
+    take: 5,
   };
 
   if (dateRange) {
