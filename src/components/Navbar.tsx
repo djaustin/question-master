@@ -1,7 +1,7 @@
 import { Flex, Heading, HStack, Link } from "@chakra-ui/layout";
-import { Button, IconButton } from "@chakra-ui/react";
+import { Avatar, Button, IconButton, Tooltip } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/system";
-import { signOut } from "next-auth/client";
+import { signOut, useSession } from "next-auth/client";
 import NextLink from "next/link";
 import React from "react";
 import { FiSettings } from "react-icons/fi";
@@ -14,6 +14,8 @@ export type NavbarProps = {
 export const Navbar: React.FC<NavbarProps> = ({
   title = "Admin Dashboard",
 }) => {
+  const [session] = useSession()
+
   return (
     <Flex
       bg={`teal.${useColorModeValue(500, 900)}`}
@@ -21,7 +23,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       px={5}
       align="center"
       justify="space-between"
-      color="white"
     >
       <Heading color="white" size="lg">
         <Link cursor="pointer" href="/dashboard" as={NextLink}>
@@ -35,15 +36,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             variant="link"
             aria-label="open settings"
             icon={<FiSettings />}
-          />
+            />
         </Link>
         <DarkModeToggle variant="link" color="white" />
+        {session && <Tooltip label={session.user.name} ><Avatar size='sm' name={session.user.name} /></Tooltip>}
         <Button
           size="xs"
           variant="outline"
           color="white"
           onClick={() => signOut()}
-        >
+          >
           Sign out
         </Button>
       </HStack>
