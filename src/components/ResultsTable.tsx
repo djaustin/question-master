@@ -1,5 +1,5 @@
 import { Feedback } from ".prisma/client";
-import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { ChevronLeftIcon, ChevronRightIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   Box,
   chakra,
@@ -14,24 +14,29 @@ import {
   VStack,
   Text,
   useColorModeValue,
+  Tooltip,
+  IconButton,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { default as React, useMemo } from "react";
+import { default as React, useMemo, useEffect, useState } from "react";
 import { FiUser } from "react-icons/fi";
-import { useFilters, useGlobalFilter, useSortBy, useTable } from "react-table";
+import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
+import useSWR from "swr";
 import { Response } from "../models/response";
 import { ScoreCard } from "./ScoreCard";
 import GlobalTableFilter from "./tableFilters/GlobalTableFilter";
 import NumberRangeColumnFilter from "./tableFilters/NumberRangeColumnFilter";
 import TextFilter from "./tableFilters/TextFilter";
+import fetcher from "../integrations/jsonFetcher";
 
 export type ColumnTitle = "Date" | "Score" | "Comment" | "Username" | "Address";
 
 export type ResultsTableProps = {
-  feedback: Feedback[];
   canFilter?: boolean;
   globalFilter?: boolean;
   hiddenColumns?: ColumnTitle[];
+  count: number;
+  dateRange?: [Date, Date];
 } & SpacerProps;
 
 const scoreMap: { [key: number]: Response } = {
@@ -43,13 +48,28 @@ const scoreMap: { [key: number]: Response } = {
 };
 
 function ResultsTable({
-  feedback,
   canFilter,
   globalFilter,
   hiddenColumns,
+  count,
+  dateRange,
   ...spacerProps
 }: ResultsTableProps) {
-  const data = React.useMemo(() => feedback, [feedback]);
+
+  let isoRange: string[];
+  let dateRangeParam = "";
+
+  const [data, setData] = useState<Feedback[]>();
+
+  if(dateRange){
+    isoRange = dateRange.map((date) => date?.toISOString());
+    dateRangeParam = `?dateRange=${isoRange.join(",")}/`;
+  }
+
+  const { data: initialResults, error } = useSWR(`/api/feedback/${dateRangeParam}`, fetcher);
+  const memoData = React.useMemo(() => initialResults, [initialResults]);
+  console.log(memoData);
+  setData(memoData);
 
   const columns = React.useMemo(() => {
     const columns = [
@@ -114,20 +134,39 @@ function ResultsTable({
   );
 
   const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
     rows,
-    prepareRow,
     state,
     preGlobalFilteredRows,
     setGlobalFilter,
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
   } = useTable(
-    { columns, data, defaultColumn },
+    { columns, data, defaultColumn, initialState: { pageIndex: 0 }, manualPagination: true, pageCount: Math.ceil(count / 5)},
     useFilters,
     useGlobalFilter,
-    useSortBy
+    useSortBy,
+    usePagination,
   );
+
+  useEffect(() => {
+    const { data: paginatedData, error } = useSWR(`/api/feedback/${dateRangeParam}?skip=${pageIndex * 5}`, fetcher);
+    const memoDataPaginated = React.useMemo(() => paginatedData, [paginatedData]);
+    setData(memoDataPaginated);
+  }, [pageIndex]);
+
+  // const { data: paginatedDatuseSWR(`/api/feedback/${dateRangeParam}?skip=${pageIndex * 5}`, fetcher);a, error: paginatedError  } = useSWR(`/api/feedback/${dateRangeParam}?skip=${pageIndex * 5}`, fetcher);
 
   return (
     <Box {...spacerProps}>
@@ -138,6 +177,8 @@ function ResultsTable({
           preGlobalFilteredRows={preGlobalFilteredRows}
         />
       )}
+      {data && 
+      <>
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (
@@ -186,6 +227,36 @@ function ResultsTable({
           })}
         </Tbody>
       </Table>
+      <HStack justifyContent="flex-end" mt={1}>
+        <Tooltip label="Previous Page">
+          <IconButton
+            aria-label="previous page"
+            onClick={() => previousPage()}       
+            isDisabled={!canPreviousPage}
+            icon={<ChevronLeftIcon h={6} w={6} />}
+          />
+        </Tooltip>
+        <Text>
+          Page{" "}
+          <Text fontWeight="bold" as="span">
+            {pageIndex + 1}{" "}
+          </Text>
+          of{" "}
+          <Text fontWeight="bold" as="span">
+            {pageOptions.length}
+          </Text>
+        </Text>
+        <Tooltip label="Next Page">
+            <IconButton
+              aria-label="next page"
+              onClick={() => nextPage()}              
+              isDisabled={!canNextPage}
+              icon={<ChevronRightIcon h={6} w={6} />}
+            />
+        </Tooltip>
+      </HStack>
+      </>
+    }
     </Box>
   );
 }

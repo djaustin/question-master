@@ -6,6 +6,10 @@ import fetcher from "../integrations/jsonFetcher";
 export const useDateFilter = (baseUrl: string = "/api/feedback") => {
   const [apiUrl, setApiUrl] = useState(baseUrl);
   const { data, error } = useSWR(apiUrl, fetcher);
+  const { data: count, error: countError } = useSWR("/api/count", fetcher);
+
+  const [dateRange, setDateRange] = useState<string>("");
+  const [skip, setSkip] = useState(0);
 
   const setDateFilter = (range: DateRange) => {
     if (!range) return setApiUrl(baseUrl);
@@ -15,5 +19,5 @@ export const useDateFilter = (baseUrl: string = "/api/feedback") => {
     }
   };
 
-  return { setDateFilter, data, error };
+  return { setDateFilter, data, error, setPaginationFilter, count };
 };

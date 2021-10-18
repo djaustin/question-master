@@ -32,20 +32,20 @@ const Results = () => {
             maxW="100vw"
             overflowX="auto"
             mt="8"
-            feedback={data}
             canFilter
             globalFilter
+            count={count}
           /> : 
-        <Center h="100vh" w="100vw">
-          <Spinner
-            thickness="6px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="teal.500"
-            size="xl"
-          />
+          <Center h="100vh" w="100vw">
+            <Spinner
+              thickness="6px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="teal.500"
+              size="xl"
+            />
         </Center>
-        }
+      }
       </Container>
     </>
   );
