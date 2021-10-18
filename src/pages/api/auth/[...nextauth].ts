@@ -32,7 +32,7 @@ const options: NextAuthOptions = {
         }
         try {
           const user = await authenticate(ldapAuthConfig)
-          return {...user, name: user.displayName || user.gecos}
+          return {...user, name: user.fullName || user.displayName || user.gecos}
         } catch (err) {
           console.log(err)
           return null;
