@@ -30,6 +30,7 @@
     "formidable": "^1.2.2",
     "framer-motion": "^4.0.3",
     "http-proxy-middleware": "^2.0.1",
+    "ldap-authentication": "^2.2.9",
     "lodash": "^4.17.21",
     "next": "latest",
     "next-absolute-url": "^1.2.2",
