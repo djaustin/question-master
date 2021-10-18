@@ -14,7 +14,7 @@ export type NavbarProps = {
 export const Navbar: React.FC<NavbarProps> = ({
   title = "Admin Dashboard",
 }) => {
-  const [session] = useSession()
+  const [session] = useSession();
 
   return (
     <Flex
@@ -36,18 +36,24 @@ export const Navbar: React.FC<NavbarProps> = ({
             variant="link"
             aria-label="open settings"
             icon={<FiSettings />}
-            />
+          />
         </Link>
         <DarkModeToggle variant="link" color="white" />
-        {session && <Tooltip label={session.user.name} ><Avatar size='sm' name={session.user.name} /></Tooltip>}
-        <Button
-          size="xs"
-          variant="outline"
-          color="white"
-          onClick={() => signOut()}
-          >
-          Sign out
-        </Button>
+        {session.user && (
+          <>
+            <Tooltip label={session.user.name}>
+              <Avatar size="sm" name={session.user.name} />
+            </Tooltip>
+            <Button
+              size="xs"
+              variant="outline"
+              color="white"
+              onClick={() => signOut()}
+            >
+              Sign out
+            </Button>
+          </>
+        )}
       </HStack>
     </Flex>
   );
