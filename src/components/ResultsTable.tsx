@@ -58,18 +58,25 @@ function ResultsTable({
 
   let isoRange: string[];
   let dateRangeParam = "";
-
-  const [data, setData] = useState<Feedback[]>();
-
   if(dateRange){
     isoRange = dateRange.map((date) => date?.toISOString());
     dateRangeParam = `?dateRange=${isoRange.join(",")}/`;
   }
 
-  const { data: initialResults, error } = useSWR(`/api/feedback/${dateRangeParam}`, fetcher);
-  const memoData = React.useMemo(() => initialResults, [initialResults]);
-  console.log(memoData);
-  setData(memoData);
+  const [data, setData] = useState<Feedback[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [skipUrl, setSkipUrl] = useState("0");
+
+  const { data: paginatedData, error } = useSWR(`/api/feedback/${dateRangeParam}?skip=${skipUrl}`, fetcher);
+
+  console.log(data);
+
+  useEffect(() => {
+    if(paginatedData){
+      // const memoData = React.useMemo(() => paginatedData, [paginatedData]);
+      setData(paginatedData);
+    }
+  }, [paginatedData]);
 
   const columns = React.useMemo(() => {
     const columns = [
@@ -161,12 +168,8 @@ function ResultsTable({
   );
 
   useEffect(() => {
-    const { data: paginatedData, error } = useSWR(`/api/feedback/${dateRangeParam}?skip=${pageIndex * 5}`, fetcher);
-    const memoDataPaginated = React.useMemo(() => paginatedData, [paginatedData]);
-    setData(memoDataPaginated);
+    setSkipUrl(`${pageIndex * 5}`);
   }, [pageIndex]);
-
-  // const { data: paginatedDatuseSWR(`/api/feedback/${dateRangeParam}?skip=${pageIndex * 5}`, fetcher);a, error: paginatedError  } = useSWR(`/api/feedback/${dateRangeParam}?skip=${pageIndex * 5}`, fetcher);
 
   return (
     <Box {...spacerProps}>
@@ -177,8 +180,6 @@ function ResultsTable({
           preGlobalFilteredRows={preGlobalFilteredRows}
         />
       )}
-      {data && 
-      <>
       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (
@@ -215,17 +216,17 @@ function ResultsTable({
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <Tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
-                ))}
-              </Tr>
-            );
-          })}
-        </Tbody>
+        {rows.map((row) => {
+          prepareRow(row);
+          return (
+            <Tr {...row.getRowProps()}>
+              {row.cells.map((cell) => (
+                <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
+              ))}
+            </Tr>
+          );
+        })}
+      </Tbody>
       </Table>
       <HStack justifyContent="flex-end" mt={1}>
         <Tooltip label="Previous Page">
@@ -255,8 +256,6 @@ function ResultsTable({
             />
         </Tooltip>
       </HStack>
-      </>
-    }
     </Box>
   );
 }
