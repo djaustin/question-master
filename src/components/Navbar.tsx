@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           />
         </Link>
         <DarkModeToggle variant="link" color="white" />
-        {session.user && (
+        {session?.user && (
           <>
             <Tooltip label={session.user.name}>
               <Avatar size="sm" name={session.user.name} />
