@@ -8,13 +8,10 @@ import _ from "lodash";
 
 export type ResultSummaryProps = {
   data: Feedback[];
-  // allFeedbackComments: Feedback[];
-  setPaginationFilter: (pageIndex) => void;
-  // setPaginationFilterAllFeedbackComments: (pageIndex) => void;
   count: number;
 };
 
-export const ResultSummary: React.FC<ResultSummaryProps> = ({ data, setPaginationFilter, count }) => {
+export const ResultSummary: React.FC<ResultSummaryProps> = ({ data, count }) => {
   const scoreCount = useMemo(() => _.groupBy(data, "score"), [data]);
   return (
     <>
@@ -69,7 +66,7 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({ data, setPaginatio
       <Text mt="20" fontWeight="bold" textTransform="uppercase">
         All Feedback Comments
       </Text>
-      {/* {data && <ResultsTable maxW="100vw" overflowX="auto" canFilter feedback={data} changePage={setPaginationFilter} count={count}/>} */}
+      {/* {data && <ResultsTable maxW="100vw" overflowX="auto" canFilter feedback={data} count={count}/>} */}
     </>
   );
 };

@@ -7,7 +7,6 @@ export type DateRange = [Date, Date];
 
 export type DatePickerProps = {
   onRangeChange: (range: DateRange) => void;
-  // setDateFilterAllFeedbackComments?: (range: DateRange) => void;
 };
 
 export default function DatePicker({ onRangeChange }: DatePickerProps) {
