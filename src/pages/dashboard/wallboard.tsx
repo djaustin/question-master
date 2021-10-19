@@ -14,7 +14,7 @@ import { DashboardNavigation } from "../../components/DashboardNavigation";
 import { ResultSummary } from "../../components/ResultSummary";
 import { requireLogin } from "../../integrations/authentication";
 import fetcher from "../../integrations/jsonFetcher";
-import Head from 'next/head'
+import Head from "next/head";
 
 const format = (value) => `${value || 0}s`;
 const parse = (value) => parseInt(value.replace(/s/, ""));
@@ -57,7 +57,7 @@ const Wallboard = () => {
           <DashboardNavigation />
         </HStack>
       </Stack>
-      {data.feedbackResults && <ResultSummary data={data.feedbackResults} />}
+      {data.feedbackResults && <ResultSummary px="8" data={data.feedbackResults} />}
     </Box>
   );
 };
