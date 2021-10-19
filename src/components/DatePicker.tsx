@@ -1,4 +1,5 @@
 import { useColorModeValue } from "@chakra-ui/color-mode";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import ReactDatePicker from "react-datepicker";
 
@@ -13,10 +14,13 @@ export default function DatePicker({ onRangeChange }: DatePickerProps) {
   const [startDate, endDate] = dateRange;
 
   function onDateChanged(range: DateRange) {
-    setDateRange(range);
-    if (!range[0] && !range[1]) onRangeChange(null);
-    if (range[1]) {
-      onRangeChange?.(range);
+    const fromDate = range[0] && dayjs(range[0]).startOf("day").toDate();
+    const toDate = range[1] && dayjs(range[1]).endOf("day").toDate();
+
+    setDateRange([fromDate, toDate]);
+    if (!(fromDate || toDate)) onRangeChange(null);
+    if (toDate) {
+      onRangeChange?.([fromDate, toDate]);
     }
   }
 
