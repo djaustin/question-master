@@ -71,6 +71,6 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({
         All Feedback Comments
       </Text>
       <ResultsTable maxW="100vw" overflowX="auto" canFilter dateRange={dateRange}/>
-      </Box>
+    </Box>
   );
 };
