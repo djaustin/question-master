@@ -10,11 +10,17 @@ export type DatePickerProps = {
   setDateRangeExternal: (range: string) => void;
 };
 
-export default function DatePicker({ onRangeChange, setDateRangeExternal }: DatePickerProps) {
-  const date24HrsAgo: Date = dayjs().subtract(1, 'day').toDate();
-  const [dateRange, setDateRange] = useState<DateRange>([date24HrsAgo, new Date()]);
+export default function DatePicker({
+  onRangeChange,
+  setDateRangeExternal,
+}: DatePickerProps) {
+  const date24HrsAgo: Date = dayjs().subtract(1, "day").toDate();
+  const [dateRange, setDateRange] = useState<DateRange>([
+    date24HrsAgo,
+    new Date(),
+  ]);
   const [startDate, endDate] = dateRange;
-  if(onRangeChange) onRangeChange(dateRange);
+  if (onRangeChange) onRangeChange(dateRange);
 
   function onDateChanged(range: DateRange) {
     const fromDate = range[0] && dayjs(range[0]).startOf("day").toDate();
@@ -23,7 +29,7 @@ export default function DatePicker({ onRangeChange, setDateRangeExternal }: Date
 
     if (!(fromDate || toDate) && onRangeChange) onRangeChange(null);
     if (toDate) {
-      if(onRangeChange) onRangeChange?.([fromDate, toDate]);
+      if (onRangeChange) onRangeChange?.([fromDate, toDate]);
 
       const isoRange = [fromDate, toDate].map((date) => date?.toISOString());
       const dateRangeParam = `dateRange=${isoRange.join(",")}`;
@@ -40,6 +46,7 @@ export default function DatePicker({ onRangeChange, setDateRangeExternal }: Date
         endDate={endDate}
         onChange={(date) => onDateChanged(date as DateRange)}
         name="datepicker-input"
+        placeholderText="Choose a date range"
       />
     </div>
   );
