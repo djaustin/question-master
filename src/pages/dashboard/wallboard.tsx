@@ -24,6 +24,8 @@ const Wallboard = () => {
   const { data, error } = useSWR<Feedback[]>("/api/feedback", fetcher, {
     refreshInterval: interval * 1000,
   });
+  if (error) return "error";
+  if (!data) return "loading...";
   return (
     <Box p="4">
       <Head>
