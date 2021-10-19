@@ -42,22 +42,22 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({ data, dateRange })
         w="full"
         direction={{ base: "column", md: "row" }}
       >
-        <VStack flexGrow={1}>
+        <VStack align="start">
           <Text fontWeight="bold" textTransform="uppercase" alignSelf="start">
             Response Breakdown
           </Text>
-          <Box w="300px">
+          <Box w="400px">
             <FeedbackPieChart data={data} />
           </Box>
         </VStack>
-        <VStack flexGrow={2}>
+        <VStack flexGrow={1}>
           <Text fontWeight="bold" textTransform="uppercase" alignSelf="start">
             All Responses
           </Text>
           <ResultsTable
             w="full"
             hiddenColumns={["Comment", "Username", "Address"]}
-            h="300px"
+            h="400px"
             overflow="auto"
             dateRange={dateRange}
           />
