@@ -8,7 +8,7 @@ import _ from "lodash";
 
 export type ResultSummaryProps = {
   data: Feedback[];
-  dateRange: string;
+  dateRange?: string;
 };
 
 export const ResultSummary: React.FC<ResultSummaryProps> = ({ data, dateRange }) => {

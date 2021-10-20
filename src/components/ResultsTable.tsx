@@ -58,7 +58,7 @@ function ResultsTable({
   const [count, setCount] = useState(0);
   const [pageIndex, setPageIndex] = useState(1);
 
-  const { data: paginatedData, error } = useSWR(`/api/feedback/?skip=${(pageIndex -1) * 5}${dateRange ? `&${dateRange}` : dateRange}`, fetcher);
+  const { data: paginatedData, error } = useSWR(`/api/feedback/?skip=${(pageIndex -1) * 5}${dateRange ? `&${dateRange}` : ""}`, fetcher);
 
   useEffect(() => {
     if(paginatedData){
@@ -66,7 +66,7 @@ function ResultsTable({
     }
   }, [paginatedData]);
   
-  const { data: pCount, error: pCountError } = useSWR(`/api/count${dateRange ? `/?${dateRange}` : dateRange}`, fetcher);
+  const { data: pCount, error: pCountError } = useSWR(`/api/count${dateRange ? `/?${dateRange}` : ""}`, fetcher);
 
   useEffect(() => {
     if(pCount){
