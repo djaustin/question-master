@@ -8,10 +8,10 @@ import _ from "lodash";
 
 export type ResultSummaryProps = {
   data: Feedback[];
-  count: number;
+  dateRange: string;
 };
 
-export const ResultSummary: React.FC<ResultSummaryProps> = ({ data, count }) => {
+export const ResultSummary: React.FC<ResultSummaryProps> = ({ data, dateRange }) => {
   const scoreCount = useMemo(() => _.groupBy(data, "score"), [data]);
   return (
     <>
@@ -59,14 +59,14 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({ data, count }) => 
             hiddenColumns={["Comment", "Username", "Address"]}
             h="300px"
             overflow="auto"
-            count={count}
+            dateRange={dateRange}
           />
         </VStack>
       </Stack>
       <Text mt="20" fontWeight="bold" textTransform="uppercase">
         All Feedback Comments
       </Text>
-      {/* {data && <ResultsTable maxW="100vw" overflowX="auto" canFilter feedback={data} count={count}/>} */}
+      <ResultsTable maxW="100vw" overflowX="auto" canFilter dateRange={dateRange}/>
     </>
   );
 };
