@@ -1,21 +1,20 @@
 import { Feedback } from ".prisma/client";
-import { ChevronLeftIcon, ChevronRightIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import {
   Box,
-  chakra,
   HStack,
   SpacerProps,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  VStack,
   Text,
   useColorModeValue,
   Tooltip,
   IconButton,
+  Table,
+  Thead,
+  VStack,
+  Th,
+  Tr,
+  chakra,
+  Tbody,
+  Td,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { default as React, useMemo, useEffect, useState } from "react";
@@ -24,10 +23,11 @@ import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 
 import useSWR from "swr";
 import { Response } from "../models/response";
 import { ScoreCard } from "./ScoreCard";
-import GlobalTableFilter from "./tableFilters/GlobalTableFilter";
 import NumberRangeColumnFilter from "./tableFilters/NumberRangeColumnFilter";
 import TextFilter from "./tableFilters/TextFilter";
 import fetcher from "../integrations/jsonFetcher";
+import { ChevronLeftIcon, ChevronRightIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import GlobalTableFilter from "./tableFilters/GlobalTableFilter";
 
 export type ColumnTitle = "Date" | "Score" | "Comment" | "Username" | "Address";
 
@@ -35,8 +35,7 @@ export type ResultsTableProps = {
   canFilter?: boolean;
   globalFilter?: boolean;
   hiddenColumns?: ColumnTitle[];
-  count: number;
-  dateRange?: [Date, Date];
+  dateRange?: string;
 } & SpacerProps;
 
 const scoreMap: { [key: number]: Response } = {
@@ -51,32 +50,29 @@ function ResultsTable({
   canFilter,
   globalFilter,
   hiddenColumns,
-  count,
   dateRange,
   ...spacerProps
 }: ResultsTableProps) {
 
-  let isoRange: string[];
-  let dateRangeParam = "";
-  if(dateRange){
-    isoRange = dateRange.map((date) => date?.toISOString());
-    dateRangeParam = `?dateRange=${isoRange.join(",")}/`;
-  }
-
   const [data, setData] = useState<Feedback[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [skipUrl, setSkipUrl] = useState("0");
+  const [count, setCount] = useState(0);
+  const [pageIndex, setPageIndex] = useState(1);
 
-  const { data: paginatedData, error } = useSWR(`/api/feedback/${dateRangeParam}?skip=${skipUrl}`, fetcher);
-
-  console.log(data);
+  const { data: paginatedData, error } = useSWR(`/api/feedback/?skip=${(pageIndex -1) * 5}${dateRange ? `&${dateRange}` : dateRange}`, fetcher);
 
   useEffect(() => {
     if(paginatedData){
-      // const memoData = React.useMemo(() => paginatedData, [paginatedData]);
       setData(paginatedData);
     }
   }, [paginatedData]);
+  
+  const { data: pCount, error: pCountError } = useSWR(`/api/count${dateRange ? `/?${dateRange}` : dateRange}`, fetcher);
+
+  useEffect(() => {
+    if(pCount){
+      setCount(pCount);
+    }
+  }, [pCount]);
 
   const columns = React.useMemo(() => {
     const columns = [
@@ -149,38 +145,25 @@ function ResultsTable({
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    page,
-    canPreviousPage,
-    canNextPage,
     pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
   } = useTable(
-    { columns, data, defaultColumn, initialState: { pageIndex: 0 }, manualPagination: true, pageCount: Math.ceil(count / 5)},
+    { columns, data, defaultColumn, manualPagination: true, pageCount: Math.ceil(count / 5)},
     useFilters,
     useGlobalFilter,
     useSortBy,
     usePagination,
   );
 
-  useEffect(() => {
-    setSkipUrl(`${pageIndex * 5}`);
-  }, [pageIndex]);
-
   return (
-    <Box {...spacerProps}>
-      {canFilter && globalFilter && (
-        <GlobalTableFilter
-          globalFilter={state.globalFilter}
-          setGlobalFilter={setGlobalFilter}
-          preGlobalFilteredRows={preGlobalFilteredRows}
-        />
+  <Box {...spacerProps}>
+        {canFilter && globalFilter && (
+          <GlobalTableFilter
+            globalFilter={state.globalFilter}
+            setGlobalFilter={setGlobalFilter}
+            preGlobalFilteredRows={preGlobalFilteredRows}
+          />
       )}
-      <Table {...getTableProps()}>
+       <Table {...getTableProps()}>
         <Thead>
           {headerGroups.map((headerGroup) => (
             <Tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
@@ -214,49 +197,49 @@ function ResultsTable({
               ))}
             </Tr>
           ))}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <Tr {...row.getRowProps()}>
-              {row.cells.map((cell) => (
-                <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
-              ))}
-            </Tr>
-          );
-        })}
-      </Tbody>
-      </Table>
-      <HStack justifyContent="flex-end" mt={1}>
-        <Tooltip label="Previous Page">
-          <IconButton
-            aria-label="previous page"
-            onClick={() => previousPage()}       
-            isDisabled={!canPreviousPage}
-            icon={<ChevronLeftIcon h={6} w={6} />}
-          />
-        </Tooltip>
-        <Text>
-          Page{" "}
-          <Text fontWeight="bold" as="span">
-            {pageIndex + 1}{" "}
-          </Text>
-          of{" "}
-          <Text fontWeight="bold" as="span">
-            {pageOptions.length}
-          </Text>
-        </Text>
-        <Tooltip label="Next Page">
-            <IconButton
-              aria-label="next page"
-              onClick={() => nextPage()}              
-              isDisabled={!canNextPage}
-              icon={<ChevronRightIcon h={6} w={6} />}
-            />
-        </Tooltip>
-      </HStack>
-    </Box>
+        </Thead>      
+      {data ? <Tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <Tr {...row.getRowProps()}>
+                {row.cells.map((cell) => (
+                  <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>
+                ))}
+              </Tr>
+            );
+          })}
+        </Tbody> : <Text>Loading...</Text>}
+    </Table>
+     <HStack justifyContent="flex-end" mt={1}>
+    <Tooltip label="Previous Page">
+      <IconButton
+        aria-label="previous page"
+        onClick={() => setPageIndex(pageIndex - 1)}       
+        isDisabled={pageIndex === 1}
+        icon={<ChevronLeftIcon h={6} w={6} />}
+      />
+    </Tooltip>
+    <Text>
+      Page{" "}
+      <Text fontWeight="bold" as="span">
+        {pageIndex}{" "}
+      </Text>
+      of{" "}
+      <Text fontWeight="bold" as="span">
+        {pageOptions.length}
+      </Text>
+    </Text>
+    <Tooltip label="Next Page">
+        <IconButton
+          aria-label="next page"
+          onClick={() => setPageIndex(pageIndex + 1)}              
+          isDisabled={pageIndex === pageOptions.length}
+          icon={<ChevronRightIcon h={6} w={6} />}
+        />
+    </Tooltip>
+  </HStack>
+  </Box>
   );
 }
 

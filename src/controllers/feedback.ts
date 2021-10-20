@@ -41,8 +41,6 @@ export async function handleGetFeedback(
     include: {
       device: true,
     },
-    skip: skip ? skip : 0,
-    take: 5,
   };
 
   if (dateRange) {
@@ -64,6 +62,12 @@ export async function handleGetFeedback(
         ],
       },
     };
+  }
+
+  query = {
+    ...query,
+    skip: skip ? skip : 0,
+    take: 5,
   }
 
   return res.json(await prisma.feedback.findMany(query));
