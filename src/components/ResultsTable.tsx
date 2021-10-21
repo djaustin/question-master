@@ -220,7 +220,7 @@ function ResultsTable({
         icon={<ChevronLeftIcon h={6} w={6} />}
       />
     </Tooltip>
-    <Text>
+    <Text aria-label="page-range-available">
       Page{" "}
       <Text fontWeight="bold" as="span">
         {pageIndex}{" "}
