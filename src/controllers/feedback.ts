@@ -33,6 +33,7 @@ export async function handleGetFeedback(
 ) {
   const dateRange = req.query?.dateRange as string;
   let skip: number = parseInt(req.query?.skip as string);
+  let take: number = parseInt(req.query?.take as string);
   
   let query: Prisma.FeedbackFindManyArgs = {
     orderBy: {
@@ -67,7 +68,7 @@ export async function handleGetFeedback(
   query = {
     ...query,
     skip: skip ? skip : 0,
-    take: 5,
+    take: take ? take : 5,
   }
 
   return res.json(await prisma.feedback.findMany(query));

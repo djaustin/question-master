@@ -15,9 +15,10 @@ import {
   chakra,
   Tbody,
   Td,
+  Select,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { default as React, useMemo, useEffect, useState } from "react";
+import { default as React, useMemo, useEffect, useState, ChangeEvent } from "react";
 import { FiUser } from "react-icons/fi";
 import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 import useSWR from "swr";
@@ -57,8 +58,9 @@ function ResultsTable({
   const [data, setData] = useState<Feedback[]>([]);
   const [count, setCount] = useState(0);
   const [pageIndex, setPageIndex] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
-  const { data: paginatedData, error } = useSWR(`/api/feedback/?skip=${(pageIndex -1) * 5}${dateRange ? `&${dateRange}` : ""}`, fetcher);
+  const { data: paginatedData, error } = useSWR(`/api/feedback/?skip=${(pageIndex - 1) * pageSize}&take=${pageSize}${dateRange ? `&${dateRange}` : ""}`, fetcher);
 
   useEffect(() => {
     if(paginatedData){
@@ -73,6 +75,10 @@ function ResultsTable({
       setCount(pCount);
     }
   }, [pCount]);
+
+  const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setPageSize(parseInt(e.target.value))
+  }
 
   const columns = React.useMemo(() => {
     const columns = [
@@ -147,7 +153,7 @@ function ResultsTable({
     prepareRow,
     pageOptions,
   } = useTable(
-    { columns, data, defaultColumn, manualPagination: true, pageCount: Math.ceil(count / 5)},
+    { columns, data, defaultColumn, manualPagination: true, pageCount: Math.ceil(count / pageSize)},
     useFilters,
     useGlobalFilter,
     useSortBy,
@@ -211,34 +217,41 @@ function ResultsTable({
           })}
         </Tbody> : <Text>Loading...</Text>}
     </Table>
-     <HStack justifyContent="flex-end" mt={1}>
-    <Tooltip label="Previous Page">
-      <IconButton
-        aria-label="previous page"
-        onClick={() => setPageIndex(pageIndex - 1)}       
-        isDisabled={pageIndex === 1}
-        icon={<ChevronLeftIcon h={6} w={6} />}
-      />
-    </Tooltip>
-    <Text aria-label="page-range-available">
-      Page{" "}
-      <Text fontWeight="bold" as="span">
-        {pageIndex}{" "}
-      </Text>
-      of{" "}
-      <Text fontWeight="bold" as="span">
-        {pageOptions.length}
-      </Text>
-    </Text>
-    <Tooltip label="Next Page">
+    <HStack mt={1} justify="space-between">
+      <Select justifyContent="flex-start" placeholder="Select page size" w="20%" onChange={handleSelectChange}>
+        {[5, 10, 20, 30, 40, 50].map(pgSize => 
+          (<option key={pgSize} value={pgSize}>Show {pgSize} </option>)
+          )}
+      </Select>
+      <HStack>
+      <Tooltip label="Previous Page">
         <IconButton
-          aria-label="next page"
-          onClick={() => setPageIndex(pageIndex + 1)}              
-          isDisabled={pageIndex === pageOptions.length}
-          icon={<ChevronRightIcon h={6} w={6} />}
+          aria-label="previous page"
+          onClick={() => setPageIndex(pageIndex - 1)}       
+          isDisabled={pageIndex === 1}
+          icon={<ChevronLeftIcon h={6} w={6} />}
         />
-    </Tooltip>
-  </HStack>
+      </Tooltip>
+      <Text aria-label="page-range-available">
+        Page{" "}
+        <Text fontWeight="bold" as="span">
+          {pageIndex}{" "}
+        </Text>
+        of{" "}
+        <Text fontWeight="bold" as="span">
+          {pageOptions.length}
+        </Text>
+      </Text>
+      <Tooltip label="Next Page">
+          <IconButton
+            aria-label="next page"
+            onClick={() => setPageIndex(pageIndex + 1)}              
+            isDisabled={pageIndex === pageOptions.length}
+            icon={<ChevronRightIcon h={6} w={6} />}
+          />
+      </Tooltip>
+      </HStack>
+    </HStack>
   </Box>
   );
 }
