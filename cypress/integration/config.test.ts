@@ -13,7 +13,7 @@ describe("Configuration Page", () => {
     const question = "test question";
     cy.intercept("POST", "/api/config", {}).as("config");
     cy.visit("/dashboard/config");
-    cy.findByLabelText(/question/i)
+    cy.findByLabelText(/Question/i)
       .clear()
       .type(question);
     cy.findByRole("button", { name: /save/i }).click();
