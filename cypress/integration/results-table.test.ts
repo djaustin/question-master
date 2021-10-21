@@ -73,4 +73,27 @@ describe("Results Page", () => {
     cy.findByText(/10.131.0.1/i).should("not.exist");
     cy.findByText(/192.168.0.1/i).should("be.visible");
   });
+  it("should show to maximum number of pages correctly and the 'previous' button should be disabled", () => {
+    const numberOfResults = 50;
+    cy.intercept("GET", "/api/count*", {body: numberOfResults}).as("count");
+    cy.visit("/dashboard/results");
+    cy.wait(3000);
+
+    cy.findByLabelText(/page-range-available/i).contains("10");
+    cy.findByLabelText(/previous page/i).should('be.disabled')
+  });
+  it("should call the api with a skip value of 5 when the 'next' button is clicked and make the 'next' button disabled", () => {
+    cy.intercept("GET", "/api/count*", {body: 10}).as("count");
+    cy.intercept("GET", "/api/feedback*", data).as("feedback");
+    cy.visit("/dashboard/results");
+    cy.wait(3000);
+
+    cy.wait("@feedback").its("request.url").should("include", "0");
+
+    cy.findByLabelText(/next page/i).click();
+
+    cy.wait("@feedback");
+    cy.wait("@feedback").its("request.url").should("include", "5");
+    cy.findByLabelText(/next page/i).should('be.disabled')
+  });
 });
