@@ -55,8 +55,7 @@ describe("Results Page", () => {
   it("should allow score range filtering", () => {
     cy.intercept("GET", "/api/feedback*", data).as("feedback");
     cy.visit("/dashboard/results");
-    cy.wait(500);
-
+    cy.wait("@feedback");
     cy.findAllByRole("spinbutton").eq(0).type("2");
     cy.findAllByRole("spinbutton").eq(1).type("4");
     cy.findByText(/sad times/i).should("not.exist");
