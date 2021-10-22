@@ -30,6 +30,8 @@ describe("Dashboard", () => {
       // Act
       cy.intercept("GET", "/api/feedback*", []).as("feedback");
       cy.visit("/dashboard/results");
+      cy.wait('@feedback');
+      cy.wait(500);
 
       cy.get(`input[value="${defaultDatePickerText}"]`).click();
       cy.findAllByRole("button", { name: fromDateRegex }).click();
