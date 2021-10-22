@@ -1,4 +1,3 @@
-import { Feedback } from ".prisma/client";
 import {
   Box,
   HStack,
@@ -22,7 +21,7 @@ import { default as React, useMemo, useEffect, useState, ChangeEvent } from "rea
 import { FiUser } from "react-icons/fi";
 import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 import useSWR from "swr";
-import { Response } from "../models/response";
+import { Response, FeedbackResults } from "../models/response";
 import { ScoreCard } from "./ScoreCard";
 import NumberRangeColumnFilter from "./tableFilters/NumberRangeColumnFilter";
 import TextFilter from "./tableFilters/TextFilter";
@@ -55,26 +54,20 @@ function ResultsTable({
   ...spacerProps
 }: ResultsTableProps) {
 
-  const [data, setData] = useState<Feedback[]>([]);
+  const [data, setData] = useState<FeedbackResults[]>([]);
   const [count, setCount] = useState(0);
   const [pageIndex, setPageIndex] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
+  const pageSizes = [10, 20, 30, 40, 50];
 
-  const { data: paginatedData, error } = useSWR(`/api/feedback/?skip=${(pageIndex - 1) * pageSize}&take=${pageSize}${dateRange ? `&${dateRange}` : ""}`, fetcher);
+  const { data: paginatedData } = useSWR(`/api/feedback/?skip=${(pageIndex - 1) * pageSize}&take=${pageSize}${dateRange ? `&${dateRange}` : ""}`, fetcher);
 
   useEffect(() => {
     if(paginatedData){
-      setData(paginatedData);
+      setData(paginatedData.feedbackResults);
+      setCount(paginatedData.totalFeedbackCount);
     }
   }, [paginatedData]);
-  
-  const { data: pCount, error: pCountError } = useSWR(`/api/count${dateRange ? `/?${dateRange}` : ""}`, fetcher);
-
-  useEffect(() => {
-    if(pCount){
-      setCount(pCount);
-    }
-  }, [pCount]);
 
   const handleSelectChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setPageSize(parseInt(e.target.value))
@@ -218,9 +211,9 @@ function ResultsTable({
         </Tbody> : <Text>Loading...</Text>}
     </Table>
     <HStack mt={1} justify="space-between">
-      <Select justifyContent="flex-start" placeholder="Select page size" w="20%" onChange={handleSelectChange}>
-        {[5, 10, 20, 30, 40, 50].map(pgSize => 
-          (<option key={pgSize} value={pgSize}>Show {pgSize} </option>)
+      <Select justifyContent="flex-start" w="120px" onChange={handleSelectChange}>
+        {pageSizes.map(pgSize => 
+          (<option key={pgSize} value={pgSize}>Show {pgSize}</option>)
           )}
       </Select>
       <HStack>
@@ -230,9 +223,10 @@ function ResultsTable({
           onClick={() => setPageIndex(pageIndex - 1)}       
           isDisabled={pageIndex === 1}
           icon={<ChevronLeftIcon h={6} w={6} />}
+          variant="ghost"
         />
       </Tooltip>
-      <Text aria-label="page-range-available">
+      <Text aria-label="total and current pages">
         Page{" "}
         <Text fontWeight="bold" as="span">
           {pageIndex}{" "}
@@ -248,6 +242,7 @@ function ResultsTable({
             onClick={() => setPageIndex(pageIndex + 1)}              
             isDisabled={pageIndex === pageOptions.length}
             icon={<ChevronRightIcon h={6} w={6} />}
+            variant="ghost"
           />
       </Tooltip>
       </HStack>

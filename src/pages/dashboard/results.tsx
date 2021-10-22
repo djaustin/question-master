@@ -1,5 +1,5 @@
-import { Center, Container, Spinner, Stack } from "@chakra-ui/react";
-import React from "react";
+import { Container, Stack } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { DashboardNavigation } from "../../components/DashboardNavigation";
 import DatePicker from "../../components/DatePicker";
 import { Navbar } from "../../components/Navbar";
@@ -9,7 +9,8 @@ import { requireLogin } from "../../integrations/authentication";
 import Head from 'next/head'
 
 const Results = () => {
-  const { data, error, setDateFilter } = useDateFilter();
+  const { error, setDateFilter } = useDateFilter();
+  const [dateRange, setDateRange ] = useState("");
   if (error) return <div>No Data</div>;
 
   return (
@@ -24,7 +25,7 @@ const Results = () => {
           align="center"
           justify="space-between"
         >
-          <DatePicker onRangeChange={setDateFilter} />
+          <DatePicker onRangeChange={setDateFilter} setDateRangeExternal={setDateRange} />
           <DashboardNavigation />
         </Stack>
         {data ? 

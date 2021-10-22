@@ -35,7 +35,7 @@ export async function handleGetFeedback(
   let skip: number = parseInt(req.query?.skip as string);
   let take: number = parseInt(req.query?.take as string);
   
-  let query: Prisma.FeedbackFindManyArgs = {
+  let feedbackQuery: Prisma.FeedbackFindManyArgs = {
     orderBy: {
       createdAt: "desc",
     },
@@ -44,10 +44,12 @@ export async function handleGetFeedback(
     },
   };
 
+  let totalFeedbackCount = await prisma.feedback.count();
+
   if (dateRange) {
     const dateRangeArray = dateRange?.split(",");
-    query = {
-      ...query,
+    feedbackQuery = {
+      ...feedbackQuery,
       where: {
         AND: [
           {
@@ -63,15 +65,45 @@ export async function handleGetFeedback(
         ],
       },
     };
+
+    totalFeedbackCount = await prisma.feedback.count({
+      where: {
+        AND: [
+          {
+            createdAt: {
+              gte: dateRangeArray?.[0],
+            },
+          },
+          {
+            createdAt: {
+              lte: dateRangeArray?.[1],
+            },
+          },
+        ],
+      },
+    });
+  };
+
+  if(skip){
+    feedbackQuery = {
+      ...feedbackQuery,
+      skip: skip,
+    }
   }
 
-  query = {
-    ...query,
-    skip: skip ? skip : 0,
-    take: take ? take : 5,
+  if(take){
+    feedbackQuery = {
+      ...feedbackQuery,
+      take: take,
+    }
   }
 
-  return res.json(await prisma.feedback.findMany(query));
+  const results = {
+    totalFeedbackCount: totalFeedbackCount,
+    feedbackResults: await prisma.feedback.findMany(feedbackQuery),
+  };
+  
+  return res.json(results);
 }
 
 function getRemoteIP(req: NextApiRequest) {
