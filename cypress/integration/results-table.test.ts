@@ -28,6 +28,7 @@ describe("Results Page", () => {
     cy.visit("/dashboard/results");
     cy.wait('@feedback');
 
+    cy.wait(3000);
     cy.findAllByRole("textbox").eq(2).type("29");
     cy.findByText(/28-09/i).should("not.exist");
     cy.findByText(/29-09/i).should("be.visible");
