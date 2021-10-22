@@ -26,6 +26,8 @@ describe("Results Page", () => {
   it("should allow date text filtering", () => {
     cy.intercept("GET", "/api/feedback", data).as("feedback");
     cy.visit("/dashboard/results");
+    cy.wait('@feedback');
+
     cy.findAllByRole("textbox").eq(2).type("29");
     cy.findByText(/28-09/i).should("not.exist");
     cy.findByText(/29-09/i).should("be.visible");

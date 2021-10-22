@@ -28,8 +28,8 @@ describe("Dashboard", () => {
       const toDateRegex = new RegExp(`\\s+${toDate.getDate()}rd`);
 
       // Act
-      cy.visit("/dashboard/results");
       cy.intercept("GET", "/api/feedback*", []).as("feedback");
+      cy.visit("/dashboard/results");
       cy.wait("@feedback");
 
       cy.get(`input[value="${defaultDatePickerText}"]`).click();
