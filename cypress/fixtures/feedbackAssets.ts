@@ -94,13 +94,6 @@ const feedbackData: Feedback[] = [
   },
 ];
 
-export default function setToStartOfDay(date: Date){
-  date.setHours(0);
-  date.setMinutes(0);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-};
-
 const defaultDatePickerText = `${dayjs().subtract(1, 'day').format("MM/DD/YYYY")} - ${dayjs(new Date()).format("MM/DD/YYYY")}`;
 
 export { feedbackData, defaultDatePickerText };

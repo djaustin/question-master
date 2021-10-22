@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import setToStartOfDay from "../fixtures/feedbackAssets";
 
 describe("Date Picker on Summary Page", () => {
   before(() => {
@@ -18,8 +17,8 @@ describe("Date Picker on Summary Page", () => {
     const toDate = new Date();
     fromDate.setFullYear(fromDate.getFullYear(), fromDate.getMonth(), 14);
     toDate.setFullYear(toDate.getFullYear(), toDate.getMonth(), 23);
-    setToStartOfDay(fromDate);
-    setToStartOfDay(toDate);
+    dayjs(fromDate).startOf('day').toDate();
+    dayjs(toDate).startOf('day').toDate();
 
     cy.intercept("GET", "/api/feedback*", []).as("feedback");
     const fromDateRegex = new RegExp(`\\s+${fromDate.getDate()}th`);
