@@ -34,6 +34,7 @@ export default function DatePicker({ onRangeChange }: DatePickerProps) {
         startDate={startDate}
         endDate={endDate}
         onChange={(date) => onDateChanged(date as DateRange)}
+        name="datepicker-input"
       />
     </div>
   );
