@@ -13,8 +13,9 @@ describe("Feedback Pie Chart", () => {
   );
   it("should show a pie chart when the user goes to the summary page", () => {
     // Arrange
-    cy.intercept("GET", "/api/feedback", feedbackData).as("feedback");
     cy.visit("/dashboard/summary");
+    cy.intercept("GET", "/api/feedback*", feedbackData).as("feedback");
+    cy.wait('@feedback');
 
     // Assert
     cy.findByText("30%");

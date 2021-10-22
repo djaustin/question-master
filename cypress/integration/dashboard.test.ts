@@ -21,7 +21,6 @@ describe("Dashboard", () => {
       fromDate = dayjs(fromDate).startOf("day").toDate();
       toDate = dayjs(toDate).endOf("day").toDate();
 
-      cy.intercept("GET", "/api/feedback*", []).as("feedback");
       const expectedQuery = [fromDate, toDate]
         .map((date) => date.toISOString())
         .join(",");
@@ -30,9 +29,13 @@ describe("Dashboard", () => {
 
       // Act
       cy.visit("/dashboard/results");
+      cy.intercept("GET", "/api/feedback*", []).as("feedback");
+      cy.wait("@feedback");
+
       cy.get(`input[value="${defaultDatePickerText}"]`).click();
       cy.findAllByRole("button", { name: fromDateRegex }).click();
       cy.findAllByRole("button", { name: toDateRegex }).click();
+      cy.intercept("GET", "/api/feedback*", []).as("feedback");
 
       // Assert
       cy.wait("@feedback");
