@@ -1,4 +1,5 @@
 import { useColorModeValue } from "@chakra-ui/color-mode";
+import { toVarDefinition } from "@chakra-ui/styled-system";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import ReactDatePicker from "react-datepicker";
@@ -7,11 +8,12 @@ export type DateRange = [Date, Date];
 
 export type DatePickerProps = {
   onRangeChange: (range: DateRange) => void;
+  setDateRangeExternal: (range: string) => void;
 };
 
-export default function DatePicker({ onRangeChange }: DatePickerProps) {
+export default function DatePicker({ onRangeChange, setDateRangeExternal }: DatePickerProps) {
   const date24HrsAgo: Date = dayjs().subtract(1, 'day').toDate();
-  const [dateRange, setDateRange] = useState<DateRange>([date24HrsAgo, new Date()]);
+  const [dateRange, setDateRange] = useState<DateRange>([date24HrsAgo, null]);
   const [startDate, endDate] = dateRange;
   onRangeChange(dateRange);
 
@@ -23,6 +25,8 @@ export default function DatePicker({ onRangeChange }: DatePickerProps) {
     if (!(fromDate || toDate)) onRangeChange(null);
     if (toDate) {
       onRangeChange?.([fromDate, toDate]);
+      const dateRangeParam = `dateRange=${[fromDate, toDate].join(",")}`;
+      setDateRangeExternal(dateRangeParam);
     }
   }
 

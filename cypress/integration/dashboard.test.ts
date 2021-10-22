@@ -26,8 +26,7 @@ describe("Dashboard", () => {
         .map((date) => date.toISOString())
         .join(",");
 
-      const expectedQueryReplaceColons = expectedQuery.replaceAll(":", "%3A");
-      const expectedQueryReplaceCommas = expectedQueryReplaceColons.replaceAll(",", "%2C");
+      const urlEncodedExpectedQuery = encodeURIComponent(expectedQuery)
 
       const fromDateRegex = new RegExp(`\\s+${fromDate.getDate()}th`);
       const toDateRegex = new RegExp(`\\s+${toDate.getDate()}rd`);
@@ -50,7 +49,7 @@ describe("Dashboard", () => {
 
       // Assert
       cy.wait("@feedback");
-      cy.wait("@feedback").its("request.url").should("include", expectedQueryReplaceCommas);
+      cy.wait("@feedback").its("request.url").should("include", urlEncodedExpectedQuery);
     });
     it("should display a table of results", () => {
       cy.visit("/dashboard/results");

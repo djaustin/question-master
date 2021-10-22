@@ -78,7 +78,7 @@ describe("Results Page", () => {
     cy.visit("/dashboard/results");
     cy.wait(3000);
 
-    cy.findByLabelText(/page-range-available/i).contains("10");
+    cy.findByLabelText(/total and current pages/i).contains("10");
     cy.findByLabelText(/previous page/i).should('be.disabled')
   });
   it("should call the api with a skip value of 5 when the 'next' button is clicked and make the 'next' button disabled", () => {

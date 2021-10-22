@@ -1,5 +1,5 @@
 import { Container, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { DashboardNavigation } from "../../components/DashboardNavigation";
 import DatePicker from "../../components/DatePicker";
 import { Navbar } from "../../components/Navbar";
@@ -9,7 +9,9 @@ import { requireLogin } from "../../integrations/authentication";
 import Head from 'next/head'
 
 export const Summary = () => {
-  const { data, error, setDateFilter } = useDateFilter();
+  const { feedbackData, setDateFilter, error } = useDateFilter();
+  const [dateRange, setDateRange ] = useState("");
+
   if (error) return "error";
   return (
     <>
@@ -23,10 +25,10 @@ export const Summary = () => {
           justify="space-between"
           align="center"
         >
-          <DatePicker onRangeChange={setDateFilter} />
+          <DatePicker onRangeChange={setDateFilter} setDateRangeExternal={setDateRange}/>
           <DashboardNavigation />
         </Stack>
-        {data ? <ResultSummary data={data} dateRange={dateRange} /> : <Text>Loading...</Text>}
+        {feedbackData ? <ResultSummary data={feedbackData} dateRange={dateRange} /> : <Text>Loading...</Text>}
       </Container>
     </>
   );
