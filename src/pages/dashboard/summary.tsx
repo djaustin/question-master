@@ -24,7 +24,7 @@ export const Summary = () => {
           align="center"
         >
           <DatePicker onRangeChange={setDateFilter} />
-          {data && <DashboardNavigation />}
+          <DashboardNavigation />
         </Stack>
         {data && <ResultSummary data={data} />}
       </Container>
