@@ -7,10 +7,15 @@ import { ResultSummary } from "../../components/ResultSummary";
 import { useDateFilter } from "../../hooks/useDateFilter";
 import { requireLogin } from "../../integrations/authentication";
 import Head from 'next/head'
+import dayjs from "dayjs";
 
 export const Summary = () => {
   const { feedbackData, setDateFilter, error } = useDateFilter();
-  const [dateRange, setDateRange ] = useState("");
+  const date24HrsAgo: Date = dayjs().subtract(1, 'day').toDate();
+  const isoRange = [date24HrsAgo, new Date()].map((date) => date?.toISOString());
+  const dateRangeParam = `dateRange=${isoRange.join(",")}`;
+
+  const [dateRange, setDateRange ] = useState(dateRangeParam);
 
   if (error) return "error";
   return (

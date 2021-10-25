@@ -7,11 +7,14 @@ import ResultsTable from "../../components/ResultsTable";
 import { useDateFilter } from "../../hooks/useDateFilter";
 import { requireLogin } from "../../integrations/authentication";
 import Head from 'next/head'
+import dayjs from "dayjs";
 
 const Results = () => {
-  const { error, setDateFilter } = useDateFilter();
-  const [dateRange, setDateRange ] = useState("");
-  if (error) return <div>No Data</div>;
+  const date24HrsAgo: Date = dayjs().subtract(1, 'day').toDate();
+  const isoRange = [date24HrsAgo, new Date()].map((date) => date?.toISOString());
+  const dateRangeParam = `dateRange=${isoRange.join(",")}`;
+
+  const [dateRange, setDateRange ] = useState(dateRangeParam);
 
   return (
     <>
@@ -25,28 +28,17 @@ const Results = () => {
           align="center"
           justify="space-between"
         >
-          <DatePicker onRangeChange={setDateFilter} setDateRangeExternal={setDateRange} />
+          <DatePicker setDateRangeExternal={setDateRange} />
           <DashboardNavigation />
         </Stack>
-        {data ? 
-          <ResultsTable
-            maxW="100vw"
-            overflowX="auto"
-            mt="8"
-            canFilter
-            globalFilter
-            count={count}
-          /> : 
-          <Center h="100vh" w="100vw">
-            <Spinner
-              thickness="6px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="teal.500"
-              size="xl"
-            />
-        </Center>
-      }
+        <ResultsTable
+          maxW="100vw"
+          overflowX="auto"
+          mt="8"
+          canFilter
+          globalFilter
+          dateRange={dateRange}
+        /> 
       </Container>
     </>
   );
