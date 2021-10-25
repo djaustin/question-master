@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { defaultDatePickerText } from "../fixtures/feedbackAssets";
+import { feedbackData } from "../fixtures/feedbackAssets";
 
 describe("Dashboard", () => {
   before(() => cy.login());
@@ -21,7 +21,6 @@ describe("Dashboard", () => {
       fromDate = dayjs(fromDate).startOf("day").toDate();
       toDate = dayjs(toDate).endOf("day").toDate();
 
-      cy.intercept("GET", "/api/feedback*", []).as("feedback");
       const expectedQuery: string = [fromDate, toDate]
         .map((date) => date.toISOString())
         .join(",");
@@ -32,23 +31,19 @@ describe("Dashboard", () => {
       const toDateRegex = new RegExp(`\\s+${toDate.getDate()}rd`);
 
       // Act
-      cy.intercept("GET", "/api/feedback*", []).as("feedback");
+      cy.intercept("GET", "/api/feedback*", feedbackData).as("feedback");
       cy.visit("/dashboard/results");
 
       // Assert
-      cy.wait("@feedback");
       cy.wait("@feedback").its("request.url").should("include", "skip=0");
 
       // Act
       cy.findAllByRole("textbox").eq(0).click();
       cy.findAllByRole("button", { name: fromDateRegex }).click();
       cy.findAllByRole("button", { name: toDateRegex }).click();
-      cy.intercept("GET", "/api/feedback*", []).as("feedback");
-
-      cy.intercept("GET", "/api/feedback*", []).as("feedback");
+      cy.intercept("GET", "/api/feedback*", feedbackData).as("feedback");
 
       // Assert
-      cy.wait("@feedback");
       cy.wait("@feedback").its("request.url").should("include", urlEncodedExpectedQuery);
     });
     it("should display a table of results", () => {
@@ -64,6 +59,7 @@ describe("Dashboard", () => {
   });
   describe("Wallboard", () => {
     it("should display a response summary and refresh interval", () => {
+      cy.intercept("GET", "/api/feedback*", feedbackData).as("feedback");
       cy.visit("/dashboard/wallboard");
       cy.findByLabelText(/refresh/i);
       checkResponseSummary();

@@ -64,8 +64,11 @@ function ResultsTable({
 
   useEffect(() => {
     if(paginatedData){
-      setData(paginatedData.feedbackResults);
-      setCount(paginatedData.totalFeedbackCount);
+      if(paginatedData.feedbackResults){
+        setData(paginatedData.feedbackResults);
+      } if(paginatedData.totalFeedbackCount){
+        setCount(paginatedData.totalFeedbackCount);
+      }
     }
   }, [paginatedData]);
 
