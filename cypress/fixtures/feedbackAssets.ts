@@ -1,7 +1,7 @@
 import { Feedback } from "@prisma/client";
 import dayjs from "dayjs";
 
-const feedbackData: Feedback[] = [
+const feedbackResults: Feedback[] = [
   {
     id: 1,
     username: "tk44b4",
@@ -93,6 +93,11 @@ const feedbackData: Feedback[] = [
     deviceIp: "127.0.0.1",
   },
 ];
+
+const feedbackData = {
+  feedbackResults: feedbackResults,
+  totalFeedbackCount: 10,
+}
 
 const defaultDatePickerText = `${dayjs().subtract(1, 'day').format("MM/DD/YYYY")} - ${dayjs(new Date()).format("MM/DD/YYYY")}`;
 
