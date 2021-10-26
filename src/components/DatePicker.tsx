@@ -1,5 +1,4 @@
 import { useColorModeValue } from "@chakra-ui/color-mode";
-import { toVarDefinition } from "@chakra-ui/styled-system";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import ReactDatePicker from "react-datepicker";
