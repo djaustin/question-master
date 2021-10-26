@@ -1,6 +1,6 @@
 import { VStack, Stack, Box, Text } from "@chakra-ui/layout";
 import { Feedback } from "@prisma/client";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import FeedbackPieChart from "./FeedbackPieChart";
 import { ResponseCount } from "./ResponseCount";
 import ResultsTable from "./ResultsTable";

@@ -21,7 +21,7 @@ const parse = (value) => parseInt(value.replace(/s/, ""));
 
 const Wallboard = () => {
   const [interval, setInterval] = useState(0);
-  const { data, error } = useSWR<Feedback[]>("/api/feedback", fetcher, {
+  const { data, error } = useSWR("/api/feedback", fetcher, {
     refreshInterval: interval * 1000,
   });
   if (error) return "error";
@@ -57,7 +57,7 @@ const Wallboard = () => {
           <DashboardNavigation />
         </HStack>
       </Stack>
-      <ResultSummary data={data} />
+      {data.feedbackResults && <ResultSummary data={data.feedbackResults} />}
     </Box>
   );
 };
