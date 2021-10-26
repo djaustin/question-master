@@ -1,0 +1,46 @@
+version: "3.4"
+
+services:
+  database:
+    image: postgres:latest
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  image-hosting:
+    image: daustin/filepile:1.0.0
+    environment:
+      FILEPILE_UPLOAD_DIR: /var/filepile
+      FILEPILE_MAX_UPLOAD_SIZE: 10000000
+    volumes:
+      - imagedata:/var/filepile
+
+  app:
+    image: daustin/question-master:0.5.0
+    build: .
+    ports:
+      - 8080:3000
+    environment:
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: password
+      DATABASE_URL: postgres://postgres:postgres@database:5432/qm
+      NEXTAUTH_URL: http://localhost:3000
+      FILEPILE_BASE_URL: http://image-hosting:8080
+    depends_on:
+      - migration
+
+  migration:
+    image: daustin/question-master:0.5.0
+    environment:
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: password
+      DATABASE_URL: postgres://postgres:postgres@database:5432/qm
+      NEXTAUTH_URL: http://localhost:3000
+    depends_on:
+      - database
+    command: yarn prisma migrate deploy
+    
+volumes:
+  pgdata:
+  imagedata:
