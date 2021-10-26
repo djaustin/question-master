@@ -15,6 +15,7 @@ describe("Feedback Pie Chart", () => {
     // Arrange
     cy.intercept("GET", "/api/feedback*", feedbackData).as("feedback");
     cy.visit("/dashboard/summary");
+    cy.wait("@feedback");
 
     // Assert
     cy.findByText("30%");

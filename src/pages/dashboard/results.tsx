@@ -4,7 +4,6 @@ import { DashboardNavigation } from "../../components/DashboardNavigation";
 import DatePicker from "../../components/DatePicker";
 import { Navbar } from "../../components/Navbar";
 import ResultsTable from "../../components/ResultsTable";
-import { useDateFilter } from "../../hooks/useDateFilter";
 import { requireLogin } from "../../integrations/authentication";
 import Head from 'next/head'
 import dayjs from "dayjs";
