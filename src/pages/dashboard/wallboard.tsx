@@ -1,4 +1,3 @@
-import { Feedback } from ".prisma/client";
 import { Box, HStack, Stack } from "@chakra-ui/layout";
 import {
   NumberDecrementStepper,
