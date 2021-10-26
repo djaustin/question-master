@@ -229,21 +229,21 @@ function ResultsTable({
           variant="ghost"
         />
       </Tooltip>
-      <Text aria-label="total and current pages">
+      <Text>
         Page{" "}
         <Text fontWeight="bold" as="span">
           {pageIndex}{" "}
         </Text>
         of{" "}
-        <Text fontWeight="bold" as="span">
-          {pageOptions.length}
+        <Text fontWeight="bold" as="span" aria-label="total and current pages">
+          {Math.max(pageOptions.length, 1)}
         </Text>
       </Text>
       <Tooltip label="Next Page">
           <IconButton
             aria-label="next page"
             onClick={() => setPageIndex(pageIndex + 1)}              
-            isDisabled={pageIndex === pageOptions.length}
+            isDisabled={pageIndex === Math.max(pageOptions.length, 1)}
             icon={<ChevronRightIcon h={6} w={6} />}
             variant="ghost"
           />

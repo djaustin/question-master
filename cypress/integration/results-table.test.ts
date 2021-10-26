@@ -90,4 +90,11 @@ describe("Results Page", () => {
     cy.wait("@feedback").its("request.url").should("include", "10");
     cy.findByLabelText(/next page/i).should('be.disabled')
   });
+  it("should disable the next button and display 'Page 1 of 1' when there are no results", () => {
+    cy.intercept("GET", "/api/feedback*", []).as("feedback");
+    cy.visit("/dashboard/results");
+
+    cy.findByLabelText(/next page/i).should('be.disabled');
+    cy.findByLabelText(/total and current pages/i).contains("1");
+  });
 });
