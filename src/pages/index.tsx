@@ -37,6 +37,7 @@ type IndexProps = {
 
 const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
+
   useBeforeunload((e) => {
     if (!hasSubmitted) e.preventDefault();
   });
@@ -76,6 +77,13 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
         description: "There was an error submitting your feedback",
         title: res.statusText,
         status: "error",
+      });
+    }
+
+    if(data.score === "1"){
+      const emailRes = await fetch("/api/email", {
+        method: "POST",
+        body: data.comment
       });
     }
   };
@@ -178,4 +186,4 @@ export const getServerSideProps: GetServerSideProps<IndexProps> = async () => {
       brandingUrl: brandingUrl?.value ?? null,
     },
   };
-};
+}

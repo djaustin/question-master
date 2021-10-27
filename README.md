@@ -109,6 +109,33 @@ To run this project, you will need to add the following environment variables to
 npx node-jose-tools newkey -s 256 -t oct -a HS512
 ```
 
+## Email Server
+
+Install Redis 
+
+```bash
+  brew install redis
+  brew ls redis
+```
+
+Run Redis server
+
+```bash
+  redis-server
+```
+
+Test the Redis server is running by running the following command (you should recieve a 'PONG' response)
+
+```bash
+  redis-cli ping
+```
+
+Monitor requests coming into the Redis server
+
+```bash
+  redis-cli monitor
+```
+
 ## Tech Stack
 
 **Client:** React, Chakra UI
