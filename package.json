@@ -21,6 +21,7 @@
     "@types/formidable": "^1.2.4",
     "@types/react-datepicker": "^4.1.7",
     "@types/react-table": "^7.7.5",
+    "@types/redis": "^2.8.32",
     "@wojtekmaj/react-datetimerange-picker": "^3.4.0",
     "bootstrap": "^5.1.1",
     "cypress-file-upload": "^5.0.8",
@@ -46,6 +47,7 @@
     "react-icons": "^4.3.1",
     "react-minimal-pie-chart": "^8.2.0",
     "react-table": "^7.7.0",
+    "redis": "^3.1.2",
     "swr": "^1.0.1"
   },
   "devDependencies": {

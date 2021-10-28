@@ -1,6 +1,7 @@
 import { Prisma } from ".prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../integrations/db";
+import { processMailSend } from "../services/mail";
 
 export async function handleCreateFeedback(
   req: NextApiRequest,
@@ -11,23 +12,24 @@ export async function handleCreateFeedback(
   const ip = req.body.clientIp || getRemoteIP(req);
   // Prisma will reject the create function args if it has extra keys it doesn't need
   delete req.body.clientIp;
-  return res.json(
-    await prisma.feedback.create({
-      data: {
-        device: {
-          connectOrCreate: {
-            create: {
-              ip,
-            },
-            where: {
-              ip,
-            },
+  const createdFeedback = await prisma.feedback.create({
+    data: {
+      device: {
+        connectOrCreate: {
+          create: {
+            ip,
+          },
+          where: {
+            ip,
           },
         },
-        ...data,
       },
-    })
-  );
+      ...data,
+    },
+  });
+  await processMailSend(req.body);
+
+  res.json(createdFeedback);
 }
 
 export async function handleGetFeedback(
