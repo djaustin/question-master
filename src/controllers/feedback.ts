@@ -7,7 +7,10 @@ export async function handleCreateFeedback(
   res: NextApiResponse
 ) {
   const data = req.body;
-  const ip = getRemoteIP(req);
+  // The client can provide an IP address to get around container networking issues that prevent us getting the remote IP from the backend
+  const ip = req.body.clientIp || getRemoteIP(req);
+  // Prisma will reject the create function args if it has extra keys it doesn't need
+  delete req.body.clientIp;
   return res.json(
     await prisma.feedback.create({
       data: {
@@ -34,7 +37,7 @@ export async function handleGetFeedback(
   const dateRange = req.query?.dateRange as string;
   let skip: number = parseInt(req.query?.skip as string);
   let take: number = parseInt(req.query?.take as string);
-  
+
   let feedbackQuery: Prisma.FeedbackFindManyArgs = {
     orderBy: {
       createdAt: "desc",
@@ -82,27 +85,27 @@ export async function handleGetFeedback(
         ],
       },
     });
-  };
+  }
 
-  if(skip){
+  if (skip) {
     feedbackQuery = {
       ...feedbackQuery,
       skip: skip,
-    }
+    };
   }
 
-  if(take){
+  if (take) {
     feedbackQuery = {
       ...feedbackQuery,
       take: take,
-    }
+    };
   }
 
   const results = {
     totalFeedbackCount: totalFeedbackCount,
     feedbackResults: await prisma.feedback.findMany(feedbackQuery),
   };
-  
+
   return res.json(results);
 }
 

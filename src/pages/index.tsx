@@ -1,3 +1,4 @@
+import { Feedback } from ".prisma/client";
 import {
   Box,
   Button,
@@ -5,6 +6,7 @@ import {
   chakra,
   Checkbox,
   Container,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -14,15 +16,14 @@ import {
   Textarea,
   useToast,
   VStack,
-  Flex,
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import React, { useState } from "react";
 import { useBeforeunload } from "react-beforeunload";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import LikertScale from "../components/LikertScale";
 import prisma from "../integrations/db";
-import Head from 'next/head'
 
 type FormInputs = {
   score: string;
@@ -58,10 +59,15 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
 
   const sendFeedback: SubmitHandler<FormInputs> = async (data) => {
     const parsedData = { ...data, score: parseInt(data.score) };
+    let reqBody: Partial<Feedback> & { clientIp?: string } = parsedData;
+    if (process.env.NEXT_PUBLIC_LOOKUP_IP_URL) {
+      const ipRes = await fetch(process.env.NEXT_PUBLIC_LOOKUP_IP_URL);
+      reqBody.clientIp = await ipRes.text();
+    }
     const res = await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(parsedData),
+      body: JSON.stringify(reqBody),
     });
 
     if (res.ok) {
@@ -87,7 +93,7 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
           <Image h="200px" src={brandingUrl} />
         </Center>
       )}
-       <Head>
+      <Head>
         <title>Feedback: Submit</title>
       </Head>
       <Heading textAlign="center" size="3xl">
