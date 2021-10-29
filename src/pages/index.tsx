@@ -34,9 +34,14 @@ type FormInputs = {
 type IndexProps = {
   question?: string;
   brandingUrl?: string;
+  ipLookupUrl?: string;
 };
 
-const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
+const Index: React.FC<IndexProps> = ({
+  question,
+  brandingUrl,
+  ipLookupUrl,
+}) => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   useBeforeunload((e) => {
     if (!hasSubmitted) e.preventDefault();
@@ -60,8 +65,8 @@ const Index: React.FC<IndexProps> = ({ question, brandingUrl }) => {
   const sendFeedback: SubmitHandler<FormInputs> = async (data) => {
     const parsedData = { ...data, score: parseInt(data.score) };
     let reqBody: Partial<Feedback> & { clientIp?: string } = parsedData;
-    if (process.env.NEXT_PUBLIC_LOOKUP_IP_URL) {
-      const ipRes = await fetch(process.env.NEXT_PUBLIC_LOOKUP_IP_URL);
+    if (ipLookupUrl) {
+      const ipRes = await fetch(ipLookupUrl);
       reqBody.clientIp = await ipRes.text();
     }
     const res = await fetch("/api/feedback", {
@@ -182,6 +187,7 @@ export const getServerSideProps: GetServerSideProps<IndexProps> = async () => {
     props: {
       question: question?.value ?? null,
       brandingUrl: brandingUrl?.value ?? null,
+      ipLookupUrl: process.env.IP_LOOKUP_URL,
     },
   };
 };
