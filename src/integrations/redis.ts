@@ -5,4 +5,8 @@ const client = redis.createClient({
   port: parseInt(process.env.REDIS_PORT),
 });
 
+client.on("error", function (error) {
+  console.log(error);
+});
+
 export const redisClient = client;
