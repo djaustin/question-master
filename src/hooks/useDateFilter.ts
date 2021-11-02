@@ -1,12 +1,15 @@
 import { Feedback } from ".prisma/client";
+import dayjs from "dayjs";
 import { useState } from "react";
 import useSWR from "swr";
 import { DateRange } from "../components/DatePicker";
 import fetcher from "../integrations/jsonFetcher";
 
-export const useDateFilter = (baseUrl: string = "/api/feedback") => {
+export const useDateFilter = (interval?: number, baseUrl: string = "/api/feedback") => {
   const [apiUrl, setApiUrl] = useState(baseUrl);
-  const { data, error } = useSWR(apiUrl, fetcher);
+  const { data, error } = useSWR(apiUrl, fetcher, {
+    refreshInterval: interval || 0,
+  });
   let feedbackData: Feedback[];
 
   if(data){
@@ -23,3 +26,10 @@ export const useDateFilter = (baseUrl: string = "/api/feedback") => {
 
   return { setDateFilter, feedbackData, error };
 };
+
+export function get24HrsAgoDateParam(){
+  const date24HrsAgo: Date = dayjs().subtract(1, 'day').toDate();
+  const isoRange = [date24HrsAgo, new Date()].map((date) => date?.toISOString());
+  const dateRangeParam = `dateRange=${isoRange.join(",")}`;
+  return dateRangeParam;
+}

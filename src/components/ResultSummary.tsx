@@ -9,6 +9,7 @@ import _ from "lodash";
 export type ResultSummaryProps = {
   data: Feedback[];
   dateRange?: string;
+  refreshInterval?: number;
 } & BoxProps;
 
 export const ResultSummary: React.FC<ResultSummaryProps> = ({
