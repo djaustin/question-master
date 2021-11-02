@@ -4,19 +4,13 @@ import { DashboardNavigation } from "../../components/DashboardNavigation";
 import DatePicker from "../../components/DatePicker";
 import { Navbar } from "../../components/Navbar";
 import { ResultSummary } from "../../components/ResultSummary";
-import { useDateFilter } from "../../hooks/useDateFilter";
+import { get24HrsAgoDateParam, useDateFilter } from "../../hooks/useDateFilter";
 import { requireLogin } from "../../integrations/authentication";
 import Head from "next/head";
-import dayjs from "dayjs";
 
 export const Summary = () => {
   const { feedbackData, setDateFilter, error } = useDateFilter();
-  const date24HrsAgo: Date = dayjs().subtract(1, "day").toDate();
-  const isoRange = [date24HrsAgo, new Date()].map((date) =>
-    date?.toISOString()
-  );
-  const dateRangeParam = `dateRange=${isoRange.join(",")}`;
-
+  const dateRangeParam = get24HrsAgoDateParam();
   const [dateRange, setDateRange] = useState(dateRangeParam);
 
   if (error) return "error";

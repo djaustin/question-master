@@ -6,13 +6,10 @@ import { Navbar } from "../../components/Navbar";
 import ResultsTable from "../../components/ResultsTable";
 import { requireLogin } from "../../integrations/authentication";
 import Head from 'next/head'
-import dayjs from "dayjs";
+import { get24HrsAgoDateParam } from "../../hooks/useDateFilter";
 
 const Results = () => {
-  const date24HrsAgo: Date = dayjs().subtract(1, 'day').toDate();
-  const isoRange = [date24HrsAgo, new Date()].map((date) => date?.toISOString());
-  const dateRangeParam = `dateRange=${isoRange.join(",")}`;
-
+  const dateRangeParam = get24HrsAgoDateParam();
   const [dateRange, setDateRange ] = useState(dateRangeParam);
 
   return (

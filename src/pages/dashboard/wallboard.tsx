@@ -1,3 +1,4 @@
+import { Text } from "@chakra-ui/react";
 import { Box, HStack, Stack } from "@chakra-ui/layout";
 import {
   NumberDecrementStepper,
@@ -7,24 +8,24 @@ import {
   NumberInputStepper,
 } from "@chakra-ui/number-input";
 import React, { useState } from "react";
-import useSWR from "swr";
 import { DarkModeToggle } from "../../components/DarkModeToggle";
 import { DashboardNavigation } from "../../components/DashboardNavigation";
 import { ResultSummary } from "../../components/ResultSummary";
 import { requireLogin } from "../../integrations/authentication";
-import fetcher from "../../integrations/jsonFetcher";
 import Head from "next/head";
+import DatePicker from "../../components/DatePicker";
+import { get24HrsAgoDateParam, useDateFilter } from "../../hooks/useDateFilter";
 
 const format = (value) => `${value || 0}s`;
 const parse = (value) => parseInt(value.replace(/s/, ""));
 
 const Wallboard = () => {
   const [interval, setInterval] = useState(0);
-  const { data, error } = useSWR("/api/feedback", fetcher, {
-    refreshInterval: interval * 1000,
-  });
+  const { feedbackData, setDateFilter, error } = useDateFilter(interval * 1000);
+  const dateRangeParam = get24HrsAgoDateParam();
+  const [dateRange, setDateRange ] = useState(dateRangeParam);
+
   if (error) return "error";
-  if (!data) return "loading...";
   return (
     <Box p="4">
       <Head>
@@ -36,6 +37,10 @@ const Wallboard = () => {
         align="center"
       >
         <HStack>
+          <DatePicker
+              onRangeChange={setDateFilter}
+              setDateRangeExternal={setDateRange}
+            />
           <NumberInput
             maxW="80px"
             value={format(interval)}
@@ -56,8 +61,12 @@ const Wallboard = () => {
           <DashboardNavigation />
         </HStack>
       </Stack>
-      {data.feedbackResults && <ResultSummary px="8" data={data.feedbackResults} />}
-    </Box>
+      {feedbackData ? (
+          <ResultSummary data={feedbackData} dateRange={dateRange} />
+        ) : (
+          <Text>Loading...</Text>
+        )}    
+      </Box>
   );
 };
 
