@@ -18,6 +18,12 @@ describe("Configuration Page", () => {
     cy.findByLabelText(/Question/i)
       .clear()
       .type(question);
+    cy.findByLabelText(/Email Address/i)
+      .clear()
+      .type(emailAddress);
+    cy.findByLabelText(/Email Subject/i)
+      .clear()
+      .type(emailSubject);
     cy.findByRole("button", { name: /save/i }).click();
     cy.wait("@config")
       .its("request.body")
@@ -35,15 +41,21 @@ describe("Configuration Page", () => {
       .clear()
       .type(question);
     cy.get('input[type="file"]').attachFile("test.png");
+     cy.findByLabelText(/email address/i)
+      .clear()
+      .type(emailAddress);
+    cy.findByLabelText(/email subject/i)
+      .clear()
+      .type(emailSubject);
     cy.findByRole("button", { name: /save/i }).click();
     cy.wait("@upload");
     cy.wait("@config")
       .its("request.body")
       .should("deep.equal", [
         { key: "question", value: question },
-        { key: "brandingUrl", value: `/api/images/${uploadedImageName}` },
-        { key: "emailSubject", value: emailSubject },
         { key: "emailAddress", value: emailAddress },
+        { key: "emailSubject", value: emailSubject },
+        { key: "brandingUrl", value: `/api/images/${uploadedImageName}` },
       ]);
   });
 });
