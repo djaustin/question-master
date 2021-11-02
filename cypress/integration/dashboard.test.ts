@@ -87,8 +87,6 @@ describe("Dashboard", () => {
       cy.intercept("GET", "/api/feedback*", feedbackData).as("feedback");
       cy.visit("/dashboard/wallboard");
       cy.wait("@feedback");
-    
-      // Act
       cy.wait("@feedback");
       cy.findAllByRole("textbox").eq(0).click();
       cy.findAllByRole("button", { name: fromDateRegex }).click();
