@@ -11,6 +11,8 @@ describe("Configuration Page", () => {
   );
   it("should submit the config when submit is clicked", () => {
     const question = "test question";
+    const emailSubject = "test email subject";
+    const emailAddress = "test@email.com";
     cy.intercept("POST", "/api/config", {}).as("config");
     cy.visit("/dashboard/config");
     cy.findByLabelText(/Question/i)
@@ -19,11 +21,13 @@ describe("Configuration Page", () => {
     cy.findByRole("button", { name: /save/i }).click();
     cy.wait("@config")
       .its("request.body")
-      .should("deep.equal", [{ key: "question", value: question }]);
+      .should("deep.equal", [{ key: "question", value: question }, { key: "emailAddress", value: emailAddress }, { key: "emailSubject", value: emailSubject }]);
   });
   it("should upload the branding image and submit the URL when submit is clicked", () => {
     const question = "test question";
     const uploadedImageName = "abc.png";
+    const emailSubject = "test email subject";
+    const emailAddress = "test@email.com";
     cy.intercept("POST", "/api/images/upload", "abc.png").as("upload");
     cy.intercept("POST", "/api/config", {}).as("config");
     cy.visit("/dashboard/config");
@@ -38,6 +42,8 @@ describe("Configuration Page", () => {
       .should("deep.equal", [
         { key: "question", value: question },
         { key: "brandingUrl", value: `/api/images/${uploadedImageName}` },
+        { key: "emailSubject", value: emailSubject },
+        { key: "emailAddress", value: emailAddress },
       ]);
   });
 });

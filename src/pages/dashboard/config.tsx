@@ -16,6 +16,8 @@ import prisma from "../../integrations/db";
 type ConfigInputs = {
   question: string;
   images: FileList;
+  emailAddress: string;
+  emailSubject: string;
 };
 
 type ConfigProps = {
@@ -106,6 +108,20 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
               <CloseButton onClick={clearImage} hidden={!selectedImage} />
             </Stack>
           </FormControl>
+          <FormControl mt="8">
+            <FormLabel>Email Address</FormLabel>
+            <Input
+              {...register("emailAddress")}
+              placeholder="e.g. hello@outlook.com"
+            />
+          </FormControl>
+          <FormControl mt="8">
+            <FormLabel>Email Subject</FormLabel>
+            <Input
+              {...register("emailSubject")}
+              placeholder="e.g. Negative Feedback Received"
+            />
+          </FormControl>
 
           <Flex width="100%" justifyContent="flex-end">
             <Button
@@ -129,11 +145,15 @@ export const getServerSideProps: GetServerSideProps<ConfigProps> = requireLogin(
     const config = await prisma.config.findMany();
     const question = config.find((item) => item.key === "question");
     const brandingUrl = config.find((item) => item.key === "brandingUrl");
+    const emailAddress = config.find((item) => item.key === "emailAddress");
+    const emailSubject = config.find((item) => item.key === "emailSubject");
 
     return {
       props: {
         question: question?.value ?? null,
         brandingUrl: brandingUrl?.value ?? null,
+        emailAddress: emailAddress?.value ?? null,
+        emailSubject: emailSubject?.value ?? null,
       },
     };
   }
@@ -151,7 +171,7 @@ const uploadFile = async (file: File) => {
 };
 
 const submitConfig = async (data: ConfigInputs, imageName: string) => {
-  const payload = [{ key: "question", value: data.question }];
+  const payload = [{ key: "question", value: data.question }, { key: "emailAddress", value: data.emailAddress }, { key: "emailSubject", value: data.emailSubject }];
   if (imageName)
     payload.push({ key: "brandingUrl", value: `/api/images/${imageName}` });
   const res = await fetch("/api/config", {

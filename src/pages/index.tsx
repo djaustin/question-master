@@ -187,7 +187,7 @@ export const getServerSideProps: GetServerSideProps<IndexProps> = async () => {
     props: {
       question: question?.value ?? null,
       brandingUrl: brandingUrl?.value ?? null,
-      ipLookupUrl: process.env.IP_LOOKUP_URL,
+      ipLookupUrl: process.env.IP_LOOKUP_URL ?? null,
     },
   };
 };
