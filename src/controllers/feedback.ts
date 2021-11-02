@@ -27,7 +27,6 @@ export async function handleCreateFeedback(
       ...data,
     },
   });
-  console.log("REQ BODY", req.body);
   await processMailSend(req.body);
 
   res.json(createdFeedback);
