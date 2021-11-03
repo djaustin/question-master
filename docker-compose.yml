@@ -20,6 +20,15 @@ services:
     volumes:
       - imagedata:/var/filepile
 
+
+  redis:
+    image: redis:6.2
+    ports:
+      - 6379:6379
+    volumes:
+      - redisdata:/data
+
 volumes:
   pgdata:
   imagedata:
+  redisdata:
