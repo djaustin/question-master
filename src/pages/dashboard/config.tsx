@@ -1,7 +1,7 @@
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Container, Flex, Heading, Stack } from "@chakra-ui/layout";
-import { Button, CloseButton, Image, Text } from "@chakra-ui/react";
+import { Button, CloseButton, Image, Text, Textarea } from "@chakra-ui/react";
 import { chakra } from "@chakra-ui/system";
 import { useToast } from "@chakra-ui/toast";
 import { GetServerSideProps } from "next";
@@ -18,14 +18,18 @@ type ConfigInputs = {
   images: FileList;
   emailAddress: string;
   emailSubject: string;
+  emailTemplate: string;
 };
 
 type ConfigProps = {
   question: string;
   brandingUrl: string;
+  emailAddress: string;
+  emailSubject: string;
+  emailTemplate: string;
 };
 
-const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
+const Config: React.FC<ConfigProps> = ({ question, brandingUrl, emailAddress, emailSubject, emailTemplate }) => {
   const {
     handleSubmit,
     register,
@@ -34,7 +38,7 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
     getValues,
     setValue,
   } = useForm<ConfigInputs>({
-    defaultValues: { question },
+    defaultValues: { question, emailAddress, emailSubject, emailTemplate },
   });
   const [filePreviewUrl, setFilePreviewUrl] = useState<string>(
     brandingUrl ?? ""
@@ -83,7 +87,7 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
             <FormLabel>Question</FormLabel>
             <Input
               {...register("question")}
-              placeholder="e.g. how are you finding the performance today?"
+              placeholder="How are you finding the performance today?"
             />
           </FormControl>
           <FormControl mt="4">
@@ -112,14 +116,27 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl }) => {
             <FormLabel>Email Address</FormLabel>
             <Input
               {...register("emailAddress")}
-              placeholder="e.g. hello@outlook.com"
+              placeholder="hello@outlook.com"
             />
           </FormControl>
           <FormControl mt="8">
             <FormLabel>Email Subject</FormLabel>
             <Input
               {...register("emailSubject")}
-              placeholder="e.g. Negative Feedback Received"
+              placeholder="Negative Feedback Received"
+            />
+          </FormControl>
+          <FormControl mt="8">
+            <FormLabel>Email Template</FormLabel>
+            <Textarea
+              minHeight = '300'
+              {...register("emailTemplate")}
+              placeholder="<p>Feedback has been received:</p>
+              <ul>
+                <li>Score:&nbsp;<strong>{{score}}</strong></li>
+                <li>Comment:&nbsp;<strong>{{comment}}</strong></li>
+                <li>Username:&nbsp;<strong>{{username}}</strong></li>
+              </ul>;"
             />
           </FormControl>
 
@@ -147,6 +164,7 @@ export const getServerSideProps: GetServerSideProps<ConfigProps> = requireLogin(
     const brandingUrl = config.find((item) => item.key === "brandingUrl");
     const emailAddress = config.find((item) => item.key === "emailAddress");
     const emailSubject = config.find((item) => item.key === "emailSubject");
+    const emailTemplate = config.find((item) => item.key === "emailTemplate");
 
     return {
       props: {
@@ -154,6 +172,7 @@ export const getServerSideProps: GetServerSideProps<ConfigProps> = requireLogin(
         brandingUrl: brandingUrl?.value ?? null,
         emailAddress: emailAddress?.value ?? null,
         emailSubject: emailSubject?.value ?? null,
+        emailTemplate: emailTemplate?.value ?? null,
       },
     };
   }
@@ -171,7 +190,7 @@ const uploadFile = async (file: File) => {
 };
 
 const submitConfig = async (data: ConfigInputs, imageName: string) => {
-  const payload = [{ key: "question", value: data.question }, { key: "emailAddress", value: data.emailAddress }, { key: "emailSubject", value: data.emailSubject }];
+  const payload = [{ key: "question", value: data.question }, { key: "emailAddress", value: data.emailAddress }, { key: "emailSubject", value: data.emailSubject }, { key: "emailTemplate", value: data.emailTemplate }];
   if (imageName)
     payload.push({ key: "brandingUrl", value: `/api/images/${imageName}` });
   const res = await fetch("/api/config", {
