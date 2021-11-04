@@ -13,6 +13,7 @@ describe("Configuration Page", () => {
     const question = "test question";
     const emailSubject = "test email subject";
     const emailAddress = "test@email.com";
+    const emailTemplate = "<h1>test.<h1>";
     cy.intercept("POST", "/api/config", {}).as("config");
     cy.visit("/dashboard/config");
     cy.findByLabelText(/Question/i)
@@ -24,16 +25,25 @@ describe("Configuration Page", () => {
     cy.findByLabelText(/Email Subject/i)
       .clear()
       .type(emailSubject);
+    cy.findByLabelText(/Email Template/i)
+      .clear()
+      .type(emailTemplate);
     cy.findByRole("button", { name: /save/i }).click();
     cy.wait("@config")
       .its("request.body")
-      .should("deep.equal", [{ key: "question", value: question }, { key: "emailAddress", value: emailAddress }, { key: "emailSubject", value: emailSubject }]);
+      .should("deep.equal", [
+        { key: "question", value: question },
+        { key: "emailAddress", value: emailAddress },
+        { key: "emailSubject", value: emailSubject },
+        { key: "emailTemplate", value: emailTemplate },
+      ]);
   });
   it("should upload the branding image and submit the URL when submit is clicked", () => {
     const question = "test question";
     const uploadedImageName = "abc.png";
     const emailSubject = "test email subject";
     const emailAddress = "test@email.com";
+    const emailTemplate = "<h1>test.<h1>";
     cy.intercept("POST", "/api/images/upload", "abc.png").as("upload");
     cy.intercept("POST", "/api/config", {}).as("config");
     cy.visit("/dashboard/config");
@@ -41,12 +51,15 @@ describe("Configuration Page", () => {
       .clear()
       .type(question);
     cy.get('input[type="file"]').attachFile("test.png");
-     cy.findByLabelText(/email address/i)
+    cy.findByLabelText(/email address/i)
       .clear()
       .type(emailAddress);
     cy.findByLabelText(/email subject/i)
       .clear()
       .type(emailSubject);
+    cy.findByLabelText(/Email Template/i)
+      .clear()
+      .type(emailTemplate);
     cy.findByRole("button", { name: /save/i }).click();
     cy.wait("@upload");
     cy.wait("@config")
@@ -55,6 +68,7 @@ describe("Configuration Page", () => {
         { key: "question", value: question },
         { key: "emailAddress", value: emailAddress },
         { key: "emailSubject", value: emailSubject },
+        { key: "emailTemplate", value: emailTemplate },
         { key: "brandingUrl", value: `/api/images/${uploadedImageName}` },
       ]);
   });
