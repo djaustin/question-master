@@ -3,15 +3,8 @@ import { promisify } from "util";
 import { redisClient } from "../integrations/redis";
 import prisma from "../integrations/db";
 import Mustache from "mustache";
-const defaultEmailTemplate = 
-`
-<p>Feedback has been received:</p>
-  <ul>
-    <li>Score:&nbsp;<strong>{{score}}</strong></li>
-    <li>Comment:&nbsp;<strong>{{comment}}</strong></li>
-    <li>Username:&nbsp;<strong>{{username}}</strong></li>
-  </ul>;
-`
+import config from "../config";
+
 const lpush = promisify(redisClient.lpush).bind(redisClient);
 
 export type MailPayload = {
@@ -28,14 +21,11 @@ export const createMailTask = async (payload: MailPayload) => {
 export async function processMailSend(data: Prisma.FeedbackCreateInput) {
   if (data.score <= 1 || data.username) {
     try {
-      const config = await prisma.config.findMany();
-      const emailTemplate = config.find((config) => config.key === "emailTemplate")?.value || defaultEmailTemplate 
-      const recipients = [config.find((config) => config.key === "emailAddress")?.value] || process.env.MAIL_RECIPIENTS?.split(",");
-      const subject = config.find((config) => config.key === "emailSubject")?.value || process.env.MAIL_SUBJECT || "User feedback received";
+      const configDb = await prisma.config.findMany();
+      const emailTemplate = configDb.find((config) => config.key === "emailTemplate")?.value || config.defaultEmailTemplate ;  
+      const recipients = [configDb.find((config) => config.key === "emailAddress")?.value] || [config.defaultEmailAddress] ;
+      const subject = configDb.find((config) => config.key === "emailSubject")?.value || config.defaultEmailSubject ;
       const message = Mustache.render(emailTemplate, data);
-      console.log(data)
-      console.log(emailTemplate)
-      console.log(message)
       await createMailTask({ subject, message, recipients });
     } catch (err) {
       console.log("Unable to process mail send", err);
