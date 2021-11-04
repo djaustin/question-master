@@ -12,6 +12,7 @@ import FileUpload from "../../components/FileUpload";
 import { Navbar } from "../../components/Navbar";
 import { requireLogin } from "../../integrations/authentication";
 import prisma from "../../integrations/db";
+import config from "../../config";
 
 type ConfigInputs = {
   question: string;
@@ -87,7 +88,7 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl, emailAddress, em
             <FormLabel>Question</FormLabel>
             <Input
               {...register("question")}
-              placeholder="How are you finding the performance today?"
+              placeholder={config.defaultQuestion}
             />
           </FormControl>
           <FormControl mt="4">
@@ -116,14 +117,14 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl, emailAddress, em
             <FormLabel>Email Address</FormLabel>
             <Input
               {...register("emailAddress")}
-              placeholder="hello@outlook.com"
+              placeholder={config.defaultEmailAddress}
             />
           </FormControl>
           <FormControl mt="8">
             <FormLabel>Email Subject</FormLabel>
             <Input
               {...register("emailSubject")}
-              placeholder="Negative Feedback Received"
+              placeholder={config.defaultEmailSubject}
             />
           </FormControl>
           <FormControl mt="8">
@@ -131,12 +132,7 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl, emailAddress, em
             <Textarea
               minHeight = '300'
               {...register("emailTemplate")}
-              placeholder="<p>Feedback has been received:</p>
-              <ul>
-                <li>Score:&nbsp;<strong>{{score}}</strong></li>
-                <li>Comment:&nbsp;<strong>{{comment}}</strong></li>
-                <li>Username:&nbsp;<strong>{{username}}</strong></li>
-              </ul>;"
+              placeholder={config.defaultEmailTemplate}
             />
           </FormControl>
 

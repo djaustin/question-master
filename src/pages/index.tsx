@@ -24,6 +24,7 @@ import { useBeforeunload } from "react-beforeunload";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import LikertScale from "../components/LikertScale";
 import prisma from "../integrations/db";
+import config from "../config";
 
 type FormInputs = {
   score: string;
@@ -102,7 +103,7 @@ const Index: React.FC<IndexProps> = ({
         <title>Feedback: Submit</title>
       </Head>
       <Heading textAlign="center" size="3xl">
-        {question || "How are you finding the system's performance today?"}
+        {question || config.defaultQuestion}
       </Heading>
       <chakra.form mt="8" onSubmit={handleSubmit(sendFeedback)}>
         <VStack spacing="8" align="start">
