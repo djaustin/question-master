@@ -18,13 +18,14 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <Flex
-      bg={`teal.${useColorModeValue(500, 900)}`}
+      borderBottom="5px solid"
+      borderColor="teal"
       h="50px"
       px={5}
       align="center"
       justify="space-between"
     >
-      <Heading color="white" size="lg">
+      <Heading color="teal" size="lg">
         <Link cursor="pointer" href="/dashboard" as={NextLink}>
           {title}
         </Link>
@@ -32,24 +33,18 @@ export const Navbar: React.FC<NavbarProps> = ({
       <HStack spacing="4">
         <Link href="/dashboard/config" as={NextLink}>
           <IconButton
-            color="white"
             variant="link"
             aria-label="open settings"
             icon={<FiSettings />}
           />
         </Link>
-        <DarkModeToggle variant="link" color="white" />
+        <DarkModeToggle variant="link" />
         {session?.user && (
           <>
             <Tooltip label={session.user.name}>
               <Avatar size="sm" name={session.user.name} />
             </Tooltip>
-            <Button
-              size="xs"
-              variant="outline"
-              color="white"
-              onClick={() => signOut()}
-            >
+            <Button size="xs" variant="outline" onClick={() => signOut()}>
               Sign out
             </Button>
           </>
