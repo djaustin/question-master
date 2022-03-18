@@ -30,7 +30,13 @@ type ConfigProps = {
   emailTemplate: string;
 };
 
-const Config: React.FC<ConfigProps> = ({ question, brandingUrl, emailAddress, emailSubject, emailTemplate }) => {
+const Config: React.FC<ConfigProps> = ({
+  question,
+  brandingUrl,
+  emailAddress,
+  emailSubject,
+  emailTemplate,
+}) => {
   const {
     handleSubmit,
     register,
@@ -72,7 +78,6 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl, emailAddress, em
 
   useEffect(() => {
     const file = getValues("images")?.[0];
-    console.log(file);
     if (file) setFilePreviewUrl(URL.createObjectURL(file));
   }, [watch("images")]);
   return (
@@ -130,18 +135,14 @@ const Config: React.FC<ConfigProps> = ({ question, brandingUrl, emailAddress, em
           <FormControl mt="8">
             <FormLabel>Email Template</FormLabel>
             <Textarea
-              minHeight = '300'
+              minHeight="300"
               {...register("emailTemplate")}
               placeholder={config.defaultEmailTemplate}
             />
           </FormControl>
 
           <Flex width="100%" justifyContent="flex-end">
-            <Button
-              mt="4"
-              disabled={!isDirty}
-              type="submit"
-            >
+            <Button mt="4" disabled={!isDirty} type="submit">
               Save
             </Button>
           </Flex>
@@ -186,7 +187,12 @@ const uploadFile = async (file: File) => {
 };
 
 const submitConfig = async (data: ConfigInputs, imageName: string) => {
-  const payload = [{ key: "question", value: data.question }, { key: "emailAddress", value: data.emailAddress }, { key: "emailSubject", value: data.emailSubject }, { key: "emailTemplate", value: data.emailTemplate }];
+  const payload = [
+    { key: "question", value: data.question },
+    { key: "emailAddress", value: data.emailAddress },
+    { key: "emailSubject", value: data.emailSubject },
+    { key: "emailTemplate", value: data.emailTemplate },
+  ];
   if (imageName)
     payload.push({ key: "brandingUrl", value: `/api/images/${imageName}` });
   const res = await fetch("/api/config", {

@@ -7,13 +7,9 @@ export type DateRange = [Date, Date];
 
 export type DatePickerProps = {
   onRangeChange?: (range: DateRange) => void;
-  setDateRangeExternal: (range: string) => void;
 };
 
-export default function DatePicker({
-  onRangeChange,
-  setDateRangeExternal,
-}: DatePickerProps) {
+export default function DatePicker({ onRangeChange }: DatePickerProps) {
   const date24HrsAgo: Date = dayjs().subtract(1, "day").toDate();
   const [dateRange, setDateRange] = useState<DateRange>([
     date24HrsAgo,
@@ -28,13 +24,7 @@ export default function DatePicker({
     setDateRange([fromDate, toDate]);
 
     if (!(fromDate || toDate) && onRangeChange) onRangeChange(null);
-    if (toDate) {
-      if (onRangeChange) onRangeChange?.([fromDate, toDate]);
-
-      const isoRange = [fromDate, toDate].map((date) => date?.toISOString());
-      const dateRangeParam = `dateRange=${isoRange.join(",")}`;
-      setDateRangeExternal(dateRangeParam);
-    }
+    if (toDate && onRangeChange) onRangeChange?.([fromDate, toDate]);
   }
 
   return (

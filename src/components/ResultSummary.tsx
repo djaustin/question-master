@@ -8,13 +8,10 @@ import _ from "lodash";
 
 export type ResultSummaryProps = {
   data: Feedback[];
-  dateRange?: string;
-  refreshInterval?: number;
 } & BoxProps;
 
 export const ResultSummary: React.FC<ResultSummaryProps> = ({
   data,
-  dateRange,
   ...boxProps
 }) => {
   const scoreCount = useMemo(() => _.groupBy(data, "score"), [data]);
@@ -63,15 +60,15 @@ export const ResultSummary: React.FC<ResultSummaryProps> = ({
             w="full"
             hiddenColumns={["Comment", "Username", "Address"]}
             h="400px"
+            data={data}
             overflow="auto"
-            dateRange={dateRange}
           />
         </VStack>
       </Stack>
       <Text mt="20" fontWeight="bold" textTransform="uppercase">
         All Feedback Comments
       </Text>
-      <ResultsTable maxW="100vw" overflowX="auto" canFilter dateRange={dateRange}/>
+      <ResultsTable maxW="100vw" h=" " overflow="auto" canFilter data={data} />
     </Box>
   );
 };

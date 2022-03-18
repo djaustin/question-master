@@ -71,30 +71,4 @@ describe("Results Page", () => {
     cy.findByText(/10.131.0.1/i).should("not.exist");
     cy.findAllByText(/192.168.0.1/i).should("be.visible");
   });
-  it("should show to maximum number of pages correctly and the 'previous' button should be disabled", () => {
-    cy.intercept("GET", "/api/feedback*", data).as("feedback");
-    cy.visit("/dashboard/results");
-
-    cy.findByLabelText(/total and current pages/i).contains("2");
-    cy.findByLabelText(/previous page/i).should('be.disabled')
-  });
-  it("should call the api with a skip value of 10 when the 'next' button is clicked and make the 'next' button disabled", () => {
-    cy.intercept("GET", "/api/feedback*", data).as("feedback");
-    cy.visit("/dashboard/results");
-
-    cy.wait("@feedback").its("request.url").should("include", "0");
-    cy.wait(500);
-
-    cy.findByLabelText(/next page/i).click();
-
-    cy.wait("@feedback").its("request.url").should("include", "10");
-    cy.findByLabelText(/next page/i).should('be.disabled')
-  });
-  it("should disable the next button and display 'Page 1 of 1' when there are no results", () => {
-    cy.intercept("GET", "/api/feedback*", []).as("feedback");
-    cy.visit("/dashboard/results");
-
-    cy.findByLabelText(/next page/i).should('be.disabled');
-    cy.findByLabelText(/total and current pages/i).contains("1");
-  });
 });
