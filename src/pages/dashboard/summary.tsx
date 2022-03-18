@@ -11,7 +11,6 @@ import Head from "next/head";
 export const Summary = () => {
   const { feedbackData, setDateFilter, error } = useDateFilter();
   const dateRangeParam = get24HrsAgoDateParam();
-  const [dateRange, setDateRange] = useState(dateRangeParam);
 
   if (error) return "error";
   return (
@@ -26,14 +25,11 @@ export const Summary = () => {
           justify="space-between"
           align="center"
         >
-          <DatePicker
-            onRangeChange={setDateFilter}
-            setDateRangeExternal={setDateRange}
-          />
+          <DatePicker onRangeChange={setDateFilter} />
           <DashboardNavigation />
         </Stack>
         {feedbackData ? (
-          <ResultSummary data={feedbackData} dateRange={dateRange} />
+          <ResultSummary data={feedbackData} />
         ) : (
           <Text>Loading...</Text>
         )}

@@ -18,7 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <Flex
-      borderBottom="5px solid"
+      borderBottom="3px solid"
       borderColor="teal"
       h="50px"
       px={5}

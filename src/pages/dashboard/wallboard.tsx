@@ -23,7 +23,7 @@ const Wallboard = () => {
   const [interval, setInterval] = useState(0);
   const { feedbackData, setDateFilter, error } = useDateFilter(interval * 1000);
   const dateRangeParam = get24HrsAgoDateParam();
-  const [dateRange, setDateRange ] = useState(dateRangeParam);
+  const [dateRange, setDateRange] = useState(dateRangeParam);
 
   if (error) return "error";
   return (
@@ -37,10 +37,6 @@ const Wallboard = () => {
         align="center"
       >
         <HStack>
-          <DatePicker
-              onRangeChange={setDateFilter}
-              setDateRangeExternal={setDateRange}
-            />
           <NumberInput
             maxW="80px"
             value={format(interval)}
@@ -62,11 +58,11 @@ const Wallboard = () => {
         </HStack>
       </Stack>
       {feedbackData ? (
-          <ResultSummary data={feedbackData} dateRange={dateRange} />
-        ) : (
-          <Text>Loading...</Text>
-        )}    
-      </Box>
+        <ResultSummary data={feedbackData || []} />
+      ) : (
+        <Text>Loading...</Text>
+      )}
+    </Box>
   );
 };
 

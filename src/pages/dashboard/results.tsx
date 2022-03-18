@@ -1,16 +1,15 @@
 import { Container, Stack } from "@chakra-ui/react";
-import React, { useState } from "react";
+import Head from "next/head";
+import React from "react";
 import { DashboardNavigation } from "../../components/DashboardNavigation";
 import DatePicker from "../../components/DatePicker";
 import { Navbar } from "../../components/Navbar";
 import ResultsTable from "../../components/ResultsTable";
+import { useDateFilter } from "../../hooks/useDateFilter";
 import { requireLogin } from "../../integrations/authentication";
-import Head from 'next/head'
-import { get24HrsAgoDateParam } from "../../hooks/useDateFilter";
 
 const Results = () => {
-  const dateRangeParam = get24HrsAgoDateParam();
-  const [dateRange, setDateRange ] = useState(dateRangeParam);
+  const { feedbackData, setDateFilter } = useDateFilter();
 
   return (
     <>
@@ -24,7 +23,7 @@ const Results = () => {
           align="center"
           justify="space-between"
         >
-          <DatePicker setDateRangeExternal={setDateRange} />
+          <DatePicker onRangeChange={setDateFilter} />
           <DashboardNavigation />
         </Stack>
         <ResultsTable
@@ -33,8 +32,8 @@ const Results = () => {
           mt="8"
           canFilter
           globalFilter
-          dateRange={dateRange}
-        /> 
+          data={feedbackData || []}
+        />
       </Container>
     </>
   );

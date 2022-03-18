@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import Providers from "next-auth/providers";
-import {authenticate} from 'ldap-authentication'
+import { authenticate } from "ldap-authentication";
 
 const options: NextAuthOptions = {
   providers: [
@@ -21,20 +21,23 @@ const options: NextAuthOptions = {
 
         const ldapAuthConfig = {
           ldapOpts: {
-            url: process.env.LDAP_URL
+            url: process.env.LDAP_URL,
           },
           adminDn: process.env.LDAP_ADMIN_DN,
           adminPassword: process.env.LDAP_ADMIN_PASSWORD,
           username,
           userPassword: password,
           userSearchBase: process.env.LDAP_USER_SEARCH_BASE,
-          usernameAttribute: process.env.LDAP_USERNAME_ATTRIBUTE
-        }
+          usernameAttribute: process.env.LDAP_USERNAME_ATTRIBUTE,
+        };
         try {
-          const user = await authenticate(ldapAuthConfig)
-          return {...user, name: user.fullName || user.displayName || user.gecos}
+          const user = await authenticate(ldapAuthConfig);
+          return {
+            ...user,
+            name: user.fullName || user.displayName || user.gecos,
+          };
         } catch (err) {
-          console.log(err)
+          console.log(err);
           return null;
         }
       },
